@@ -1,7 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+const { generatePassword } = require("../helpers/bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,16 +12,64 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  User.init({
-    name: DataTypes.STRING,
-    location: DataTypes.STRING,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  }
+  User.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "name cannot be empty",
+          },
+        },
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "location cannot be empty",
+          },
+        },
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "username cannot be empty",
+          },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "email cannot be empty",
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "password cannot be empty",
+          },
+        },
+      },
+    },
+    {
+      hooks: {
+        beforeCreate: (user, options) => {
+          user.password = generatePassword(user.password);
+        },
+      },
+      sequelize,
+      modelName: "User",
+    }
+  );
   return User;
 };

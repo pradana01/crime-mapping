@@ -1,1 +1,0 @@
-// Ini copy app.js untuk nanti testing
