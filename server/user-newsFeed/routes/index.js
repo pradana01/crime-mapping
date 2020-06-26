@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const router = require('express').Router()
 const CrimeReportController = require('../controllers/crimeReportController')
 const CommentController = require(`../controllers/commentController`)
@@ -19,3 +20,12 @@ router.delete('/comments/:id', CommentController.delete)
 router.put('/comments/:id', CommentController.update)
 
 module.exports = router
+=======
+const router = require("express").Router();
+const userController = require("../controllers/userController");
+
+router.post("/signin", userController.signIn);
+router.post("/signup", userController.signUp);
+
+module.exports = router;
+>>>>>>> development

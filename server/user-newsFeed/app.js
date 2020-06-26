@@ -1,20 +1,21 @@
-const express = require('express')
-const cors = require('cors')
-const routes = require('./routes')
-require('dotenv').config()
-// const error = require('./middlewares/errorHandler')
+require("dotenv").config();
+const express = require("express");
+const router = require("./routes");
+const cors = require("cors");
+const errorHandler = require("./middlewares/errorHandler");
 
-const app = express()
-const port = process.env.PORT
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json())
-app.use(express.urlencoded({extended : false}))
-app.use(cors())
-app.use(routes)
-// app.use(error)
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.listen(port, () => {
-    console.log('This app is listening to port : ', port)
-})
+app.use(router);
+app.use(errorHandler);
 
-module.exports = app
+app.listen(PORT, () => {
+  console.log(`Listening on PORT ${PORT}`);
+});
+
+module.exports = app;

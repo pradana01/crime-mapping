@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "rezarr",
-    "password": 123456,
-    "database": "crimeport",
+    "username": "postgres",
+    "password": 1,
+    "database": "crime-mapping-database",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "username": "rezarr",
-    "password": 123456,
-    "database": "crimeport_test",
+    "username": "postgres",
+    "password": 1,
+    "database": "crimeport-testing",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "crimeport_production",
+    "username": "postgres",
+    "password": 1,
+    "database": "crimeport-testing",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }

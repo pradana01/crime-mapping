@@ -18,5 +18,9 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.2.1",
     "sequelize": "^6.1.0"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "supertest": "^4.0.2"
   }
 }
