@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "generate": "NODE_ENV=test sequelize db:create && NODE_ENV=test sequelize db:migrate",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "google-auth-library": "^6.0.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.2.1",
-    "sequelize": "^6.1.0"
+    "sequelize": "^6.1.0",
+    "supertest": "^4.0.2"
   }
 }
