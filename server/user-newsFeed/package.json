@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
+    "generate": "NODE_ENV=test sequelize db:create && NODE_ENV=test sequelize db:migrate",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit"
+=======
     "test": "NODE_ENV=test jest --detectOpenHandles --runInBand --forceExit"
+>>>>>>> development
   },
   "keywords": [],
   "author": "",
@@ -17,10 +22,14 @@
     "google-auth-library": "^6.0.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.2.1",
+<<<<<<< HEAD
+    "sequelize": "^6.1.0",
+=======
     "sequelize": "^6.1.0"
   },
   "devDependencies": {
     "jest": "^26.1.0",
+>>>>>>> development
     "supertest": "^4.0.2"
   }
 }
