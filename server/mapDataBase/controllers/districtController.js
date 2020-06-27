@@ -9,7 +9,7 @@ class Control {
         })
         .catch((err) => {
             console.log(err)
-            throw err
+            res.status(500).jason(err.message)
         })
     }
     static getOneDistrict(req, res, next) {
@@ -19,7 +19,7 @@ class Control {
         })
         .catch(err => {
             console.log(err)
-            throw err
+            res.status(500).jason(err.message)
         })
     }
 }
