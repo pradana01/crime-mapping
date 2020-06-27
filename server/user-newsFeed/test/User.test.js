@@ -141,7 +141,6 @@ describe("User Routes Test", () => {
         .post("/signin")
         .send(wrongUsername)
         .then((response) => {
-          console.log(response);
           const { body, status } = response;
           expect(status).toBe(400);
           expect(body).toHaveProperty("message", "Wrong Username");
