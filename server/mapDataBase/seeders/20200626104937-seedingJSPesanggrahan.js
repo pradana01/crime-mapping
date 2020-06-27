@@ -12,8 +12,9 @@ module.exports = {
      * }], {});
     */
    await queryInterface.bulkInsert('Districts', [{
-    name: 'Pesannggrahan',
+    name: 'Pesanggrahan',
     city: 'Jakarta Selatan',
+    mapName: 'pesanggrahan',
     homicide: 0,
     assault: 35,
     harassment: 2,
