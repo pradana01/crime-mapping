@@ -7,7 +7,7 @@ class Control {
         res.status(200).json(data);
       })
       .catch((err) => {
-        res.status(500).jason(err.message);
+        res.status(500).json(err.message);
       });
   }
   static getOneDistrict(req, res, next) {
@@ -16,7 +16,7 @@ class Control {
         res.status(200).json(data);
       })
       .catch((err) => {
-        res.status(500).jason(err.message);
+        res.status(500).json(err.message);
       });
   }
 }
