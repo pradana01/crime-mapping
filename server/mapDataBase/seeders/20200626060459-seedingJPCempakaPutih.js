@@ -15,6 +15,7 @@ module.exports = {
      name: 'Cempaka Putih',
      city: 'Jakarta Pusat',
      mapName: 'cempakaPutih',
+     population: 85051,
      homicide: 10,
      assault: 18,
      harassment: 23,

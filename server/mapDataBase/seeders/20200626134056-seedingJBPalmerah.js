@@ -12,9 +12,10 @@ module.exports = {
      * }], {});
     */
    await queryInterface.bulkInsert('Districts', [{
-    name: 'Palemerah',
+    name: 'Palmerah',
     city: 'Jakarta Barat',
     mapName: 'palmerah',
+    population: 193787,
     homicide: 0,
     assault: 1,
     harassment: 1,

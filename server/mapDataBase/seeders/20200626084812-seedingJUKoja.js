@@ -16,6 +16,7 @@ module.exports = {
     name: 'Koja',
     city: 'Jakarta Utara',
     mapName: 'koja',
+    population: 34073,
     homicide: 0,
     assault: 12,
     harassment: 0,

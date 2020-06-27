@@ -15,6 +15,7 @@ module.exports = {
     name: 'Cakung',
     city: 'Jakarta Timur',
     mapName: 'cakung',
+    population: 105649,
     homicide: 1,
     assault: 12,
     harassment: 5,

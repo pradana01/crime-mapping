@@ -15,6 +15,7 @@ module.exports = {
     name: 'Kramat Jati',
     city: 'Jakarta Timur',
     mapName: 'kramatJati',
+    population: 275658,
     homicide: 0,
     assault: 12,
     harassment: 2,

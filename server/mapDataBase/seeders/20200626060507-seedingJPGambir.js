@@ -15,6 +15,7 @@ module.exports = {
     name: 'Gambir',
     city: 'Jakarta Pusat',
     mapName: 'gambir',
+    population: 78254,
     homicide: 1,
     assault: 5,
     harassment: 8,

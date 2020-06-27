@@ -15,6 +15,7 @@ module.exports = {
     name: 'Johar Baru',
     city: 'Jakarta Pusat',
     mapName: 'joharBaru',
+    population: 117985,
     homicide: 0,
     assault: 1,
     harassment: 10,

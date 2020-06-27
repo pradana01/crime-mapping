@@ -15,6 +15,7 @@ module.exports = {
     name: 'Pancoran',
     city: 'Jakarta Selatan',
     mapName: 'pancoran',
+    population: 154693,
     homicide: 5,
     assault: 24,
     harassment: 15,

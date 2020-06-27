@@ -15,6 +15,7 @@ module.exports = {
     name: 'Pasar Rebo',
     city: 'Jakarta Timur',
     mapName: 'pasarRebo',
+    population: 208108,
     homicide: 0,
     assault: 20,
     harassment: 0,

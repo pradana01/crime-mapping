@@ -15,6 +15,7 @@ module.exports = {
     name: 'Kebayoran Lama',
     city: 'Jakarta Selatan',
     mapName: 'kebayoranLama',
+    population: 307734,
     homicide: 0,
     assault: 10,
     harassment: 9,

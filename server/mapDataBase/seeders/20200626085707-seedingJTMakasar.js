@@ -15,6 +15,7 @@ module.exports = {
     name: 'Makasar',
     city: 'Jakarta Timur',
     mapName: 'makasar',
+    population: 157261,
     homicide: 0,
     assault: 1,
     harassment: 0,

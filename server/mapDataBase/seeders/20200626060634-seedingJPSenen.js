@@ -15,6 +15,7 @@ module.exports = {
     name: 'Senen',
     city: 'Jakarta Pusat',
     mapName: 'senen',
+    population: 95945,
     homicide: 12,
     assault: 23,
     harassment: 10,

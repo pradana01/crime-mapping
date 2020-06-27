@@ -15,6 +15,7 @@ module.exports = {
     name: 'Cipayung',
     city: 'Jakarta Timur',
     mapName: 'cipayung',
+    population: 29311,
     homicide: 2,
     assault: 3,
     harassment: 1,

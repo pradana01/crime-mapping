@@ -15,6 +15,7 @@ module.exports = {
     name: 'Sawah Besar',
     city: 'Jakarta Pusat',
     mapName: 'sawahBesar',
+    population: 100593,
     homicide: 0,
     assault: 3,
     harassment: 2,

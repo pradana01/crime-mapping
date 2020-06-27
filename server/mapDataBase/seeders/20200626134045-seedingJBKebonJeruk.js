@@ -15,6 +15,7 @@ module.exports = {
     name: 'Kebon Jeruk',
     city: 'Jakarta Barat',
     mapName: 'kebonJeruk',
+    population: 190665,
     homicide: 0,
     assault: 0,
     harassment: 1,

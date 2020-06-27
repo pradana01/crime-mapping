@@ -15,6 +15,7 @@ module.exports = {
     name: 'Kemayoran',
     city: 'Jakarta Pusat',
     mapName: 'kemayoran',
+    population: 222309,
     homicide: 3,
     assault: 10,
     harassment: 20,

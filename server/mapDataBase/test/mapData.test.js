@@ -6,6 +6,7 @@ const { queryInterface } = sequelize;
 const createDistrict = {
   name: "cempaka putih",
   city: "jakarta pusat",
+  population: 100000,
   homicide: 1,
   assault: 1,
   harassment: 1,
