@@ -127,7 +127,8 @@ export const tanjungPriok = `
 
 
 // Pindahkan fungsi dibawah ke page yang membutuhkan & invoke dengan menggunakan parameter di atas
-function buildCoordinate(district) {
+export function buildCoordinate(value) {
+    var district = eval(value)
     var finalData = []
     var grouped = district.split(' ')
     
@@ -135,8 +136,8 @@ function buildCoordinate(district) {
         let a = item.trim().split(',')
     
         finalData.push({
-            lng: parseFloat(a[0]),
-            lat: parseFloat(a[1])
+            longitude: parseFloat(a[0]),
+            latitude: parseFloat(a[1])
         })
     
     })
