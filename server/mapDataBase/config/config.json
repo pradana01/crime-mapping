@@ -8,8 +8,8 @@
   },
   "test": {
     "username": "postgres",
-    "password": 123456,
-    "database": "crime_database",
+    "password": 1,
+    "database": "crimeport-database-test",
     "host": "localhost",
     "dialect": "postgres"
   },
