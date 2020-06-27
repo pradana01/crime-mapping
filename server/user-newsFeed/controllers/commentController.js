@@ -1,21 +1,24 @@
-const { Comment } = require('../models')
+const { Comment, User } = require('../models')
 
 class CommentController {
     static show(req, res, next){
-        Comment.findAll()
+        Comment.findAll({include: User })
         .then( comments => { res.status(200).json(comments) })
         .catch( err => { next(err) })
     }
 
     static findByReportId(req, res, next){
-        Comment.findAll({where: {CrimeReportId: req.params.id}})
+        Comment.findAll({
+            where: {CrimeReportId: req.params.id},
+            include: User
+        })
         .then( comments => { res.status(200).json(comments) })
         .catch( err => { next(err) })
     }
 
     static add(req, res, next){
-        const { comment, CrimeReportId, UserId } = req.body
-        // const UserId = req.userData.id
+        const { comment, CrimeReportId } = req.body
+        const UserId = req.userData.id
         Comment.create({ comment, CrimeReportId, UserId })
         .then( comment => { res.status(201).json(comment) })
         .catch( err => { next(err) })
