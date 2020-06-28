@@ -2,85 +2,20 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
 import { StyleSheet, Dimensions, View, Text, Alert, Modal, TouchableHighlight } from "react-native";
-import MapView, { Polygon, Callout, Marker } from "react-native-maps";
-import { buildCoordinate } from "../coordinates";
+import MapView, { Polygon } from "react-native-maps";
 import * as Location from "expo-location";
+import { finalData } from "../coordinates";
+
 const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1() {
-  const [location, setLocation] = useState({
-    latitude: -6.260643,
-    longitude: 106.781589,
-  });
+  const [location, setLocation] = useState({ latitude: -6.260643, longitude: 106.781589 });
   const [errorMsg, setErrorMsg] = useState(null);
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    const district = [
-      "cengkareng",
-      "grogolPetamburan",
-      "kalideres",
-      "kebonJeruk",
-      "kembangan",
-      "palmerah",
-      "tamansari",
-      "tambora",
-      "cempakaPutih",
-      "gambir",
-      "joharBaru",
-      "kemayoran",
-      "menteng",
-      "sawahBesar",
-      "senen",
-      "tanahAbang",
-      "cilandak",
-      "jagakarsa",
-      "kebayoranLama",
-      "kebayoranLama1",
-      "kebayoranBaru",
-      "mampangPrapatan",
-      "pancoran",
-      "pasarMinggu",
-      "pesanggrahan",
-      "setiaBudi",
-      "tebet",
-      "cakung",
-      "cipayung",
-      "ciracas",
-      "durenSawit",
-      "jatinegara",
-      "kramatJati",
-      "makasar",
-      "matraman",
-      "pasarRebo",
-      "pulogadung",
-      "cilincing",
-      "kelapaGading",
-      "koja",
-      "pademangan",
-      "penjaringan",
-      "tanjungPriok",
-    ];
-    const finalData = [];
-    for (let i = 0; i < district.length; i++) {
-      let districtData = {
-        name: district[i],
-        cords: buildCoordinate(district[i]),
-        status: null,
-      };
-      if (district[i][0] == "p") {
-        districtData.status = "danger";
-      } else if (district[i][0] == "k") {
-        districtData.status = "warning";
-      } else if (district[i][0] == "t") {
-        districtData.status = "beware";
-      } else {
-        districtData.status = "save";
-      }
-      finalData.push(districtData);
-    }
     setDataKecamatan(finalData);
 
     (async () => {
