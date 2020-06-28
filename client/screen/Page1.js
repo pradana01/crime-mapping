@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Dimensions, View, Picker, Button } from "react-native";
-import MapView, { Marker, Polygon } from "react-native-maps";
+import { Header } from "native-base";
+import { StyleSheet, Dimensions, View, Text, Alert, Modal, TouchableHighlight } from "react-native";
+import MapView, { Polygon, Callout, Marker } from "react-native-maps";
 import { buildCoordinate } from "../coordinates";
 import * as Location from "expo-location";
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -9,16 +10,15 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1() {
   const [location, setLocation] = useState({
-    latitude: -6.353576,
-    longitude: 106.7800195,
+    latitude: -6.260643,
+    longitude: 106.781589,
   });
   const [errorMsg, setErrorMsg] = useState(null);
-
-  //test looping polygon
   const [dataKecamatan, setDataKecamatan] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    const kec = [
+    const district = [
       "cengkareng",
       "grogolPetamburan",
       "kalideres",
@@ -38,6 +38,7 @@ export default function Page1() {
       "cilandak",
       "jagakarsa",
       "kebayoranLama",
+      "kebayoranLama1",
       "kebayoranBaru",
       "mampangPrapatan",
       "pancoran",
@@ -62,25 +63,26 @@ export default function Page1() {
       "penjaringan",
       "tanjungPriok",
     ];
-    const arr = [];
-    for (let i = 0; i < kec.length; i++) {
-      // arr.push(buildCoordinate(kec[i]));
-      let obj = {
-        cords: buildCoordinate(kec[i]),
+    const finalData = [];
+    for (let i = 0; i < district.length; i++) {
+      let districtData = {
+        name: district[i],
+        cords: buildCoordinate(district[i]),
         status: null,
       };
-      if (kec[i][0] == "p") {
-        obj.status = "danger";
-      } else if (kec[i][0] == "k") {
-        obj.status = "warning";
-      } else if (kec[i][0] == "t") {
-        obj.status = "beware";
+      if (district[i][0] == "p") {
+        districtData.status = "danger";
+      } else if (district[i][0] == "k") {
+        districtData.status = "warning";
+      } else if (district[i][0] == "t") {
+        districtData.status = "beware";
       } else {
-        obj.status = "save";
+        districtData.status = "save";
       }
-      arr.push(obj);
+      finalData.push(districtData);
     }
-    setDataKecamatan(arr);
+    setDataKecamatan(finalData);
+
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -99,12 +101,16 @@ export default function Page1() {
     text = JSON.stringify(location);
   }
 
-  const cekPolygon = () => {
-    console.log("taro modal box disini <------------------");
+  const showModal = () => {
+    // Alert.alert(`Welcome to`);
+    setModalVisible(true);
   };
 
   return (
     <View style={styles.container}>
+      <Header style={styles.header}>
+        <Text style={styles.titleHeader}>Maps</Text>
+      </Header>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -113,6 +119,8 @@ export default function Page1() {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        showsUserLocation
+        showsMyLocationButton
       >
         {dataKecamatan.map((kec, index) => {
           return (
@@ -133,7 +141,7 @@ export default function Page1() {
               }
               strokeColor={
                 kec.status == "danger"
-                  ? "rgba(255, 0, 0, 0.4)"
+                  ? "rgba(255, 255, 255, 0.4)"
                   : kec.status == "warning"
                   ? "	rgba(255, 195, 160, 0.4)"
                   : kec.status == "beware"
@@ -143,12 +151,29 @@ export default function Page1() {
                   : "rgba(0, 0, 0, 0.4)"
               }
               tappable={true}
-              onPress={() => cekPolygon()}
-            />
+              onPress={() => showModal()}
+            ></Polygon>
           );
         })}
-        <Marker coordinate={location} />
       </MapView>
+
+      {/* MODAL */}
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
       <StatusBar style="auto" />
     </View>
   );
@@ -162,7 +187,55 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   map: {
-    height: screenHeight - 100,
+    height: screenHeight - 105,
     width: screenWidth,
+  },
+  header: {
+    width: screenWidth,
+    justifyContent: "center",
+  },
+  titleHeader: {
+    paddingTop: 22,
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "white",
+  },
+  //test modal
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderRadius: 20,
+    padding: 100,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    color: "white",
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
