@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
-import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
-
-export default function CrimeMap() {
-  return (
-    <Container>
-      <Header style={styles.header}>
-        <Text style={styles.titleHeader}>Crime Map</Text>
-      </Header>
-      <Content>
-        {/* <View >
-          
-        </View> */}
-      </Content>
-    </Container>
-
-=======
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions, View, Picker, Button } from "react-native";
@@ -102,7 +83,6 @@ export default function Page1() {
       </View>
       <StatusBar style="auto" />
     </View>
->>>>>>> development
   );
 }
 
@@ -117,22 +97,4 @@ const styles = StyleSheet.create({
     height: (screenHeight - 100) / 1.15,
     width: screenWidth,
   },
-<<<<<<< HEAD
-  header: {
-    justifyContent: 'center',
-    ...Platform.select({
-      android: {
-        paddingTop: StatusBar.currentHeight,
-
-      }
-    })
-  },
-  titleHeader: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  }
 });
-=======
-});
->>>>>>> development
