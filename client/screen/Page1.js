@@ -13,10 +13,74 @@ export default function Page1() {
     longitude: 106.7800195,
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  const [coordinate, setCoordinates] = useState(buildCoordinate("tanjungPriok"));
-  const [kecamatan, setKecamatan] = useState("tanjungPriok");
+
+  //test looping polygon
+  const [dataKecamatan, setDataKecamatan] = useState([]);
 
   useEffect(() => {
+    const kec = [
+      "cengkareng",
+      "grogolPetamburan",
+      "kalideres",
+      "kebonJeruk",
+      "kembangan",
+      "palmerah",
+      "tamansari",
+      "tambora",
+      "cempakaPutih",
+      "gambir",
+      "joharBaru",
+      "kemayoran",
+      "menteng",
+      "sawahBesar",
+      "senen",
+      "tanahAbang",
+      "cilandak",
+      "jagakarsa",
+      "kebayoranLama",
+      "kebayoranBaru",
+      "mampangPrapatan",
+      "pancoran",
+      "pasarMinggu",
+      "pesanggrahan",
+      "setiaBudi",
+      "tebet",
+      "cakung",
+      "cipayung",
+      "ciracas",
+      "durenSawit",
+      "jatinegara",
+      "kramatJati",
+      "makasar",
+      "matraman",
+      "pasarRebo",
+      "pulogadung",
+      "cilincing",
+      "kelapaGading",
+      "koja",
+      "pademangan",
+      "penjaringan",
+      "tanjungPriok",
+    ];
+    const arr = [];
+    for (let i = 0; i < kec.length; i++) {
+      // arr.push(buildCoordinate(kec[i]));
+      let obj = {
+        cords: buildCoordinate(kec[i]),
+        status: null,
+      };
+      if (kec[i][0] == "p") {
+        obj.status = "danger";
+      } else if (kec[i][0] == "k") {
+        obj.status = "warning";
+      } else if (kec[i][0] == "t") {
+        obj.status = "beware";
+      } else {
+        obj.status = "save";
+      }
+      arr.push(obj);
+    }
+    setDataKecamatan(arr);
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -26,17 +90,14 @@ export default function Page1() {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location.coords);
     })();
-  }, [errorMsg]);
+  }, []);
+
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     text = JSON.stringify(location);
   }
-
-  const gantiKoor = () => {
-    setCoordinates(buildCoordinate(kecamatan));
-  };
 
   const cekPolygon = () => {
     console.log("taro modal box disini <------------------");
@@ -53,34 +114,41 @@ export default function Page1() {
           longitudeDelta: 0.0421,
         }}
       >
-        <Polygon
-          coordinates={coordinate}
-          //setting warna fill nya dibawah ini, mending rgba aja biar skalian ngatur opacity nya
-          fillColor="rgba(255, 0, 0, 0.5)"
-          tappable={true}
-          onPress={() => cekPolygon(kecamatan)}
-        />
+        {dataKecamatan.map((kec, index) => {
+          return (
+            <Polygon
+              key={index}
+              coordinates={kec.cords}
+              //setting warna fill nya dibawah ini, mending rgba aja biar skalian ngatur opacity nya
+              fillColor={
+                kec.status == "danger"
+                  ? "rgba(255, 0, 0, 0.4)"
+                  : kec.status == "warning"
+                  ? "	rgba(255, 195, 160, 0.4)"
+                  : kec.status == "beware"
+                  ? "rgba(255, 255, 100, 0.4)"
+                  : kec.status == "save"
+                  ? "rgba(101, 220, 184, 0.4)"
+                  : "rgba(0, 0, 0, 0.4)"
+              }
+              strokeColor={
+                kec.status == "danger"
+                  ? "rgba(255, 0, 0, 0.4)"
+                  : kec.status == "warning"
+                  ? "	rgba(255, 195, 160, 0.4)"
+                  : kec.status == "beware"
+                  ? "rgba(255, 242, 175, 0.4)"
+                  : kec.status == "save"
+                  ? "rgba(101, 220, 184, 0.4)"
+                  : "rgba(0, 0, 0, 0.4)"
+              }
+              tappable={true}
+              onPress={() => cekPolygon()}
+            />
+          );
+        })}
         <Marker coordinate={location} />
       </MapView>
-      <View>
-        <Picker
-          selectedValue={kecamatan}
-          style={{ height: 50, width: 200 }}
-          onValueChange={(value) => setKecamatan(value)}
-        >
-          <Picker.Item label="Tanjung Priok" value="tanjungPriok" />
-          <Picker.Item label="Cengkareng" value="cengkareng" />
-          <Picker.Item label="Palmerah" value="palmerah" />
-          <Picker.Item label="Kemayoran" value="kemayoran" />
-          <Picker.Item label="Jatinegara" value="jatinegara" />
-          <Picker.Item label="Grogol Petamburan" value="grogolPetamburan" />
-          <Picker.Item label="Kalideres" value="kalideres" />
-          <Picker.Item label="Taman Sari" value="tamansari" />
-          <Picker.Item label="Cipayung" value="cipayung" />
-          <Picker.Item label="Jagakarsa" value="jagakarsa" />
-        </Picker>
-        <Button onPress={() => gantiKoor()} title="Change Location" />
-      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -94,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   map: {
-    height: (screenHeight - 100) / 1.15,
+    height: screenHeight - 100,
     width: screenWidth,
   },
 });
