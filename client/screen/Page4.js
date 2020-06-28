@@ -1,8 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
-import { Container, Content, Header, Form, Item, Input, Label, Textarea } from "native-base";
+import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button } from "native-base";
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Account() {
+
+  const clearAll = async () => {
+    try{
+      await AsyncStorage.clear()
+    } 
+    catch(err) {
+      console.log(err)
+    }
+    console.log('pressed')
+  }
+
   return (
     <Container>
       <Header style={styles.header}>
@@ -28,6 +40,9 @@ export default function Account() {
           <Item regular disabled>
             <Input bordered placeholder='Input report title' />
           </Item>
+          <Button block primary onPress={() => {clearAll()}}>
+            <Text>Logout</Text>
+          </Button>
       </Content>
     </Container>
 

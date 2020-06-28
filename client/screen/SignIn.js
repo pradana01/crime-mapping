@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Text, Button, Dimensions } from 'react-native';
-
+import {userLogin} from '../store/actions/userAction'
+import {useDispatch} from 'react-redux'
 
 export default function SignIn() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+
+  const user_login =() => {
+    const data = {
+      username,
+      password
+    }
+    dispatch(userLogin(data))
+    // console.log(data)  
+  }
+
   return (
     <View style={styles.container}>
       <Text>Crime Port</Text>
@@ -10,14 +24,14 @@ export default function SignIn() {
         <Text>Sign In</Text>
         <View style={styles.column}>
           <Text>Username</Text>
-          <TextInput style={styles.input} placeholder="username"/>
+          <TextInput style={styles.input} placeholder="username" onChangeText={(value) => setUsername(value)}/>
         </View>
         <View style={styles.column}>
           <Text>Password</Text>
-          <TextInput style={styles.input} placeholder="password" secureTextEntry={true}/>
+          <TextInput style={styles.input} placeholder="password" secureTextEntry={true} onChangeText={(value) => setPassword(value)}/>
         </View>
         <View style={styles.column}>
-          <Button title="Sign In"/>
+          <Button title="Sign In" onPress={() => user_login()}/>
           <Text>If you are new, Register Here!</Text>
         </View>
       </View>

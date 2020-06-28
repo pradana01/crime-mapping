@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import {Provider} from 'react-redux'
 
+import store from './store'
 import Home from "./screen/Home";
 import CrimeMap from "./screen/Page1";
 import CreateReport from "./screen/Page2";
@@ -12,13 +14,32 @@ import Account from "./screen/Page4";
 import Page5 from "./screen/Page5";
 import SignIn from "./screen/SignIn";
 import SignUp from "./screen/SignUp";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const isLogin = true;
+  let isLogin = false
+  
+  const getData = async () => {
+    try{
+      const value = await AsyncStorage.getItem('token')
+      if (value !== null){
+        isLogin = true
+      }
+    }
+    catch(e){
+      console.log('error di get item :', e)
+    }
+  }
+  
+  useEffect(() => {
+    getData()
+  },[])
+
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
@@ -76,12 +97,27 @@ export default function App() {
           </>
         ) : (
           <>
-            <Tab.Screen name="Sign In" component={SignIn} />
-            <Tab.Screen name="Sign Up" component={SignUp} />
+            <Tab.Screen 
+              name="Sign In" 
+              component={SignIn} 
+              options={{
+                tabBarLabel: "Sign In",
+                tabBarIcon: ({ color, size }) => <Icon name="account-question" color={color} size={size} />,
+              }}
+            />
+            <Tab.Screen 
+              name="Sign Up" 
+              component={SignUp}
+              options={{
+                tabBarLabel: "Sign Up",
+                tabBarIcon: ({ color, size }) => <Icon name="account-plus" color={color} size={size} />,
+              }}
+            />
           </>
         )}
       </Tab.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
