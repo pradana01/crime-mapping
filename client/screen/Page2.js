@@ -1,33 +1,41 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, Text, Button, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button } from "native-base";
 
-// tambahin header crime report, nanti dicari contoh nya
-export default function Page2() {
+export default function Create() {
   return (
-    <View style={styles.container}>
-      <Text>Crime Report</Text>
-      <View>
-        <View style={styles.column}>
-          <Text>Title</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.column}>
-          <Text>Report Description</Text>
-          <TextInput style={styles.input} multiline={true} numberOfLines={4}/>
-        </View>
-        <View style={styles.column}>
-          <Text>Location</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.column}>
-          <Text>Photo / Evidence</Text>
-          <TextInput style={styles.input}/>
-        </View>
-        <View style={styles.column}>
-          <Button title="Create Report"/>
-        </View>
-      </View>
-    </View>
+    <Container>
+      <Header style={styles.header}>
+        <Text style={styles.titleHeader}>Create Report</Text>
+      </Header>
+      <Content padder>
+        <Form style={{ marginHorizontal: 10 }}>
+          <Label style={{ marginBottom: 5, fontSize: 15 }}>Title</Label>
+          <Item regular>
+            <Input bordered placeholder='Input report title' />
+          </Item>
+          <Label style={{ marginVertical: 5, fontSize: 15 }}>Description</Label>
+          <Item regular>
+            <Textarea rowSpan={5} placeholder='Input report description' />
+          </Item>
+          <Label style={{ marginVertical: 5, fontSize: 15 }}>Location</Label>
+          <Item regular>
+            <Input bordered placeholder='Input report location' />
+          </Item>
+          <Label style={{ marginVertical: 5, fontSize: 15 }}>Input file</Label>
+          <Item regular>
+            <Input bordered placeholder='Input report picture' />
+          </Item>
+          <Button block primary>
+            <Text>
+              
+            Submit Report
+            </Text>
+            </Button>
+        </Form>
+      </Content>
+    </Container>
+
   );
 }
 
@@ -38,12 +46,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  column: {
-    width: Dimensions.get('window').width-100,
-    margin: 4
+  header: {
+    justifyContent: 'center',
+    ...Platform.select({
+      android: {
+        paddingTop: StatusBar.currentHeight,
+
+      }
+    })
   },
-  input : {
-    borderColor: "black",
-    borderWidth: 1,
+  titleHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   }
 });
