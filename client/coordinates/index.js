@@ -129,8 +129,9 @@ export const kebayoranLama1 = `
 
 // Pindahkan fungsi dibawah ke page yang membutuhkan & invoke dengan menggunakan parameter di atas
 export function buildCoordinate(value) {
+  let asd = eval(value);
   var finalData = [];
-  var grouped = value.split(" ");
+  var grouped = asd.split(" ");
 
   grouped.forEach(function (item, i) {
     let a = item.trim().split(",");
@@ -143,65 +144,48 @@ export function buildCoordinate(value) {
   return finalData;
 }
 
-const district = [
-  cengkareng,
-  grogolPetamburan,
-  kalideres,
-  kebonJeruk,
-  kembangan,
-  palmerah,
-  tamansari,
-  tambora,
-  cempakaPutih,
-  gambir,
-  joharBaru,
-  kemayoran,
-  menteng,
-  sawahBesar,
-  senen,
-  tanahAbang,
-  cilandak,
-  jagakarsa,
-  kebayoranLama,
-  kebayoranLama1,
-  kebayoranBaru,
-  mampangPrapatan,
-  pancoran,
-  pasarMinggu,
-  pesanggrahan,
-  setiaBudi,
-  tebet,
-  cakung,
-  cipayung,
-  ciracas,
-  durenSawit,
-  jatinegara,
-  kramatJati,
-  makasar,
-  matraman,
-  pasarRebo,
-  pulogadung,
-  cilincing,
-  kelapaGading,
-  koja,
-  pademangan,
-  penjaringan,
-  tanjungPriok,
+export const district = [
+  "cengkareng",
+  "grogolPetamburan",
+  "kalideres",
+  "kebonJeruk",
+  "kembangan",
+  "palmerah",
+  "tamansari",
+  "tambora",
+  "cempakaPutih",
+  "gambir",
+  "joharBaru",
+  "kemayoran",
+  "menteng",
+  "sawahBesar",
+  "senen",
+  "tanahAbang",
+  "cilandak",
+  "jagakarsa",
+  "kebayoranLama",
+  "kebayoranLama1",
+  "kebayoranBaru",
+  "mampangPrapatan",
+  "pancoran",
+  "pasarMinggu",
+  "pesanggrahan",
+  "setiaBudi",
+  "tebet",
+  "cakung",
+  "cipayung",
+  "ciracas",
+  "durenSawit",
+  "jatinegara",
+  "kramatJati",
+  "makasar",
+  "matraman",
+  "pasarRebo",
+  "pulogadung",
+  "cilincing",
+  "kelapaGading",
+  "koja",
+  "pademangan",
+  "penjaringan",
+  "tanjungPriok",
 ];
-
-export const finalData = [];
-for (let i = 0; i < district.length; i++) {
-  let districtData = {
-    name: district[i],
-    cords: buildCoordinate(district[i]),
-    status: null,
-  };
-  if (districtData.name == "p") {
-    districtData.status = "danger";
-  } else if (districtData.name == "k") {
-    districtData.status = "warning";
-  } else {
-    districtData.status = "save";
-  }
-  finalData.push(districtData);
-}

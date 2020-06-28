@@ -4,7 +4,7 @@ import { Header } from "native-base";
 import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight } from "react-native";
 import MapView, { Polygon } from "react-native-maps";
 import * as Location from "expo-location";
-import { finalData } from "../coordinates/index";
+import { district, buildCoordinate } from "../coordinates/index";
 
 import axios from "axios";
 
@@ -23,6 +23,7 @@ export default function Page1() {
       .get(`http://192.168.43.127:3000/districts`)
       .then((res) => {
         setFetchData(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -30,7 +31,49 @@ export default function Page1() {
   }, []);
 
   useEffect(() => {
-    setDataKecamatan(finalData);
+    const finalData = [];
+    if (fetchData) {
+      for (let i = 0; i < district.length; i++) {
+        let districtData = {
+          name: null,
+          cords: buildCoordinate(district[i]),
+          status: null,
+          population: null,
+          homicide: null,
+          assault: null,
+          harassment: null,
+          abduction: null,
+          robbery: null,
+          theft: null,
+          drugs: null,
+          fraudulency: null,
+          anarchism: null,
+        };
+        for (let j = 0; j < fetchData.length; j++) {
+          if (fetchData[j].mapName == district[i]) {
+            districtData.name = fetchData[j].name;
+            districtData.status = fetchData[j].status;
+            districtData.population = fetchData[j].population;
+            districtData.homicide = fetchData[j].homicide;
+            districtData.assault = fetchData[j].assault;
+            districtData.harassment = fetchData[j].harassment;
+            districtData.abduction = fetchData[j].abduction;
+            districtData.robbery = fetchData[j].robbery;
+            districtData.theft = fetchData[j].theft;
+            districtData.drugs = fetchData[j].drugs;
+            districtData.fraudulency = fetchData[j].fraudulency;
+            districtData.anarchism = fetchData[j].anarchism;
+          }
+        }
+        finalData.push(districtData);
+      }
+      // console.log(finalData[0].status);
+      setDataKecamatan(finalData);
+    }
+  }, []);
+
+  useEffect(() => {
+    // setDataKecamatan(finalData);
 
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
@@ -80,15 +123,15 @@ export default function Page1() {
                 kec.status == "danger"
                   ? "rgba(255, 0, 0, 0.4)"
                   : kec.status == "warning"
-                  ? "	rgba(255, 195, 160, 0.4)"
-                  : "rgba(255, 255, 100, 0.4)"
+                  ? "rgba(255, 100, 100, 0.4)"
+                  : "rgba(150, 200, 0, 0.4)"
               }
               strokeColor={
                 kec.status == "danger"
                   ? "rgba(255, 0, 0, 0.4)"
                   : kec.status == "warning"
-                  ? "	rgba(255, 195, 160, 0.4)"
-                  : "rgba(255, 255, 100, 0.4)"
+                  ? "rgba(255, 100, 100, 0.4)"
+                  : "rgba(150, 200, 0, 0.4)"
               }
               tappable={true}
               onPress={() => showModal()}

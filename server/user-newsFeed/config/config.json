@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "rezarr",
-    "password": 123456,
-    "database": "crimeport",
+    "username": "postgres",
+    "password": 1,
+    "database": "crime-mapping-database",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
