@@ -1,31 +1,36 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, Text, Button, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import { Container, Content, Header, Form, Item, Input, Label, Textarea } from "native-base";
 
-
-export default function Page4() {
+export default function Account() {
   return (
-    <View style={styles.container}>
-      <Text>Crime Port</Text>
-      <View>
-        <Text>Disini section display picture</Text>
-        <View style={styles.column}>
-          <Text>Name</Text>
-          <TextInput style={styles.input} placeholder="name"/>
-        </View>
-        <View style={styles.column}>
-          <Text>Location</Text>
-          <TextInput style={styles.input} placeholder="location"/>
-        </View>
-        <View style={styles.column}>
-          <Text>Email</Text>
-          <TextInput style={styles.input} placeholder="email"/>
-        </View>
-        <View style={styles.column}>
-          <Text>Username</Text>
-          <TextInput style={styles.input} placeholder="username"/>
-        </View>
-      </View>
-    </View>
+    <Container>
+      <Header style={styles.header}>
+        <Text style={styles.titleHeader}>Account</Text>
+      </Header>
+      <Content padder>
+          <View style={{flex:1, alignItems: 'center'}}>
+
+          </View>
+          <Label style={{ marginBottom: 5, fontSize: 15 }}>Name</Label>
+          <Item regular disabled>
+            <Input bordered placeholder='Input report title' />
+          </Item>
+          <Label style={{ marginVertical: 5, fontSize: 15 }}>Location</Label>
+          <Item regular disabled>
+            <Input placeholder='Input report title' />
+          </Item>
+          <Label style={{ marginBottom: 5, fontSize: 15 }}>Email</Label>
+          <Item regular disabled>
+            <Input bordered placeholder='Input report title' />
+          </Item>
+          <Label style={{ marginBottom: 5, fontSize: 15 }}>Username</Label>
+          <Item regular disabled>
+            <Input bordered placeholder='Input report title' />
+          </Item>
+      </Content>
+    </Container>
+
   );
 }
 
@@ -35,14 +40,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    
   },
-  column: {
-    width: Dimensions.get('window').width-100,
-    margin: 2
+  header: {
+    justifyContent: 'center',
+    ...Platform.select({
+      android: {
+        paddingTop: StatusBar.currentHeight,
+
+      }
+    })
   },
-  input : {
-    borderColor: "black",
-    borderWidth: 1,
+  titleHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   }
 });

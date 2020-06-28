@@ -1,13 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
 
-export default function Page1() {
+export default function CrimeMap() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Container>
+      <Header style={styles.header}>
+        <Text style={styles.titleHeader}>Crime Map</Text>
+      </Header>
+      <Content>
+        {/* <View >
+          
+        </View> */}
+      </Content>
+    </Container>
+
   );
 }
 
@@ -18,4 +25,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: {
+    justifyContent: 'center',
+    ...Platform.select({
+      android: {
+        paddingTop: StatusBar.currentHeight,
+
+      }
+    })
+  },
+  titleHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  }
 });
