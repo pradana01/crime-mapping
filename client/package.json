@@ -28,10 +28,15 @@
     "react-native-safe-area-context": "3.0.2",
     "react-native-screens": "~2.9.0",
     "react-native-web": "~0.11.7",
+<<<<<<< HEAD
     "react-navigation": "^4.4.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
+=======
+    "react-native-maps": "0.27.1",
+    "expo-permissions": "~9.0.1"
+>>>>>>> client-development
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
