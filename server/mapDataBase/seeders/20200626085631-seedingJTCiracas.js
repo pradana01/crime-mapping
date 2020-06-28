@@ -25,6 +25,7 @@ module.exports = {
     drugs: 5,
     fraudulency: 2,
     anarchism: 0,
+    status: 'warning',
     createdAt: new Date(),
     updatedAt: new Date()
   }], {});

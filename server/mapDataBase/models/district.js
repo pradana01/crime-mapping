@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     robbery: DataTypes.INTEGER,
     theft: DataTypes.INTEGER,
     drugs: DataTypes.INTEGER,
+    status: DataTypes.STRING,
     fraudulency: DataTypes.INTEGER,
     anarchism: DataTypes.INTEGER
   }, {
