@@ -1,10 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
-import { StyleSheet, Dimensions, View, Text, Alert, Modal, TouchableHighlight } from "react-native";
+import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight } from "react-native";
 import MapView, { Polygon } from "react-native-maps";
 import * as Location from "expo-location";
-import { finalData } from "../coordinates";
+import { finalData } from "../coordinates/index";
+
+import axios from "axios";
 
 const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
@@ -14,6 +16,18 @@ export default function Page1() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [fetchData, setFetchData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://192.168.43.127:3000/districts`)
+      .then((res) => {
+        setFetchData(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     setDataKecamatan(finalData);
@@ -37,7 +51,6 @@ export default function Page1() {
   }
 
   const showModal = () => {
-    // Alert.alert(`Welcome to`);
     setModalVisible(true);
   };
 
@@ -68,22 +81,14 @@ export default function Page1() {
                   ? "rgba(255, 0, 0, 0.4)"
                   : kec.status == "warning"
                   ? "	rgba(255, 195, 160, 0.4)"
-                  : kec.status == "beware"
-                  ? "rgba(255, 255, 100, 0.4)"
-                  : kec.status == "save"
-                  ? "rgba(101, 220, 184, 0.4)"
-                  : "rgba(0, 0, 0, 0.4)"
+                  : "rgba(255, 255, 100, 0.4)"
               }
               strokeColor={
                 kec.status == "danger"
-                  ? "rgba(255, 255, 255, 0.4)"
+                  ? "rgba(255, 0, 0, 0.4)"
                   : kec.status == "warning"
                   ? "	rgba(255, 195, 160, 0.4)"
-                  : kec.status == "beware"
-                  ? "rgba(255, 242, 175, 0.4)"
-                  : kec.status == "save"
-                  ? "rgba(101, 220, 184, 0.4)"
-                  : "rgba(0, 0, 0, 0.4)"
+                  : "rgba(255, 255, 100, 0.4)"
               }
               tappable={true}
               onPress={() => showModal()}
