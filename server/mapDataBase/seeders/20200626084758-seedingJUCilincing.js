@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Cilincing',
     city: 'Jakarta Utara',
+    mapName: 'cilincing',
+    population: 57061,
     homicide: 15,
     assault: 56,
     harassment: 1,

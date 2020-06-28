@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Kelapa Gading',
     city: 'Jakarta Utara',
+    mapName: 'kelapaGading',
+    population: 26387,
     homicide: 1,
     assault: 2,
     harassment: 0,

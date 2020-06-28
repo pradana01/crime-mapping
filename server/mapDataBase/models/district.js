@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   District.init({
     name: DataTypes.STRING,
     city: DataTypes.STRING,
+    mapName: DataTypes.STRING,
+    population: DataTypes.INTEGER,
     homicide: DataTypes.INTEGER,
     assault: DataTypes.INTEGER,
     harassment: DataTypes.INTEGER,

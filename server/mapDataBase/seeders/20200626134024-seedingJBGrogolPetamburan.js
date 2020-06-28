@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Grogol Petamburan',
     city: 'Jakarta Barat',
+    mapName: 'grogolPetamburan',
+    population: 217991,
     homicide: 0,
     assault: 1,
     harassment: 12,

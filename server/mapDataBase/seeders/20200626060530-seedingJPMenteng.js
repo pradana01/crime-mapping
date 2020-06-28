@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Menteng',
     city: 'Jakarta Pusat',
+    mapName: 'menteng',
+    population: 68168,
     homicide: 0,
     assault: 5,
     harassment: 2,

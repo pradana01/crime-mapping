@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Tanah Abang',
     city: 'Jakarta Pusat',
+    mapName: 'tanahAbang',
+    population: 145877,
     homicide: 23,
     assault: 34,
     harassment: 1,

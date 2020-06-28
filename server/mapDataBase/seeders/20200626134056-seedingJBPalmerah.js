@@ -11,6 +11,23 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+   await queryInterface.bulkInsert('Districts', [{
+    name: 'Palmerah',
+    city: 'Jakarta Barat',
+    mapName: 'palmerah',
+    population: 193787,
+    homicide: 0,
+    assault: 1,
+    harassment: 1,
+    abduction: 0,
+    robbery: 88,
+    theft: 157,
+    drugs: 41,
+    fraudulency: 0,
+    anarchism: 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }], {});
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -20,5 +37,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('Districts', null, {});
   }
 };

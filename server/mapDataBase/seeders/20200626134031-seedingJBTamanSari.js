@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Taman Sari',
     city: 'Jakarta Barat',
+    mapName: 'tamansari',
+    population: 130810,
     homicide: 10,
     assault: 76,
     harassment: 0,

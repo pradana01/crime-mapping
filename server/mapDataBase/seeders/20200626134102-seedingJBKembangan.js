@@ -11,6 +11,23 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+   await queryInterface.bulkInsert('Districts', [{
+    name: 'Kembangan',
+    city: 'Jakarta Barat',
+    mapName: 'kembangan',
+    population: 140210,
+    homicide: 1,
+    assault: 5,
+    harassment: 1,
+    abduction: 2,
+    robbery: 64,
+    theft: 278,
+    drugs: 54,
+    fraudulency: 0,
+    anarchism: 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }], {});
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -20,5 +37,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('Districts', null, {});
   }
 };

@@ -14,6 +14,12 @@ module.exports = {
       city: {
         type: Sequelize.STRING
       },
+      mapName: {
+        type: Sequelize.STRING
+      },
+      population: {
+        type: Sequelize.INTEGER
+      },
       homicide: {
         type: Sequelize.INTEGER
       },

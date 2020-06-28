@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Tanjung Priok',
     city: 'Jakarta Utara',
+    mapName: 'tanjungPriok',
+    population: 42072,
     homicide: 31,
     assault: 48,
     harassment: 0,

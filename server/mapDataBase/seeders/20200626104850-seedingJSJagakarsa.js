@@ -14,6 +14,8 @@ module.exports = {
    await queryInterface.bulkInsert('Districts', [{
     name: 'Jagakarsa',
     city: 'Jakarta Selatan',
+    mapName: 'jagakarsa',
+    population: 350000,
     homicide: 0,
     assault: 2,
     harassment: 3,

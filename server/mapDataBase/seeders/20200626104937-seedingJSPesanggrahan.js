@@ -12,8 +12,10 @@ module.exports = {
      * }], {});
     */
    await queryInterface.bulkInsert('Districts', [{
-    name: 'Pesannggrahan',
+    name: 'Pesanggrahan',
     city: 'Jakarta Selatan',
+    mapName: 'pesanggrahan',
+    population: 222522,
     homicide: 0,
     assault: 35,
     harassment: 2,
