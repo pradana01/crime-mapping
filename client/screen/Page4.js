@@ -1,8 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Platform, Button } from 'react-native';
 import { Container, Content, Header, Form, Item, Input, Label, Textarea } from "native-base";
+import { useSelector, useDispatch } from 'react-redux'
+import { userLogout } from '../store/actions/userAction'
 
 export default function Account() {
+
+  const token = useSelector(state => state.userReducer.token)
+  console.log(token)
+
+  const dispatch = useDispatch()
+  const user_logout = () => {
+    dispatch(userLogout())
+  }
+
   return (
     <Container>
       <Header style={styles.header}>
@@ -14,20 +25,21 @@ export default function Account() {
           </View>
           <Label style={styles.label}>Name</Label>
           <Item regular disabled>
-            <Input bordered placeholder='Input report title' />
+            <Input bordered placeholder='Your Name' />
           </Item>
           <Label style={styles.label}>Location</Label>
           <Item regular disabled>
-            <Input placeholder='Input report title' />
+            <Input placeholder='Your Location' />
           </Item>
           <Label style={styles.label}>Email</Label>
           <Item regular disabled>
-            <Input bordered placeholder='Input report title' />
+            <Input bordered placeholder='Your Email' />
           </Item>
           <Label style={styles.label}>Username</Label>
           <Item regular disabled>
-            <Input bordered placeholder='Input report title' />
+            <Input bordered placeholder='Your Username' />
           </Item>
+          <Button title="Logout" onPress={() => user_logout()}/>
       </Content>
     </Container>
 
