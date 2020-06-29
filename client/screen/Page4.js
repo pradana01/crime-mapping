@@ -12,19 +12,19 @@ export default function Account() {
           <View style={{flex:1, alignItems: 'center'}}>
 
           </View>
-          <Label style={{ marginBottom: 5, fontSize: 15 }}>Name</Label>
+          <Label style={styles.label}>Name</Label>
           <Item regular disabled>
             <Input bordered placeholder='Input report title' />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Location</Label>
+          <Label style={styles.label}>Location</Label>
           <Item regular disabled>
             <Input placeholder='Input report title' />
           </Item>
-          <Label style={{ marginBottom: 5, fontSize: 15 }}>Email</Label>
+          <Label style={styles.label}>Email</Label>
           <Item regular disabled>
             <Input bordered placeholder='Input report title' />
           </Item>
-          <Label style={{ marginBottom: 5, fontSize: 15 }}>Username</Label>
+          <Label style={styles.label}>Username</Label>
           <Item regular disabled>
             <Input bordered placeholder='Input report title' />
           </Item>
@@ -54,5 +54,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
+  },
+  label: {
+    marginVertical: 5,
+    fontSize: 15
   }
 });
