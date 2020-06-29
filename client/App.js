@@ -17,7 +17,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const isLogin = true;
+  const isLogin = false;
   return (
     <NavigationContainer>
       <Tab.Navigator
