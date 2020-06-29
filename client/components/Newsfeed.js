@@ -1,6 +1,7 @@
 import React from 'react'
 import {Text, Image, StyleSheet, View, Button} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import {CardItem, Right} from 'native-base'
 
 export default function Newsfeed({props}) {
     const navigation = useNavigation()
@@ -14,31 +15,57 @@ export default function Newsfeed({props}) {
     }
 
     return (
-        <View style={styles.container} key={id}>
-            <View>
-                <Image
-                style={styles.logo} 
-                source={{uri:image}}/>
-            </View>
-            <View>
-                <Text>{title}</Text>
-                <Text>{comment}</Text>
-            </View>
-            <Button 
-                onPress={() => pindahPage()}
-                title="View Comment" />
-        </View>
+        <CardItem style={styles.carditem}>
+          <View >
+            <Image 
+                style={ styles.image }
+                source={{uri:image}} />
+          </View>
+          <Right style={ styles.right }>
+            <Text style={styles.time}>01.00 PM</Text>
+            <Text>{title}</Text>
+            <Text style={{ fontWeight: "bold" }}>Kejadian seorang cowok nembak cewek di sini {comment}</Text>
+            <Text
+              style={styles.location}
+            >
+              Kecamatan : Kuningan
+            </Text>
+            <Button title="see comment"/>
+          </Right>
+        </CardItem>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-      borderWidth: 1,
-      borderColor: "black",
-      margin: 5
-    },
-    logo: {
-      width: 200,
-      height: 200,
-    },
-  });
+  container: {
+    borderWidth: 1,
+    borderColor: "black",
+    margin: 5
+  },
+  image: {
+      width: 80, 
+      height: 100, 
+      backgroundColor: "#707070", 
+      marginLeft: -10
+  },
+  carditem: { 
+      marginVertical: 5, 
+      marginHorizontal: 5 
+  },
+  right: {
+      flex: 1,
+      alignItems: "flex-start", 
+      height: 100, 
+      marginLeft: 15 
+  },
+  time: { 
+      fontSize: 12,
+      color: "#ccc" 
+  },
+  location: { 
+      marginTop: 5,
+      fontStyle: "italic",
+      color: "#5891FE",
+      fontWeight: "700" 
+  }
+});
