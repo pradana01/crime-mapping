@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,8 @@ import Newsfeed from "../components/Newsfeed";
 import Constants from "expo-constants";
 import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
 
+import { useSelector, useDispatch } from "react-redux";
+import {fetch_newsfeed} from '../store/actions/reportAction'
 const Data = [
   {
     id: "1",
@@ -39,54 +41,31 @@ const Data = [
 const URL = "https://tribratanewsbengkulu.com/wp-content/uploads/20160109011636-curanmor.jpg";
 
 export default function Home({ navigation: { navigate } }) {
+  const dispatch = useDispatch()
+  const newsfeed = useSelector(state => state.reportReducer.newsfeed)
+  const token = useSelector(state => state.userReducer.token)
+
+  useEffect(() => {
+    let data = {
+      token
+    }
+    dispatch(fetch_newsfeed(data))
+  },[])
+
   return (
     <Container>
       <Header style={styles.header}>
         <Text style={styles.titleHeader}>News Feed</Text>
       </Header>
-      <Content style={{ backgroundColor: "#f0f0f0" }}>
-        <CardItem>
-          <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
-            {/* <Image source={URL} /> */}
-          </View>
-          <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
-            <Text style={{ fontSize: 12, color: "#ccc" }}>Jennie at 01.00 PM</Text>
-            <Text style={{ fontWeight: "bold" }}>Kejadian seorang cowok nembak cewek di sini</Text>
-            <Text
-              style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}
-            >
-              Kecamatan : Kuningan
-            </Text>
-          </Right>
-        </CardItem>
-
-        <CardItem style={{ marginVertical: 10, marginHorizontal: 5 }}>
-          <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
-            {/* <Image source={URL} /> */}
-          </View>
-          <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
-            <Text style={{ fontSize: 12, color: "#ccc" }}>Jennie at 01.00 PM</Text>
-            <Text style={{ fontWeight: "bold" }}>Kejadian seorang cowok nembak cewek di sini</Text>
-            <Text
-              style={{ fontSize: 14, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}
-            >
-              Kecamatan : Kuningan
-            </Text>
-          </Right>
-        </CardItem>
-      </Content>
+      {/* <Content style={{ backgroundColor: "#f0f0f0" }}> */}
+        <View style={{backgroundColor: '#f0f0f0'}}>
+        <FlatList
+          data={newsfeed}
+          renderItem={(item) => <Newsfeed props={item} />}
+          keyExtractor={item => String(item.id)}/>
+        </View>
+      {/* </Content> */}
     </Container>
-    // <View style={styles.container}>
-    //   {/* <View style={{marginTop: Constants.statusBarHeight }}>
-    //     <Text style={{fontSize:26}}>Newsfeed report</Text>
-    //   </View> */}
-    //   <View>
-    //     <FlatList
-    //       data={Data}
-    //       renderItem={(item) => <Newsfeed props={item} />}
-    //       keyExtractor={item => item.id}/>
-    //   </View>
-    // </View>
   );
 }
 

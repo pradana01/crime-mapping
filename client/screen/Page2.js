@@ -10,28 +10,25 @@ export default function Create() {
       </Header>
       <Content padder>
         <Form style={{ marginHorizontal: 10 }}>
-          <Label style={{ marginBottom: 5, fontSize: 15 }}>Title</Label>
+          <Label style={ styles.label }>Title</Label>
           <Item regular>
             <Input bordered placeholder='Input report title' />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Description</Label>
+          <Label style={styles.label}>Description</Label>
           <Item regular>
             <Textarea rowSpan={5} placeholder='Input report description' />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Location</Label>
+          <Label style={styles.label}>Location</Label>
           <Item regular>
             <Input bordered placeholder='Input report location' />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Input file</Label>
+          <Label style={styles.label}>Input file</Label>
           <Item regular>
             <Input bordered placeholder='Input report picture' />
           </Item>
           <Button block primary>
-            <Text>
-              
-            Submit Report
-            </Text>
-            </Button>
+            <Text> Submit Report </Text>
+          </Button>
         </Form>
       </Content>
     </Container>
@@ -59,5 +56,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
+  },
+  label: { 
+    marginBottom: 5, 
+    fontSize: 15 
   }
 });

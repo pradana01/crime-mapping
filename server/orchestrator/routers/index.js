@@ -1,7 +1,15 @@
 const router = require('express').Router()
 const axios = require('axios')
+const { route } = require('../../user-newsFeed/routes')
+const cloudinary = require('cloudinary').v2
 const NEWS_FEED_SERVICES_URL = `http://localhost:3001`
 const MAP_SERVICES_URL = `http://localhost:3002`
+
+cloudinary.config({
+    cloud_name: 'andrean',
+    api_key: '627525378763992',
+    api_secret: '_ZKJ7Udu3eqgLQg8J6xItZeyzdY'
+})
 
 //USER
 router.post('/signin', (req, res) => {
@@ -44,30 +52,111 @@ router.get('/reports/:id', (req, res) => {
         .catch(err => { res.send(err) })
 })
 
+router.get('/myReports', (req, res) => {
+    const access_token = req.headers.access_token
+    axios({
+        method: 'get',
+        url: `${NEWS_FEED_SERVICES_URL}/myReports`,
+        headers: { access_token }
+    })
+    .then(resp => { res.send(resp.data) })
+    .catch(err => { res.send(err) })
+})
+
 router.post('/reports', (req, res) => {
     const access_token = req.headers.access_token
     const { title, description, location, photo, video } = req.body
-    axios({
-        method: 'post',
-        url: `${NEWS_FEED_SERVICES_URL}/reports`,
-        data:{ title, description, location, photo, video },
-        headers: { access_token }
-    })
-        .then(resp => { res.send(resp.data) })
-        .catch(err => { res.send(err) })
+    // const { photo, video } = req.files
+    let uploadedPhoto;
+    let uploadedVideo;
+    // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
+    //     console.log('gagal')
+    // } else {
+        if(!video) {
+            cloudinary.uploader.upload(photo, function(err, result) {
+                // console.log(result)
+                uploadedPhoto = result.url
+                let data = {title, description, location, photo: uploadedPhoto}
+                axios({
+                    method: 'post',
+                    url: `${NEWS_FEED_SERVICES_URL}/reports`,
+                    data: data,
+                    headers: { access_token }
+                })
+                .then(resp => { 
+                    res.send(resp.data)
+                })
+                .catch(err => { res.send(err) })
+            })
+        } else {
+            cloudinary.uploader.upload(photo, function(err, result) {
+                uploadedPhoto = result.url
+                cloudinary.uploader.upload(video, { resource_type: 'video'}, function(vidErr, vidResult) {
+                    uploadedVideo = vidResult.url
+                    let data = {title, description, location, photo: uploadedPhoto, video: uploadedVideo}
+                    axios({
+                        method: 'post',
+                        url: `${NEWS_FEED_SERVICES_URL}/reports`,
+                        data: data,
+                        headers: {
+                            access_token 
+                        }
+                    })
+                        .then(resp => { 
+                            res.send(resp.data) 
+                        })
+                        .catch(err => { res.send(err) })
+                })
+            })
+        }
+    // }
 })
 
 router.put('/reports/:id', (req, res) => {
     const access_token = req.headers.access_token
     const { title, description, location, photo, video } = req.body
-    axios({
-        method: 'put',
-        url: `${NEWS_FEED_SERVICES_URL}/reports/${req.params.id}`,
-        data:{ title, description, location, photo, video },
-        headers: { access_token }
-    })
-        .then(resp => { res.send(resp.data) })
-        .catch(err => { res.send(err) })
+    // const { photo, video } = req.files
+    let uploadedPhoto;
+    let uploadedVideo;
+    // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
+    //     console.log('gagal')
+    // } else {
+        if(!video) {
+            cloudinary.uploader.upload(photo, function(err, result) {
+                uploadedPhoto = result.url
+                let data = {title, description, location, photo: uploadedPhoto}
+                axios({
+                    method: 'put',
+                    url: `${NEWS_FEED_SERVICES_URL}/reports/${req.params.id}`,
+                    data: data,
+                    headers: { access_token }
+                })
+                .then(resp => { res.send(resp.data) })
+                .catch(err => { res.send(err) })
+            })
+        } else {
+            cloudinary.uploader.upload(photo, function(err, result) {
+                if (err) console.log(err);
+                uploadedPhoto = result.url
+                cloudinary.uploader.upload(video, { resource_type: 'video'}, function(vidErr, vidResult) {
+                    uploadedVideo = vidResult.url
+                    let data = {title, description, location, photo: uploadedPhoto, video: uploadedVideo}
+                    console.log(data)
+                    axios({
+                        method: 'put',
+                        url: `${NEWS_FEED_SERVICES_URL}/reports/${req.params.id}`,
+                        data: data,
+                        headers: {
+                            access_token 
+                        }
+                    })
+                    .then(resp => { res.send(resp.data) })
+                    .catch(err => { res.send(err) })
+                })
+            })
+        }
+    // }
+    
 })
 
 router.delete('/reports/:id', (req, res) => {
