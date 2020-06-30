@@ -5,7 +5,8 @@ import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight, Alert } 
 import MapView, { Polygon } from "react-native-maps";
 import * as Location from "expo-location";
 import { district, buildCoordinate } from "../assets/coordinates/index";
-import * as geolib from "geolib";
+import * as TaskManager from "expo-task-manager";
+// import * as geolib from "geolib";
 
 import axios from "axios";
 
@@ -13,7 +14,7 @@ const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1() {
-  const [location, setLocation] = useState({ latitude: -6.175399, longitude: 106.82722 });
+  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [errorMsg, setErrorMsg] = useState(null);
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -64,6 +65,18 @@ export default function Page1() {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location.coords);
     })();
+
+    // TaskManager.defineTask(YOUR_TASK_NAME, ({ data: { eventType, region }, error }) => {
+    //   if (error) {
+    //     // check `error.message` for more details.
+    //     return;
+    //   }
+    //   if (eventType === Location.GeofencingEventType.Enter) {
+    //     console.log("You've entered region:", region);
+    //   } else if (eventType === Location.GeofencingEventType.Exit) {
+    //     console.log("You've left region:", region);
+    //   }
+    // });
   }, []);
 
   // useEffect(() => {
@@ -96,79 +109,87 @@ export default function Page1() {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <Header style={styles.header}>
-        <Text style={styles.titleHeader}>Maps</Text>
-      </Header>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        showsUserLocation
-        showsMyLocationButton
-      >
-        {dataKecamatan.map((kec, index) => {
-          return (
-            <Polygon
-              key={index}
-              coordinates={kec.cords}
-              fillColor={
-                kec.status == "dangerous"
-                  ? "rgba(255, 0, 0, 0.4)"
-                  : kec.status == "warning"
-                  ? "rgba(255, 200, 100, 0.4)"
-                  : "rgba(100, 200, 100, 0.4)"
-              }
-              strokeColor={
-                kec.status == "dangerous"
-                  ? "rgba(255, 0, 0, 0.5)"
-                  : kec.status == "warning"
-                  ? "rgba(255, 200, 200, 0.5)"
-                  : "rgba(100, 200, 200, 0.5)"
-              }
-              tappable={true}
-              onPress={() => showModal(kec)}
-            ></Polygon>
-          );
-        })}
-      </MapView>
+  if (location.latitude === 0) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading maps........</Text>
+        <StatusBar style="auto" />
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Header style={styles.header}>
+          <Text style={styles.titleHeader}>Maps</Text>
+        </Header>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          showsUserLocation
+          showsMyLocationButton
+        >
+          {dataKecamatan.map((kec, index) => {
+            return (
+              <Polygon
+                key={index}
+                coordinates={kec.cords}
+                fillColor={
+                  kec.status == "dangerous"
+                    ? "rgba(255, 0, 0, 0.4)"
+                    : kec.status == "warning"
+                    ? "rgba(255, 200, 100, 0.4)"
+                    : "rgba(100, 200, 100, 0.4)"
+                }
+                strokeColor={
+                  kec.status == "dangerous"
+                    ? "rgba(255, 0, 0, 0.5)"
+                    : kec.status == "warning"
+                    ? "rgba(255, 200, 200, 0.5)"
+                    : "rgba(100, 200, 200, 0.5)"
+                }
+                tappable={true}
+                onPress={() => showModal(kec)}
+              ></Polygon>
+            );
+          })}
+        </MapView>
 
-      {/* MODAL */}
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text>City :{dataModal.city}</Text>
-            <Text>District: {dataModal.name}</Text>
-            <Text>Population: {dataModal.population}</Text>
-            <Text>abduction: {dataModal.abduction} case</Text>
-            <Text>anarchism: {dataModal.anarchism} case</Text>
-            <Text>Drugs: {dataModal.drugs} case</Text>
-            <Text>Fraudulency: {dataModal.fraudulency} case</Text>
-            <Text>Harassment: {dataModal.harassment} case</Text>
-            <Text>Homicide: {dataModal.homicide} case</Text>
-            <Text>Robbery {dataModal.robbery} case</Text>
-            <Text>Theft: {dataModal.theft} case</Text>
-            <Text>Status: {dataModal.status}</Text>
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text>City :{dataModal.city}</Text>
+              <Text>District: {dataModal.name}</Text>
+              <Text>Population: {dataModal.population}</Text>
+              <Text>abduction: {dataModal.abduction} case</Text>
+              <Text>anarchism: {dataModal.anarchism} case</Text>
+              <Text>Drugs: {dataModal.drugs} case</Text>
+              <Text>Fraudulency: {dataModal.fraudulency} case</Text>
+              <Text>Harassment: {dataModal.harassment} case</Text>
+              <Text>Homicide: {dataModal.homicide} case</Text>
+              <Text>Robbery {dataModal.robbery} case</Text>
+              <Text>Theft: {dataModal.theft} case</Text>
+              <Text>Status: {dataModal.status}</Text>
 
-            <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={styles.textStyle}>thanks</Text>
-            </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>thanks</Text>
+              </TouchableHighlight>
+            </View>
           </View>
-        </View>
-      </Modal>
-      <StatusBar style="auto" />
-    </View>
-  );
+        </Modal>
+        <StatusBar style="auto" />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
