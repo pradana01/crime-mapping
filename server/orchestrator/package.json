@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cloudinary": "^1.22.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3"
   }
