@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Button } from 'native-base';
+import { TextInput } from 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  StatusBar,
+  Platform,
+  Image,
+  Dimensions
+} from "react-native";
+import Newsfeed from "../components/Newsfeed";
+import Constants from "expo-constants";
 import { useNavigation } from '@react-navigation/native'
-import { TextInput, ScrollView } from 'react-native-gesture-handler';
+import { Container, Content, Header, Card, CardItem, Left, Right, Textarea, Button } from "native-base";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function Page5(props) {
   const navigation = useNavigation()
-  const { id, title, location, photo, video } = props.route.params
+  const { reportData } = props.route.params
   // console.log(id)
   const [commentData, setCommentData] = useState([])
   const [newComment, setNewComment] = useState('')
   const url = 'http://localhost:3000'
 
   useEffect(() => {
-    fetch(`${url}/comments/${id}`, {
+    fetch(`${url}/comments/${reportData.id}`, {
       headers: {
         'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
         'Content-Type': 'application/json'
@@ -22,7 +34,7 @@ export default function Page5(props) {
     })
       .then(res => res.json())
       .then(comment => {
-        console.log(id)
+        // console.log(id)
         console.log(comment)
         setCommentData(comment)
       })
@@ -42,7 +54,7 @@ export default function Page5(props) {
         },
         body: JSON.stringify({
           comment: newComment,
-          CrimeReportId: id
+          CrimeReportId: reportData.id
         })
       })
         .then(res => res.json())
@@ -63,58 +75,70 @@ export default function Page5(props) {
   }
 
   return (
-    <View style={styles.container}>
-      <View>
-        <View>
-          <Image
-            style={styles.logo}
-            source={{ uri: photo }} />
-        </View>
-        <View>
-          <Text>{title}</Text>
-          <Text>{location}</Text>
-          <Text>{video}</Text>
-        </View>
-      </View>
-      <Text>--------------------------------------</Text>
-      <ScrollView>
-        <View>
-          <Text>Comments:</Text>
-          {commentData.map((comment, i) => <Text key={i}>{comment.comment}<br />by: {comment.User.name}</Text>)}
-        </View>
-        <View style={styles.addComment}>
-          <Text>--------------------------------------</Text>
-          <Text>Add comment</Text>
-          <TextInput
-            onChangeText={add => setNewComment(add)}
-            placeholder="add a comment"
-          />
-          <Button
-            onPress={() => onPressAddComment()}
-            title="Add"
-          />
-        </View>
-        <Text> </Text>
-        <Button
-          onPress={() => pindahPage()}
-          title="Back" />
-      </ScrollView>
-    </View>
+    <Container>
+      <Header style={styles.header}>
+        <Text style={styles.titleHeader}>Reports Detail</Text>
+      </Header>
+      <Content style={{ backgroundColor: "#f0f0f0" }}>
+        <CardItem style={{ flexDirection: 'column' }}>
+          <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+            <View >
+              <Image style={{ width: 30, height: 30, borderRadius: 100 }} source={{ uri: reportData.photo }} />
+            </View>
+            <View style={{ flex: 1, alignItems: "flex-start", height: 30, marginLeft: 15 }}>
+              <Text style={{ fontSize: 10, color: "#ccc" }}>{reportData.createdAt}</Text>
+              <Text style={{ fontWeight: "bold" }}>user</Text>
+            </View>
+          </View>
+
+          <View style={{}}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 8 }}>{reportData.title}</Text>
+            <Text style={{ marginTop: 8 }}>{reportData.description}</Text>
+            <Text style={{ marginTop: 8, color: '#5891fe', fontWeight: 'bold' }}>{reportData.location}</Text>
+          </View>
+
+        </CardItem>
+        <CardItem style={{ marginTop: 5, flexDirection: 'column', alignItems: 'flex-start' }}>
+          <Text>Comments : </Text>
+          {commentData.map((comment, i) =>
+            <View key={i}>
+              <Text>{comment.comment}</Text><br />
+              <Text>By: {comment.User.name}</Text>
+            </View>
+          )}
+          <View style={{ width: '100%', borderStyle: "solid", borderWidth: 1, borderColor: '#ccc', marginVertical: 8 }}>
+            <Textarea rowSpan={2} placeholder='your comment here..' onChangeText={add => setNewComment(add)} />
+          </View>
+          <Button block onPress={() => onPressAddComment()}>
+            <Text style={{ color: '#fff' }}>SUBMIT COMMENT</Text>
+          </Button>
+        </CardItem>
+        <Button block onPress={() => pindahPage()}>
+          <Text style={{ color: '#fff' }}>BACK</Text>
+        </Button>
+      </Content>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: "black",
-    margin: 5,
-    color: "white"
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  logo: {
-    width: 200,
-    height: 200,
+  header: {
+    justifyContent: "center",
+    ...Platform.select({
+      android: {
+        paddingTop: StatusBar.currentHeight,
+      },
+    }),
   },
-  addComment: {
-    border: "solid black 1px"
-  }
+  titleHeader: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
+  },
 });

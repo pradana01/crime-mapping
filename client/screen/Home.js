@@ -38,8 +38,9 @@ export default function Home({ navigation: { navigate } }) {
     })
   })
 
-  const pindahPage = (id, title, description, location, photo, video) => {
-    navigation.navigate('Comment', {id, title, description, location, photo, video})
+  const pindahPage = (reportData) => {
+    console.log(reportData)
+    navigation.navigate('Comment', {reportData})
 }
 
   return (
@@ -63,7 +64,7 @@ export default function Home({ navigation: { navigate } }) {
               Kecamatan : {data.location}
             </Text>
             <Button 
-                onPress={() => pindahPage(data.id, data.title, data.location, data.photo, data.video)}
+                onPress={() => pindahPage(data)}
                 title="View Comment" />
           </Right>
         </CardItem>
