@@ -7,6 +7,15 @@ class CrimeReportController {
             .catch(err => { next(err) })
     }
 
+    static showUserReports(req, res, next) {
+        console.log(req.userData.id)
+        CrimeReport.findAll({
+            where: {UserId: req.userData.id}
+        })
+        .then(report => {res.status(200).json(report)})
+        .catch(err => { next(err) })
+    }
+
     static add(req, res, next) {
         const { title, description, location, photo, video } = req.body
         const UserId = req.userData.id

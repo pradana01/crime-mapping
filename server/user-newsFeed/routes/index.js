@@ -10,6 +10,7 @@ router.post("/signup", UserController.signUp);
 router.use(authentication);
 router.get("/reports", CrimeReportController.show);
 router.post("/reports", CrimeReportController.add);
+router.get("/myReports", CrimeReportController.showUserReports)
 // router.use(authorization)
 router.get("/reports/:id", CrimeReportController.find);
 router.delete("/reports/:id", CrimeReportController.delete);

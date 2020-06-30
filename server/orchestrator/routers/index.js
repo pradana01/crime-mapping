@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const axios = require('axios')
+const { route } = require('../../user-newsFeed/routes')
 const cloudinary = require('cloudinary').v2
 const NEWS_FEED_SERVICES_URL = `http://localhost:3001`
 const MAP_SERVICES_URL = `http://localhost:3002`
@@ -49,6 +50,17 @@ router.get('/reports/:id', (req, res) => {
     })
         .then(resp => { res.send(resp.data) })
         .catch(err => { res.send(err) })
+})
+
+router.get('/myReports', (req, res) => {
+    const access_token = req.headers.access_token
+    axios({
+        method: 'get',
+        url: `${NEWS_FEED_SERVICES_URL}/myReports`,
+        headers: { access_token }
+    })
+    .then(resp => { res.send(resp.data) })
+    .catch(err => { res.send(err) })
 })
 
 router.post('/reports', (req, res) => {
