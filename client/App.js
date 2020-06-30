@@ -10,6 +10,7 @@ import CreateReport from "./screen/Page2";
 import MyReport from "./screen/Page3";
 import Account from "./screen/Page4";
 import Page5 from "./screen/Page5";
+import EditPage from './screen/EditPage'
 import SignIn from "./screen/SignIn";
 import SignUp from "./screen/SignUp";
 
@@ -75,11 +76,19 @@ export default function App() {
             />
           </>
         ) : (
-          <>
-            <Tab.Screen name="Sign In" component={SignIn} />
-            <Tab.Screen name="Sign Up" component={SignUp} />
-          </>
-        )}
+            <>
+              <Tab.Screen name="Sign In" component={SignIn} />
+              <Tab.Screen name="Sign Up" component={SignUp} />
+            </>
+          )}
+        <Stack.Screen
+          name="Comment"
+          component={Page5}
+        />
+        <Stack.Screen
+          name="EditPage"
+          component={EditPage}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
