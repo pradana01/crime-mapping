@@ -48,6 +48,7 @@ export default function Home({ navigation: { navigate } }) {
       <Header style={styles.header}>
         <Text style={styles.titleHeader}>News Feed</Text>
       </Header>
+
       <Content style={{ backgroundColor: "#f0f0f0" }}>
 
       {data.map((data, i) =>  
@@ -70,6 +71,15 @@ export default function Home({ navigation: { navigate } }) {
         </CardItem>
 )}
       </Content>
+/*
+      <View style={{ backgroundColor: "#f0f0f0" }}>
+        <FlatList
+          data={newsfeed}
+          renderItem={(item) => <Newsfeed props={item} />}
+          keyExtractor={(item) => String(item.id)}
+        />
+      </View>
+*/
     </Container>
   );
 }

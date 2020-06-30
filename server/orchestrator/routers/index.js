@@ -65,15 +65,16 @@ router.get('/myReports', (req, res) => {
 
 router.post('/reports', (req, res) => {
     const access_token = req.headers.access_token
-    const { title, description, location } = req.body
-    const { photo, video } = req.files
+    const { title, description, location, photo, video } = req.body
+    // const { photo, video } = req.files
     let uploadedPhoto;
     let uploadedVideo;
-    if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
-        console.log('gagal')
-    } else {
+    // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
+    //     console.log('gagal')
+    // } else {
         if(!video) {
-            cloudinary.uploader.upload(photo.tempFilePath, function(err, result) {
+            cloudinary.uploader.upload(photo, function(err, result) {
+                // console.log(result)
                 uploadedPhoto = result.url
                 let data = {title, description, location, photo: uploadedPhoto}
                 axios({
@@ -88,9 +89,9 @@ router.post('/reports', (req, res) => {
                 .catch(err => { res.send(err) })
             })
         } else {
-            cloudinary.uploader.upload(photo.tempFilePath, function(err, result) {
+            cloudinary.uploader.upload(photo, function(err, result) {
                 uploadedPhoto = result.url
-                cloudinary.uploader.upload(video.tempFilePath, { resource_type: 'video'}, function(vidErr, vidResult) {
+                cloudinary.uploader.upload(video, { resource_type: 'video'}, function(vidErr, vidResult) {
                     uploadedVideo = vidResult.url
                     let data = {title, description, location, photo: uploadedPhoto, video: uploadedVideo}
                     axios({
@@ -108,20 +109,20 @@ router.post('/reports', (req, res) => {
                 })
             })
         }
-    }
+    // }
 })
 
 router.put('/reports/:id', (req, res) => {
     const access_token = req.headers.access_token
-    const { title, description, location } = req.body
-    const { photo, video } = req.files
+    const { title, description, location, photo, video } = req.body
+    // const { photo, video } = req.files
     let uploadedPhoto;
     let uploadedVideo;
-    if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
-        console.log('gagal')
-    } else {
+    // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
+    //     console.log('gagal')
+    // } else {
         if(!video) {
-            cloudinary.uploader.upload(photo.tempFilePath, function(err, result) {
+            cloudinary.uploader.upload(photo, function(err, result) {
                 uploadedPhoto = result.url
                 let data = {title, description, location, photo: uploadedPhoto}
                 axios({
@@ -134,10 +135,10 @@ router.put('/reports/:id', (req, res) => {
                 .catch(err => { res.send(err) })
             })
         } else {
-            cloudinary.uploader.upload(photo.tempFilePath, function(err, result) {
+            cloudinary.uploader.upload(photo, function(err, result) {
                 if (err) console.log(err);
                 uploadedPhoto = result.url
-                cloudinary.uploader.upload(video.tempFilePath, { resource_type: 'video'}, function(vidErr, vidResult) {
+                cloudinary.uploader.upload(video, { resource_type: 'video'}, function(vidErr, vidResult) {
                     uploadedVideo = vidResult.url
                     let data = {title, description, location, photo: uploadedPhoto, video: uploadedVideo}
                     console.log(data)
@@ -154,7 +155,7 @@ router.put('/reports/:id', (req, res) => {
                 })
             })
         }
-    }
+    // }
     
 })
 

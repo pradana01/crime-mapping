@@ -8,7 +8,6 @@ class CrimeReportController {
     }
 
     static showUserReports(req, res, next) {
-        console.log(req.userData.id)
         CrimeReport.findAll({
             where: {UserId: req.userData.id}
         })
@@ -19,10 +18,8 @@ class CrimeReportController {
     static add(req, res, next) {
         const { title, description, location, photo, video } = req.body
         const UserId = req.userData.id
-        console.log(photo, video)
         CrimeReport.create({ title, description, location, photo, video, UserId })
         .then(report => {
-            console.log(report)
             res.status(201).json(report)
         })
         .catch(err => { next(err) })
@@ -43,7 +40,6 @@ class CrimeReportController {
     }
 
     static update(req, res, next) {
-        console.log('masuk ke update cuy')
         const { title, description, location, photo, video } = req.body
         CrimeReport.update({ title, description, location, photo, video }, {
             where: { id: req.params.id }

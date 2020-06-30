@@ -77,6 +77,16 @@ export default function Home({ navigation: { navigate } }) {
         )}
 
       </Content>
+/*
+      <View style={{ backgroundColor: "#f0f0f0" }}>
+        <FlatList
+          data={reports}
+          renderItem={(item) => <Report props={item} />}
+          keyExtractor={(item) => String(item.id)}
+        />
+      </View>
+*/
+
     </Container>
   );
 }
@@ -84,22 +94,21 @@ export default function Home({ navigation: { navigate } }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
-    justifyContent: 'center',
+    justifyContent: "center",
     ...Platform.select({
       android: {
         paddingTop: StatusBar.currentHeight,
-
-      }
-    })
+      },
+    }),
   },
   titleHeader: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  }
+    fontWeight: "bold",
+    color: "white",
+  },
 });

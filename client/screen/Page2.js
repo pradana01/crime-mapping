@@ -67,7 +67,7 @@ export default function Create() {
       </Header>
       <Content padder>
         <Form style={{ marginHorizontal: 10 }}>
-          <Label style={{ marginBottom: 5, fontSize: 15 }}>Title</Label>
+          <Label style={ styles.label }>Title</Label>
           <Item regular>
             <Input
               bordered
@@ -75,7 +75,7 @@ export default function Create() {
               onChangeText={title => setTitle(title)}
             />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Description</Label>
+          <Label style={styles.label}>Description</Label>
           <Item regular>
             <Textarea
               rowSpan={5}
@@ -83,7 +83,7 @@ export default function Create() {
               onChangeText={desc => setDescription(desc)}
             />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Location</Label>
+          <Label style={styles.label}>Location</Label>
           <Item regular>
             <Input
               bordered
@@ -107,10 +107,7 @@ export default function Create() {
             primary
             onPress={() => onPressed()}
           >
-            <Text>
-
-              Submit Report
-            </Text>
+            <Text> Submit Report </Text>
           </Button>
         </Form>
       </Content>
@@ -138,6 +135,10 @@ const styles = StyleSheet.create({
   titleHeader: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
+  },
+  label: { 
+    marginBottom: 5, 
+    fontSize: 15 
   }
 });

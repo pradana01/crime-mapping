@@ -80,6 +80,7 @@ export default function Page5(props) {
         <Text style={styles.titleHeader}>Reports Detail</Text>
       </Header>
       <Content style={{ backgroundColor: "#f0f0f0" }}>
+
         <CardItem style={{ flexDirection: 'column' }}>
           <View style={{ flexDirection: 'row', marginBottom: 15 }}>
             <View >
@@ -116,6 +117,7 @@ export default function Page5(props) {
         <Button block onPress={() => pindahPage()}>
           <Text style={{ color: '#fff' }}>BACK</Text>
         </Button>
+
       </Content>
     </Container>
   );
