@@ -2,11 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
 import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight, Alert } from "react-native";
-import MapView, { Polygon } from "react-native-maps";
+import MapView, { Polygon, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { district, buildCoordinate } from "../assets/coordinates/index";
 import * as TaskManager from "expo-task-manager";
-// import * as geolib from "geolib";
+import * as geolib from "geolib";
 
 import axios from "axios";
 
@@ -23,7 +23,7 @@ export default function Page1() {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.100.6:3000/districts`)
+      .get(`http://192.168.1.115:3000/districts`)
       .then((res) => {
         setFetchData(res.data);
         console.log("========fetch data============");
@@ -65,32 +65,21 @@ export default function Page1() {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location.coords);
     })();
-
-    // TaskManager.defineTask(YOUR_TASK_NAME, ({ data: { eventType, region }, error }) => {
-    //   if (error) {
-    //     // check `error.message` for more details.
-    //     return;
-    //   }
-    //   if (eventType === Location.GeofencingEventType.Enter) {
-    //     console.log("You've entered region:", region);
-    //   } else if (eventType === Location.GeofencingEventType.Exit) {
-    //     console.log("You've left region:", region);
-    //   }
-    // });
   }, []);
 
-  // useEffect(() => {
-  //   let cordinates;
+  useEffect(() => {
+    let cordinates = [];
 
-  //   dataKecamatan.forEach((data) => {
-  //     cordinates = data.cords;
-  //   });
-
-  //   if (geolib.isPointInPolygon({ latitude: -6.260643, longitude: 106.781589 }, cordinates)) {
-  //     console.log("<<<<<<<<<<<<< di dalem polygon");
-  //     Alert.alert("assssss");
-  //   }
-  // }, [setDataKecamatan]);
+    district.forEach((data) => {
+      if (location.latitude !== 0) {
+        if (
+          geolib.isPointInPolygon({ latitude: location.latitude, longitude: location.longitude }, buildCoordinate(data))
+        ) {
+          Alert.alert("DANGER");
+        }
+      }
+    });
+  }, [location]);
 
   let text = "Waiting..";
   if (errorMsg) {
@@ -133,6 +122,7 @@ export default function Page1() {
           showsUserLocation
           showsMyLocationButton
         >
+          {/* <Marker></Marker> */}
           {dataKecamatan.map((kec, index) => {
             return (
               <Polygon
@@ -143,7 +133,7 @@ export default function Page1() {
                     ? "rgba(255, 0, 0, 0.4)"
                     : kec.status == "warning"
                     ? "rgba(255, 200, 100, 0.4)"
-                    : "rgba(100, 200, 100, 0.4)"
+                    : "rgba(100, 200, 200, 0.5)"
                 }
                 strokeColor={
                   kec.status == "dangerous"
