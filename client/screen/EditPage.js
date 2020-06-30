@@ -4,18 +4,19 @@ import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button 
 import { useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 
-export default function Create() {
+export default function Edit({ route: { params: { data } } }) {
   const navigation = useNavigation()
-  const [title, setTitle] = useState('Input report title')
-  const [description, setDescription] = useState('Input description')
-  const [location, setLocation] = useState('Input location')
-  const [photo, setPhoto] = useState('')
-  const [video, setVideo] = useState('')
+  const id = data.id
+  const [title, setTitle] = useState(data.title)
+  const [description, setDescription] = useState(data.description)
+  const [location, setLocation] = useState(data.location)
+  const [photo, setPhoto] = useState(data.photo)
+  const [video, setVideo] = useState(data.video)
   const url = 'http://localhost:3000'
 
   const selectOneVideo = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:'Videos' 
+      mediaTypes: 'Videos'
     })
     if (!res.cancelled) {
       console.log(res)
@@ -32,8 +33,8 @@ export default function Create() {
   }
 
   const onPressed = () => {
-    fetch(`${url}/reports`, {
-      method: 'post',
+    fetch(`${url}/reports/${id}`, {
+      method: 'put',
       headers: {
         'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
         'Content-Type': 'application/json'
@@ -52,7 +53,7 @@ export default function Create() {
     })
       .then(res => res.json())
       .then(report => {
-        alert(`You've successfuly submitted a report`)
+        alert(`You've successfuly edited the report`)
         navigation.navigate('My Report')
       })
       .catch(err => {
@@ -63,19 +64,19 @@ export default function Create() {
   return (
     <Container>
       <Header style={styles.header}>
-        <Text style={styles.titleHeader}>Create Report</Text>
+        <Text style={styles.titleHeader}>Edit Report</Text>
       </Header>
       <Content padder>
         <Form style={{ marginHorizontal: 10 }}>
-          <Label style={ styles.label }>Title</Label>
+          <Label style={{ marginBottom: 5, fontSize: 15 }}>Title</Label>
           <Item regular>
             <Input
               bordered
               placeholder={title}
               onChangeText={title => setTitle(title)}
-            />
+            ></Input>
           </Item>
-          <Label style={styles.label}>Description</Label>
+          <Label style={{ marginVertical: 5, fontSize: 15 }}>Description</Label>
           <Item regular>
             <Textarea
               rowSpan={5}
@@ -83,7 +84,7 @@ export default function Create() {
               onChangeText={desc => setDescription(desc)}
             />
           </Item>
-          <Label style={styles.label}>Location</Label>
+          <Label style={{ marginVertical: 5, fontSize: 15 }}>Location</Label>
           <Item regular>
             <Input
               bordered
@@ -107,7 +108,10 @@ export default function Create() {
             primary
             onPress={() => onPressed()}
           >
-            <Text> Submit Report </Text>
+            <Text>
+
+              Submit
+            </Text>
           </Button>
         </Form>
       </Content>
@@ -136,9 +140,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
-  },
-  label: { 
-    marginBottom: 5, 
-    fontSize: 15 
   }
 });
