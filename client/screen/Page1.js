@@ -1,169 +1,245 @@
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Dimensions, View, Picker, Button } from "react-native";
-// import MapView, { Marker, Polygon } from "react-native-maps";
-// import { buildCoordinate } from "../coordinates";
-// import * as Location from "expo-location";
-// const screenWidth = Math.round(Dimensions.get("window").width);
-// const screenHeight = Math.round(Dimensions.get("window").height);
+import { Header } from "native-base";
+import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight, Alert } from "react-native";
+import MapView, { Polygon, Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import { district, buildCoordinate } from "../assets/coordinates/index";
+import * as TaskManager from "expo-task-manager";
+import * as geolib from "geolib";
+
+import axios from "axios";
+
+const screenWidth = Math.round(Dimensions.get("window").width);
+const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1() {
-//   const [location, setLocation] = useState({
-//     latitude: -6.353576,
-//     longitude: 106.7800195,
-//   });
-//   const [errorMsg, setErrorMsg] = useState(null);
+  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [dataKecamatan, setDataKecamatan] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [fetchData, setFetchData] = useState([]);
+  const [dataModal, setDataModal] = useState({});
 
-//   //test looping polygon
-//   const [dataKecamatan, setDataKecamatan] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://192.168.1.115:3000/districts`)
+      .then((res) => {
+        setFetchData(res.data);
+        console.log("========fetch data============");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-//   useEffect(() => {
-//     const kec = [
-//       "cengkareng",
-//       "grogolPetamburan",
-//       "kalideres",
-//       "kebonJeruk",
-//       "kembangan",
-//       "palmerah",
-//       "tamansari",
-//       "tambora",
-//       "cempakaPutih",
-//       "gambir",
-//       "joharBaru",
-//       "kemayoran",
-//       "menteng",
-//       "sawahBesar",
-//       "senen",
-//       "tanahAbang",
-//       "cilandak",
-//       "jagakarsa",
-//       "kebayoranLama",
-//       "kebayoranBaru",
-//       "mampangPrapatan",
-//       "pancoran",
-//       "pasarMinggu",
-//       "pesanggrahan",
-//       "setiaBudi",
-//       "tebet",
-//       "cakung",
-//       "cipayung",
-//       "ciracas",
-//       "durenSawit",
-//       "jatinegara",
-//       "kramatJati",
-//       "makasar",
-//       "matraman",
-//       "pasarRebo",
-//       "pulogadung",
-//       "cilincing",
-//       "kelapaGading",
-//       "koja",
-//       "pademangan",
-//       "penjaringan",
-//       "tanjungPriok",
-//     ];
-//     const arr = [];
-//     for (let i = 0; i < kec.length; i++) {
-//       // arr.push(buildCoordinate(kec[i]));
-//       let obj = {
-//         cords: buildCoordinate(kec[i]),
-//         status: null,
-//       };
-//       if (kec[i][0] == "p") {
-//         obj.status = "danger";
-//       } else if (kec[i][0] == "k") {
-//         obj.status = "warning";
-//       } else if (kec[i][0] == "t") {
-//         obj.status = "beware";
-//       } else {
-//         obj.status = "save";
-//       }
-//       arr.push(obj);
-//     }
-//     setDataKecamatan(arr);
-//     (async () => {
-//       let { status } = await Location.requestPermissionsAsync();
-//       if (status !== "granted") {
-//         setErrorMsg("Permission to access location was denied");
-//       }
+  useEffect(() => {
+    const finalData = [];
+    if (fetchData) {
+      for (let i = 0; i < district.length; i++) {
+        let districtData = {
+          name: null,
+          cords: buildCoordinate(district[i]),
+          status: null,
+        };
+        for (let j = 0; j < fetchData.length; j++) {
+          if (fetchData[j].mapName == district[i]) {
+            districtData.name = fetchData[j].name;
+            districtData.status = fetchData[j].status;
+          }
+        }
+        finalData.push(districtData);
+      }
+      console.log("========joining data===========");
+      setDataKecamatan(finalData);
+    }
+  }, [fetchData]);
 
-//       let location = await Location.getCurrentPositionAsync({});
-//       setLocation(location.coords);
-//     })();
-//   }, []);
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      }
 
-//   let text = "Waiting..";
-//   if (errorMsg) {
-//     text = errorMsg;
-//   } else if (location) {
-//     text = JSON.stringify(location);
-//   }
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+  }, []);
 
-//   const cekPolygon = () => {
-//     console.log("taro modal box disini <------------------");
-//   };
 
-  return (
-  <View></View>
-//     <View style={styles.container}>
-//       <MapView
-//         style={styles.map}
-//         initialRegion={{
-//           latitude: location.latitude,
-//           longitude: location.longitude,
-//           latitudeDelta: 0.0922,
-//           longitudeDelta: 0.0421,
-//         }}
-//       >
-//         {dataKecamatan.map((kec, index) => {
-//           return (
-//             <Polygon
-//               key={index}
-//               coordinates={kec.cords}
-//               //setting warna fill nya dibawah ini, mending rgba aja biar skalian ngatur opacity nya
-//               fillColor={
-//                 kec.status == "danger"
-//                   ? "rgba(255, 0, 0, 0.4)"
-//                   : kec.status == "warning"
-//                   ? "	rgba(255, 195, 160, 0.4)"
-//                   : kec.status == "beware"
-//                   ? "rgba(255, 255, 100, 0.4)"
-//                   : kec.status == "save"
-//                   ? "rgba(101, 220, 184, 0.4)"
-//                   : "rgba(0, 0, 0, 0.4)"
-//               }
-//               strokeColor={
-//                 kec.status == "danger"
-//                   ? "rgba(255, 0, 0, 0.4)"
-//                   : kec.status == "warning"
-//                   ? "	rgba(255, 195, 160, 0.4)"
-//                   : kec.status == "beware"
-//                   ? "rgba(255, 242, 175, 0.4)"
-//                   : kec.status == "save"
-//                   ? "rgba(101, 220, 184, 0.4)"
-//                   : "rgba(0, 0, 0, 0.4)"
-//               }
-//               tappable={true}
-//               onPress={() => cekPolygon()}
-//             />
-//           );
-//         })}
-//         <Marker coordinate={location} />
-//       </MapView>
-//       <StatusBar style="auto" />
-//     </View>
-  );
+  useEffect(() => {
+    let cordinates = [];
+
+    district.forEach((data) => {
+      if (location.latitude !== 0) {
+        if (
+          geolib.isPointInPolygon({ latitude: location.latitude, longitude: location.longitude }, buildCoordinate(data))
+        ) {
+          Alert.alert("DANGER");
+        }
+      }
+    });
+  }, [location]);
+
+  let text = "Waiting..";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
+  const showModal = (value) => {
+    let dataGrab = fetchData.filter(function (element) {
+      return element.name === value.name;
+    });
+    if (dataGrab.length) {
+      setDataModal(dataGrab[0]);
+      setModalVisible(true);
+    }
+  };
+
+  if (location.latitude === 0) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading maps........</Text>
+        <StatusBar style="auto" />
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Header style={styles.header}>
+          <Text style={styles.titleHeader}>Maps</Text>
+        </Header>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          showsUserLocation
+          showsMyLocationButton
+        >
+          {/* <Marker></Marker> */}
+          {dataKecamatan.map((kec, index) => {
+            return (
+              <Polygon
+                key={index}
+                coordinates={kec.cords}
+                fillColor={
+                  kec.status == "dangerous"
+                    ? "rgba(255, 0, 0, 0.4)"
+                    : kec.status == "warning"
+                    ? "rgba(255, 200, 100, 0.4)"
+                    : "rgba(100, 200, 200, 0.5)"
+                }
+                strokeColor={
+                  kec.status == "dangerous"
+                    ? "rgba(255, 0, 0, 0.5)"
+                    : kec.status == "warning"
+                    ? "rgba(255, 200, 200, 0.5)"
+                    : "rgba(100, 200, 200, 0.5)"
+                }
+                tappable={true}
+                onPress={() => showModal(kec)}
+              ></Polygon>
+            );
+          })}
+        </MapView>
+
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text>City :{dataModal.city}</Text>
+              <Text>District: {dataModal.name}</Text>
+              <Text>Population: {dataModal.population}</Text>
+              <Text>abduction: {dataModal.abduction} case</Text>
+              <Text>anarchism: {dataModal.anarchism} case</Text>
+              <Text>Drugs: {dataModal.drugs} case</Text>
+              <Text>Fraudulency: {dataModal.fraudulency} case</Text>
+              <Text>Harassment: {dataModal.harassment} case</Text>
+              <Text>Homicide: {dataModal.homicide} case</Text>
+              <Text>Robbery {dataModal.robbery} case</Text>
+              <Text>Theft: {dataModal.theft} case</Text>
+              <Text>Status: {dataModal.status}</Text>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>thanks</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+        <StatusBar style="auto" />
+      </View>
+    );
+  }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   map: {
-//     height: screenHeight - 100,
-//     width: screenWidth,
-//   },
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  map: {
+    height: screenHeight - 105,
+    width: screenWidth,
+  },
+  header: {
+    width: screenWidth,
+    justifyContent: "center",
+  },
+  titleHeader: {
+    paddingTop: 22,
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "white",
+  },
+  //test modal
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    borderRadius: 20,
+    padding: 50,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    color: "white",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+});
