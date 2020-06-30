@@ -1,34 +1,41 @@
-import React from 'react'
+import React, { useState,useEffect} from 'react'
 import {Text, Image, StyleSheet, View, Button} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {CardItem, Right} from 'native-base'
 
 export default function Newsfeed({props}) {
+    const [date, setDate] = useState('')
+    const [time, setTime] = useState('')
     const navigation = useNavigation()
 
-    const {title, image, id, comment} = props.item
+    const {title, photo, id, description, location, video, createdAt, Users} = props.item
     
-    // console.log(props)
+    // console.log(props.item.Users)
 
     const pindahPage = () => {
         navigation.navigate({name:'Comment',params:id})
     }
+
+    useEffect(() => {
+      setDate(createdAt.split('T')[0])
+      setTime(createdAt.split('T')[1].split('.')[0])
+    },[])
 
     return (
         <CardItem style={styles.carditem}>
           <View >
             <Image 
                 style={ styles.image }
-                source={{uri:image}} />
+                source={{uri:photo}} />
           </View>
           <Right style={ styles.right }>
-            <Text style={styles.time}>01.00 PM</Text>
+            <Text style={styles.time}>{date} {time} By: {Users[0].name}</Text>
             <Text>{title}</Text>
-            <Text style={{ fontWeight: "bold" }}>Kejadian seorang cowok nembak cewek di sini {comment}</Text>
+            <Text style={{ fontWeight: "bold" }}>{description}</Text>
             <Text
               style={styles.location}
             >
-              Kecamatan : Kuningan
+              Kecamatan : {location}
             </Text>
             <Button title="see comment"/>
           </Right>

@@ -14,9 +14,8 @@ import Newsfeed from "../components/Newsfeed";
 import Constants from "expo-constants";
 import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
 
-import axios from 'axios'
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import {fetch_newsfeed} from '../store/actions/reportAction'
 const Data = [
   {
     id: "1",
@@ -42,21 +41,15 @@ const Data = [
 const URL = "https://tribratanewsbengkulu.com/wp-content/uploads/20160109011636-curanmor.jpg";
 
 export default function Home({ navigation: { navigate } }) {
-
-  const [newsfeed, setNewsfeed] = useState([])
+  const dispatch = useDispatch()
+  const newsfeed = useSelector(state => state.reportReducer.newsfeed)
   const token = useSelector(state => state.userReducer.token)
 
   useEffect(() => {
-    fetch(`http://192.168.0.105:3000/reports`,{
-      headers: token
-    })
-    .then(res => res.json())
-    .then(data => {
-      setNewsfeed(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    let data = {
+      token
+    }
+    dispatch(fetch_newsfeed(data))
   },[])
 
   return (
@@ -65,11 +58,11 @@ export default function Home({ navigation: { navigate } }) {
         <Text style={styles.titleHeader}>News Feed</Text>
       </Header>
       {/* <Content style={{ backgroundColor: "#f0f0f0" }}> */}
-        <View>
+        <View style={{backgroundColor: '#f0f0f0'}}>
         <FlatList
           data={newsfeed}
           renderItem={(item) => <Newsfeed props={item} />}
-          keyExtractor={item => item.id}/>
+          keyExtractor={item => String(item.id)}/>
         </View>
       {/* </Content> */}
     </Container>

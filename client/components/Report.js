@@ -4,23 +4,23 @@ import {CardItem, Right} from 'native-base'
 
 export default function Report({props}) {
 
-    const {title, image, id, comment} = props.item
+    const {title, photo, id, description, location, createdAt} = props.item
 
     return (
         <CardItem style={styles.carditem}>
           <View >
             <Image 
                 style={ styles.image }
-                source={{uri:image}} />
+                source={{uri:photo}} />
           </View>
           <Right style={ styles.right }>
-            <Text style={styles.time}>01.00 PM</Text>
+            <Text style={styles.time}>{createdAt}</Text>
             <Text>{title}</Text>
-            <Text style={{ fontWeight: "bold" }}>Kejadian seorang cowok nembak cewek di sini {comment}</Text>
+            <Text style={{ fontWeight: "bold" }}>{description}</Text>
             <Text
               style={styles.location}
             >
-              Kecamatan : Kuningan
+              Kecamatan : {location}
             </Text>
             <Button title="Edit Report"/>
             <Button title="Delete Report"/>
