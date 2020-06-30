@@ -18,6 +18,8 @@ export default function Page1() {
   const [modalVisible, setModalVisible] = useState(false);
   const [fetchData, setFetchData] = useState([]);
   const [dataModal, setDataModal] = useState({});
+  const [modalAlert, setModalAlert] = useState(false);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     axios
@@ -74,12 +76,15 @@ export default function Page1() {
     dataKecamatan.forEach((data) => {
       if (geolib.isPointInPolygon({ latitude: location.latitude, longitude: location.longitude }, data.cords)) {
         if (data.status === "dangerous") {
-          Alert.alert("DANGER");
+          setStatus("DANGER");
         } else if (data.status === "warning") {
-          Alert.alert("WARNING");
+          setStatus("WARNING");
         } else {
-          Alert.alert("SAFE");
+          setStatus("SAFE");
         }
+        setTimeout(() => {
+          setModalAlert(true);
+        }, 2000);
       }
     });
   }, [location]);
@@ -164,6 +169,22 @@ export default function Page1() {
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
                   setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>thanks</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+        <Modal animationType="slide" transparent={true} visible={modalAlert}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text>{status}</Text>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalAlert(false);
                 }}
               >
                 <Text style={styles.textStyle}>thanks</Text>
