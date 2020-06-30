@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
+    "password": 123456,
     "database": "crimeport",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "test": {

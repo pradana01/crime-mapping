@@ -67,6 +67,7 @@ export default function Page1() {
     })();
   }, []);
 
+
   useEffect(() => {
     let cordinates = [];
 
