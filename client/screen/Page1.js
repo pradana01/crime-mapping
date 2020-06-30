@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
-import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight } from "react-native";
+import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight, Alert } from "react-native";
 import MapView, { Polygon } from "react-native-maps";
 import * as Location from "expo-location";
-import { district, buildCoordinate } from "../coordinates/index";
+import { district, buildCoordinate } from "../assets/coordinates/index";
+import * as geolib from "geolib";
 
 import axios from "axios";
 
@@ -12,18 +13,19 @@ const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1() {
-  const [location, setLocation] = useState({ latitude: -6.260643, longitude: 106.781589 });
+  const [location, setLocation] = useState({ latitude: -6.175399, longitude: 106.82722 });
   const [errorMsg, setErrorMsg] = useState(null);
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [fetchData, setFetchData] = useState([]);
+  const [dataModal, setDataModal] = useState({});
 
   useEffect(() => {
     axios
-      .get(`http://192.168.43.127:3000/districts`)
+      .get(`http://192.168.100.6:3000/districts`)
       .then((res) => {
         setFetchData(res.data);
-        // console.log(res.data);
+        console.log("========fetch data============");
       })
       .catch((error) => {
         console.log(error);
@@ -38,43 +40,21 @@ export default function Page1() {
           name: null,
           cords: buildCoordinate(district[i]),
           status: null,
-          population: null,
-          homicide: null,
-          assault: null,
-          harassment: null,
-          abduction: null,
-          robbery: null,
-          theft: null,
-          drugs: null,
-          fraudulency: null,
-          anarchism: null,
         };
         for (let j = 0; j < fetchData.length; j++) {
           if (fetchData[j].mapName == district[i]) {
             districtData.name = fetchData[j].name;
             districtData.status = fetchData[j].status;
-            districtData.population = fetchData[j].population;
-            districtData.homicide = fetchData[j].homicide;
-            districtData.assault = fetchData[j].assault;
-            districtData.harassment = fetchData[j].harassment;
-            districtData.abduction = fetchData[j].abduction;
-            districtData.robbery = fetchData[j].robbery;
-            districtData.theft = fetchData[j].theft;
-            districtData.drugs = fetchData[j].drugs;
-            districtData.fraudulency = fetchData[j].fraudulency;
-            districtData.anarchism = fetchData[j].anarchism;
           }
         }
         finalData.push(districtData);
       }
-      // console.log(finalData[0].status);
+      console.log("========joining data===========");
       setDataKecamatan(finalData);
     }
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
-    // setDataKecamatan(finalData);
-
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -86,6 +66,19 @@ export default function Page1() {
     })();
   }, []);
 
+  // useEffect(() => {
+  //   let cordinates;
+
+  //   dataKecamatan.forEach((data) => {
+  //     cordinates = data.cords;
+  //   });
+
+  //   if (geolib.isPointInPolygon({ latitude: -6.260643, longitude: 106.781589 }, cordinates)) {
+  //     console.log("<<<<<<<<<<<<< di dalem polygon");
+  //     Alert.alert("assssss");
+  //   }
+  // }, [setDataKecamatan]);
+
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
@@ -93,8 +86,14 @@ export default function Page1() {
     text = JSON.stringify(location);
   }
 
-  const showModal = () => {
-    setModalVisible(true);
+  const showModal = (value) => {
+    let dataGrab = fetchData.filter(function (element) {
+      return element.name === value.name;
+    });
+    if (dataGrab.length) {
+      setDataModal(dataGrab[0]);
+      setModalVisible(true);
+    }
   };
 
   return (
@@ -118,23 +117,22 @@ export default function Page1() {
             <Polygon
               key={index}
               coordinates={kec.cords}
-              //setting warna fill nya dibawah ini, mending rgba aja biar skalian ngatur opacity nya
               fillColor={
-                kec.status == "danger"
+                kec.status == "dangerous"
                   ? "rgba(255, 0, 0, 0.4)"
                   : kec.status == "warning"
-                  ? "rgba(255, 100, 100, 0.4)"
-                  : "rgba(150, 200, 0, 0.4)"
+                  ? "rgba(255, 200, 100, 0.4)"
+                  : "rgba(100, 200, 100, 0.4)"
               }
               strokeColor={
-                kec.status == "danger"
-                  ? "rgba(255, 0, 0, 0.4)"
+                kec.status == "dangerous"
+                  ? "rgba(255, 0, 0, 0.5)"
                   : kec.status == "warning"
-                  ? "rgba(255, 100, 100, 0.4)"
-                  : "rgba(150, 200, 0, 0.4)"
+                  ? "rgba(255, 200, 200, 0.5)"
+                  : "rgba(100, 200, 200, 0.5)"
               }
               tappable={true}
-              onPress={() => showModal()}
+              onPress={() => showModal(kec)}
             ></Polygon>
           );
         })}
@@ -144,7 +142,18 @@ export default function Page1() {
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
+            <Text>City :{dataModal.city}</Text>
+            <Text>District: {dataModal.name}</Text>
+            <Text>Population: {dataModal.population}</Text>
+            <Text>abduction: {dataModal.abduction} case</Text>
+            <Text>anarchism: {dataModal.anarchism} case</Text>
+            <Text>Drugs: {dataModal.drugs} case</Text>
+            <Text>Fraudulency: {dataModal.fraudulency} case</Text>
+            <Text>Harassment: {dataModal.harassment} case</Text>
+            <Text>Homicide: {dataModal.homicide} case</Text>
+            <Text>Robbery {dataModal.robbery} case</Text>
+            <Text>Theft: {dataModal.theft} case</Text>
+            <Text>Status: {dataModal.status}</Text>
 
             <TouchableHighlight
               style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
@@ -152,7 +161,7 @@ export default function Page1() {
                 setModalVisible(!modalVisible);
               }}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={styles.textStyle}>thanks</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -192,9 +201,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(255, 255, 255, 1)",
     borderRadius: 20,
-    padding: 100,
+    padding: 50,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
