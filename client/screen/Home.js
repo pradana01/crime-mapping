@@ -48,10 +48,13 @@ export default function Home({ navigation: { navigate } }) {
 
   useEffect(() => {
     fetch(`http://192.168.0.105:3000/reports`,{
-      headers: token
+      headers: {
+        access_token: token
+      }
     })
     .then(res => res.json())
     .then(data => {
+      console.log(data)
       setNewsfeed(data)
     })
     .catch(err => {
@@ -69,7 +72,7 @@ export default function Home({ navigation: { navigate } }) {
         <FlatList
           data={newsfeed}
           renderItem={(item) => <Newsfeed props={item} />}
-          keyExtractor={item => item.id}/>
+          keyExtractor={item => String(item.id)}/>
         </View>
       {/* </Content> */}
     </Container>

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platform,Image } from 'react-native';
 import Report from '../components/Report'
 import Constants from 'expo-constants'
-import { Container, Content, Header , Card, CardItem, Left,Right} from "native-base";
+import { Container, Content, Header} from "native-base";
+import { useSelector } from 'react-redux'
 
 const Data = [
     {
@@ -28,6 +29,25 @@ const Data = [
 const URL =  'https://tribratanewsbengkulu.com/wp-content/uploads/20160109011636-curanmor.jpg'
 export default function Page3({navigation: {navigate}}) {
 
+  const [report, setReport] = useState([])
+  const token = useSelector(state => state.userReducer.token)
+
+  useEffect(() => {
+    fetch(`http://192.168.0.105:3000/reports`,{
+      headers: {
+        access_token: token
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setReport(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },[])
+
   return (
     <Container>
       <Header style={styles.header}>
@@ -35,7 +55,7 @@ export default function Page3({navigation: {navigate}}) {
       </Header>
       <Content style={{backgroundColor:'#f0f0f0'}}>
       <FlatList 
-          data={Data}
+          data={report}
           renderItem={(item) => <Report props={item} />}
           keyExtractor={item => item.id}/>
       </Content>
