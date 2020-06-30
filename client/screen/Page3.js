@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platfo
 import Report from '../components/Report'
 import Constants from 'expo-constants'
 import { Container, Content, Header} from "native-base";
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { fetch_report } from '../store/actions/reportAction'
 const Data = [
     {
         id: '1',
@@ -26,26 +26,16 @@ const Data = [
     }
 ]
 
-const URL =  'https://tribratanewsbengkulu.com/wp-content/uploads/20160109011636-curanmor.jpg'
 export default function Page3({navigation: {navigate}}) {
-
-  const [report, setReport] = useState([])
+  const dispatch = useDispatch()
+  const reports = useSelector(state => state.reportReducer.reports)
   const token = useSelector(state => state.userReducer.token)
 
   useEffect(() => {
-    fetch(`http://192.168.0.105:3000/reports`,{
-      headers: {
-        access_token: token
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      setReport(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    let data ={
+      token
+    }
+    dispatch(fetch_report(data))
   },[])
 
   return (
@@ -53,12 +43,14 @@ export default function Page3({navigation: {navigate}}) {
       <Header style={styles.header}>
         <Text style={styles.titleHeader}>My Report</Text>
       </Header>
-      <Content style={{backgroundColor:'#f0f0f0'}}>
+      {/* <Content style={{backgroundColor:'#f0f0f0'}}> */}
+      <View style={{backgroundColor:'#f0f0f0'}}>
       <FlatList 
-          data={report}
+          data={reports}
           renderItem={(item) => <Report props={item} />}
-          keyExtractor={item => item.id}/>
-      </Content>
+          keyExtractor={item => String(item.id)}/>
+      </View>
+      {/* </Content> */}
     </Container>
   );
 }

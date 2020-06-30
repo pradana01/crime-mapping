@@ -10,7 +10,7 @@ export default function Newsfeed({props}) {
 
     const {title, photo, id, description, location, video, createdAt, Users} = props.item
     
-    console.log(props.item.Users)
+    // console.log(props.item.Users)
 
     const pindahPage = () => {
         navigation.navigate({name:'Comment',params:id})
