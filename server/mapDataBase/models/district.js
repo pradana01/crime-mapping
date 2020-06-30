@@ -10,28 +10,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  }
-  District.init(
-    {
-      name: DataTypes.STRING,
-      city: DataTypes.STRING,
-      mapName: DataTypes.STRING,
-      population: DataTypes.INTEGER,
-      homicide: DataTypes.INTEGER,
-      assault: DataTypes.INTEGER,
-      harassment: DataTypes.INTEGER,
-      abduction: DataTypes.INTEGER,
-      robbery: DataTypes.INTEGER,
-      theft: DataTypes.INTEGER,
-      drugs: DataTypes.INTEGER,
-      fraudulency: DataTypes.INTEGER,
-      anarchism: DataTypes.INTEGER,
-      status: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: "District",
-    }
-  );
+  };
+  District.init({
+    name: DataTypes.STRING,
+    city: DataTypes.STRING,
+    mapName: DataTypes.STRING,
+    population: DataTypes.INTEGER,
+    homicide: DataTypes.INTEGER,
+    assault: DataTypes.INTEGER,
+    harassment: DataTypes.INTEGER,
+    abduction: DataTypes.INTEGER,
+    robbery: DataTypes.INTEGER,
+    theft: DataTypes.INTEGER,
+    drugs: DataTypes.INTEGER,
+    status: DataTypes.STRING,
+    fraudulency: DataTypes.INTEGER,
+    anarchism: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'District',
+  });
   return District;
 };

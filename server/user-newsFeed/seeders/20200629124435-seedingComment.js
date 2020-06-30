@@ -11,23 +11,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await queryInterface.bulkInsert('Districts', [{
-    name: 'Gambir',
-    city: 'Jakarta Pusat',
-    mapName: 'gambir',
-    population: 78254,
-    homicide: 1,
-    assault: 5,
-    harassment: 8,
-    abduction: 0,
-    robbery: 42,
-    theft: 79,
-    drugs: 10,
-    fraudulency: 1,
-    anarchism: 1,
-    status: 'warning',
+   await queryInterface.bulkInsert('Comments', [{
+    UserId: 1,
+    CrimeReportId: 1,
+    comment: 'Seeding komentar',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   }], {});
   },
 
@@ -38,6 +27,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Districts', null, {});
+    await queryInterface.bulkDelete('Comments', null, {})
   }
 };

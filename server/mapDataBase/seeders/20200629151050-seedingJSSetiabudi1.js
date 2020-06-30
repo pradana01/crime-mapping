@@ -12,20 +12,20 @@ module.exports = {
      * }], {});
     */
    await queryInterface.bulkInsert('Districts', [{
-    name: 'Gambir',
-    city: 'Jakarta Pusat',
-    mapName: 'gambir',
-    population: 78254,
-    homicide: 1,
-    assault: 5,
-    harassment: 8,
+    name: 'Setia Budi',
+    city: 'Jakarta Selatan',
+    mapName: 'setiabudi1',
+    population: 140985,
+    homicide: 0,
+    assault: 0,
+    harassment: 0,
     abduction: 0,
-    robbery: 42,
-    theft: 79,
-    drugs: 10,
-    fraudulency: 1,
-    anarchism: 1,
-    status: 'warning',
+    robbery: 1,
+    theft: 1,
+    drugs: 4,
+    fraudulency: 0,
+    anarchism: 0,
+    status: 'safe',
     createdAt: new Date(),
     updatedAt: new Date()
   }], {});

@@ -2,11 +2,10 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
 import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight, Alert } from "react-native";
-import MapView, { Polygon } from "react-native-maps";
-import * as Location from "expo-location";
+import MapView, { Polygon, Marker } from "react-native-maps";
 import { district, buildCoordinate } from "../assets/coordinates/index";
-import * as TaskManager from "expo-task-manager";
-// import * as geolib from "geolib";
+import * as geolib from "geolib";
+// import * as Location from "expo-location";
 
 import axios from "axios";
 
@@ -15,7 +14,6 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1() {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
-  const [errorMsg, setErrorMsg] = useState(null);
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [fetchData, setFetchData] = useState([]);
@@ -23,10 +21,9 @@ export default function Page1() {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.100.6:3000/districts`)
+      .get(`http://192.168.1.115:3000/districts`)
       .then((res) => {
         setFetchData(res.data);
-        console.log("========fetch data============");
       })
       .catch((error) => {
         console.log(error);
@@ -50,54 +47,42 @@ export default function Page1() {
         }
         finalData.push(districtData);
       }
-      console.log("========joining data===========");
       setDataKecamatan(finalData);
     }
   }, [fetchData]);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-      }
+    function success(pos) {
+      var crd = pos.coords;
+      setLocation(crd);
+    }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
-    })();
+    function error(err) {
+      console.warn("ERROR(" + err.code + "): " + err.message);
+    }
 
-    // TaskManager.defineTask(YOUR_TASK_NAME, ({ data: { eventType, region }, error }) => {
-    //   if (error) {
-    //     // check `error.message` for more details.
-    //     return;
-    //   }
-    //   if (eventType === Location.GeofencingEventType.Enter) {
-    //     console.log("You've entered region:", region);
-    //   } else if (eventType === Location.GeofencingEventType.Exit) {
-    //     console.log("You've left region:", region);
-    //   }
-    // });
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 5000,
+    };
+
+    navigator.geolocation.watchPosition(success, error, options);
   }, []);
 
-  // useEffect(() => {
-  //   let cordinates;
-
-  //   dataKecamatan.forEach((data) => {
-  //     cordinates = data.cords;
-  //   });
-
-  //   if (geolib.isPointInPolygon({ latitude: -6.260643, longitude: 106.781589 }, cordinates)) {
-  //     console.log("<<<<<<<<<<<<< di dalem polygon");
-  //     Alert.alert("assssss");
-  //   }
-  // }, [setDataKecamatan]);
-
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
+  useEffect(() => {
+    dataKecamatan.forEach((data) => {
+      if (geolib.isPointInPolygon({ latitude: location.latitude, longitude: location.longitude }, data.cords)) {
+        if (data.status === "dangerous") {
+          Alert.alert("DANGER");
+        } else if (data.status === "warning") {
+          Alert.alert("WARNING");
+        } else {
+          Alert.alert("SAFE");
+        }
+      }
+    });
+  }, [location]);
 
   const showModal = (value) => {
     let dataGrab = fetchData.filter(function (element) {
@@ -143,7 +128,7 @@ export default function Page1() {
                     ? "rgba(255, 0, 0, 0.4)"
                     : kec.status == "warning"
                     ? "rgba(255, 200, 100, 0.4)"
-                    : "rgba(100, 200, 100, 0.4)"
+                    : "rgba(100, 200, 200, 0.5)"
                 }
                 strokeColor={
                   kec.status == "dangerous"
@@ -213,7 +198,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  //test modal
   centeredView: {
     flex: 1,
     justifyContent: "center",

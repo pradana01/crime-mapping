@@ -12,20 +12,20 @@ module.exports = {
      * }], {});
     */
    await queryInterface.bulkInsert('Districts', [{
-    name: 'Gambir',
+    name: 'Kemayoran',
     city: 'Jakarta Pusat',
-    mapName: 'gambir',
-    population: 78254,
-    homicide: 1,
-    assault: 5,
-    harassment: 8,
+    mapName: 'kemayoran1',
+    population: 222309,
+    homicide: 3,
+    assault: 10,
+    harassment: 20,
     abduction: 0,
-    robbery: 42,
-    theft: 79,
-    drugs: 10,
-    fraudulency: 1,
-    anarchism: 1,
-    status: 'warning',
+    robbery: 10,
+    theft: 40,
+    drugs: 15,
+    fraudulency: 0,
+    anarchism: 0,
+    status: 'safe',
     createdAt: new Date(),
     updatedAt: new Date()
   }], {});

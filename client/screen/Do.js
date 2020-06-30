@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ScrollView,
-  Button,
-  StatusBar,
-  Platform,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platform, Image } from "react-native";
 import Newsfeed from "../components/Newsfeed";
 import Constants from "expo-constants";
 import { Container, Content, Header, Card, CardItem, Left, Right, List, ListItem } from "native-base";
@@ -93,13 +83,8 @@ export default function Home({ navigation: { navigate } }) {
               <Text>- Entering unknown area</Text>
             </ListItem>
         </List>
-        </Content>
+      </Content>
     </Container>
-    //       data={Data}
-    //       renderItem={(item) => <Newsfeed props={item} />}
-    //       keyExtractor={item => item.id}/>
-    //   </View>
-    // </View>
   );
 }
 

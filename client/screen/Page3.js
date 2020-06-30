@@ -1,56 +1,35 @@
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platform,Image } from 'react-native';
-import Report from '../components/Report'
-import Constants from 'expo-constants'
-import { Container, Content, Header} from "native-base";
-import { useSelector, useDispatch } from 'react-redux'
-import { fetch_report } from '../store/actions/reportAction'
-const Data = [
-    {
-        id: '1',
-        title: 'AAA',
-        comment: "wah gak bener ini asu",
-        image: 'https://risetcdn.jatimtimes.com/images/2020/02/06/Masuk-2020-600-Lebih-Tindak-Kejahatan-Belum-Diungkap-Polres-Malang73bb576a2f94d5ab.md.jpg',
-    },
-    {
-        id: '2',
-        title: 'BBB',
-        comment: 'ih jambret',
-        image: 'https://cdn2.tstatic.net/jambi/foto/bank/images/ilustrasi-jambret.jpg',
-    },
-    {
-        id: '3',
-        title: 'CCC',
-        comment: 'Maling curanmor',
-        image: 'https://tribratanewsbengkulu.com/wp-content/uploads/20160109011636-curanmor.jpg',
-    }
-]
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platform, Image } from "react-native";
+import Report from "../components/Report";
+import { Container, Content, Header } from "native-base";
+import { useSelector, useDispatch } from "react-redux";
+import { fetch_report } from "../store/actions/reportAction";
+import Constants from "expo-constants";
 
-export default function Page3({navigation: {navigate}}) {
-  const dispatch = useDispatch()
-  const reports = useSelector(state => state.reportReducer.reports)
-  const token = useSelector(state => state.userReducer.token)
+export default function Page3({ navigation: { navigate } }) {
+  const dispatch = useDispatch();
+  const reports = useSelector((state) => state.reportReducer.reports);
+  const token = useSelector((state) => state.userReducer.token);
 
   useEffect(() => {
-    let data ={
-      token
-    }
-    dispatch(fetch_report(data))
-  },[])
+    let data = {
+      token,
+    };
+    dispatch(fetch_report(data));
+  }, []);
 
   return (
     <Container>
       <Header style={styles.header}>
         <Text style={styles.titleHeader}>My Report</Text>
       </Header>
-      {/* <Content style={{backgroundColor:'#f0f0f0'}}> */}
-      <View style={{backgroundColor:'#f0f0f0'}}>
-      <FlatList 
+      <View style={{ backgroundColor: "#f0f0f0" }}>
+        <FlatList
           data={reports}
           renderItem={(item) => <Report props={item} />}
-          keyExtractor={item => String(item.id)}/>
+          keyExtractor={(item) => String(item.id)}
+        />
       </View>
-      {/* </Content> */}
     </Container>
   );
 }
@@ -58,22 +37,21 @@ export default function Page3({navigation: {navigate}}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  header : {
-    justifyContent: 'center',
+  header: {
+    justifyContent: "center",
     ...Platform.select({
       android: {
         paddingTop: StatusBar.currentHeight,
-        
-      }
-    })
+      },
+    }),
   },
-  titleHeader : {
+  titleHeader: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  }
+    fontWeight: "bold",
+    color: "white",
+  },
 });

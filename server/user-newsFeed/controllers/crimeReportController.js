@@ -7,12 +7,22 @@ class CrimeReportController {
             .catch(err => { next(err) })
     }
 
+    static showUserReports(req, res, next) {
+        CrimeReport.findAll({
+            where: {UserId: req.userData.id}
+        })
+        .then(report => {res.status(200).json(report)})
+        .catch(err => { next(err) })
+    }
+
     static add(req, res, next) {
         const { title, description, location, photo, video } = req.body
         const UserId = req.userData.id
         CrimeReport.create({ title, description, location, photo, video, UserId })
-            .then(report => { res.status(201).json(report) })
-            .catch(err => { next(err) })
+        .then(report => {
+            res.status(201).json(report)
+        })
+        .catch(err => { next(err) })
     }
 
     static find(req, res, next) {
@@ -34,9 +44,9 @@ class CrimeReportController {
         CrimeReport.update({ title, description, location, photo, video }, {
             where: { id: req.params.id }
         })
-            .then(() => { return CrimeReport.findByPk(req.params.id) })
-            .then(report => { res.status(200).json(report) })
-            .catch(err => { next(err) })
+        .then(() => { return CrimeReport.findByPk(req.params.id) })
+        .then(report => { res.status(200).json(report) })
+        .catch(err => { next(err) })
     }
 }
 
