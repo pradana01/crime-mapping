@@ -73,6 +73,7 @@ export default TabComponent = () => {
                   tabBarIcon: ({ color, size }) => <Icon name="account" color={color} size={size} />,
                 }}
               />
+              
             </>
           ) : (
             <>
