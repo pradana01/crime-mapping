@@ -1,6 +1,7 @@
 import React from 'react'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from '@react-navigation/stack'
 import { useSelector } from 'react-redux'
 
 import Home from "../screen/Home";
@@ -11,8 +12,28 @@ import Account from "../screen/Page4";
 import Page5 from "../screen/Page5";
 import SignIn from "../screen/SignIn";
 import SignUp from "../screen/SignUp";
+import EditPage from '../screen/EditPage'
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator()
+
+const HomeNavigator = () => {
+  return (
+  <Stack.Navigator>
+    <Stack.Screen name='Home' component={Home} />
+    <Stack.Screen name='Comment' component={Page5} />
+  </Stack.Navigator>
+  )
+}
+
+const ReportNavigator = () => {
+  return (
+  <Stack.Navigator>
+    <Stack.Screen name='My Report' component={MyReport} />
+    <Stack.Screen name='Edit Report' component={EditPage} />
+  </Stack.Navigator>
+  )
+}
 
 export default TabComponent = () => {
 
@@ -31,7 +52,7 @@ export default TabComponent = () => {
             <>
               <Tab.Screen
                 name="Home"
-                component={Home}
+                component={HomeNavigator}
                 options={{
                   tabBarLabel: "Home",
                   tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} />,
@@ -57,7 +78,7 @@ export default TabComponent = () => {
               />
               <Tab.Screen
                 name="My Report"
-                component={MyReport}
+                component={ReportNavigator}
                 options={{
                   tabBarLabel: "My Report",
                   tabBarIcon: ({ color, size }) => (
