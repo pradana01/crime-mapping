@@ -9,7 +9,6 @@ export function fetch_newsfeed(data) {
     })
       .then((res) => res.json())
       .then((hasil) => {
-        console.log(hasil);
         dispatch({
           type: "FETCH_NEWSFEED",
           payload: {
