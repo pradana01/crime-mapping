@@ -71,7 +71,7 @@ export default function Home({ navigation: { navigate } }) {
         </CardItem>
 )}
       </Content>
-/*
+{/*
       <View style={{ backgroundColor: "#f0f0f0" }}>
         <FlatList
           data={newsfeed}
@@ -79,7 +79,7 @@ export default function Home({ navigation: { navigate } }) {
           keyExtractor={(item) => String(item.id)}
         />
       </View>
-*/
+*/}
     </Container>
   );
 }

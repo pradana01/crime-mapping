@@ -77,7 +77,7 @@ export default function Home({ navigation: { navigate } }) {
         )}
 
       </Content>
-/*
+{/*
       <View style={{ backgroundColor: "#f0f0f0" }}>
         <FlatList
           data={reports}
@@ -85,8 +85,7 @@ export default function Home({ navigation: { navigate } }) {
           keyExtractor={(item) => String(item.id)}
         />
       </View>
-*/
-
+*/}
     </Container>
   );
 }
