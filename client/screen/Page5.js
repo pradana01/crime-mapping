@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { TextInput } from "react-native-gesture-handler";
-import { StyleSheet, Text, View, FlatList, ScrollView, StatusBar, Platform, Image, Dimensions } from "react-native";
-import Newsfeed from "../components/Newsfeed";
-import Constants from "expo-constants";
+import { StyleSheet, Text, View, StatusBar, Platform, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Container, Content, Header, Card, CardItem, Left, Right, Textarea, Button } from "native-base";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Container, Content, CardItem, Textarea, Button } from "native-base";
 import { useSelector } from "react-redux";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 export default function Page5(props) {
   const navigation = useNavigation();
   const { reportData } = props.route.params;
-  // console.log(id)
   const [commentData, setCommentData] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const url = "https://crimeport-orchestrator.herokuapp.com";
-  // const url = "http://192.168.1.115:3000";
-  const token = useSelector((state) => state.userReducer.token);
   const [render, setRender] = useState(true);
+  const token = useSelector((state) => state.userReducer.token);
+  const url = "https://crimeport-orchestrator.herokuapp.com";
 
   useEffect(() => {
     fetch(`${url}/comments/${reportData.id}`, {
@@ -67,9 +63,6 @@ export default function Page5(props) {
 
   return (
     <Container>
-      {/* <Header style={styles.header}>
-        <Text style={styles.titleHeader}>Reports Detail</Text>
-      </Header> */}
       <Content padder style={{ backgroundColor: "#f0f0f0" }}>
         <CardItem style={{ flexDirection: "column", borderRadius: 10 }}>
           <View style={{ flexDirection: "row", marginBottom: 15 }}>

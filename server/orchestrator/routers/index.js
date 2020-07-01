@@ -148,12 +148,10 @@ router.post("/reports", (req, res) => {
 router.put("/reports/:id", (req, res) => {
   const access_token = req.headers.access_token;
   const { title, description, location, photo, video } = req.body;
-  // const { photo, video } = req.files
+
   let uploadedPhoto;
   let uploadedVideo;
-  // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
-  //     console.log('gagal')
-  // } else {
+
   if (photo) {
     cloudinary.uploader.upload(photo, function (err, result) {
       uploadedPhoto = result.url;
@@ -310,11 +308,9 @@ router.delete("/comments/:id", (req, res) => {
 
 //MAP (DISTRICTS)
 router.get("/districts", (req, res) => {
-  // const access_token = req.headers.access_token
   axios({
     method: "get",
     url: `${MAP_SERVICES_URL}/districts`,
-    // headers: { access_token }
   })
     .then((resp) => {
       res.send(resp.data);
@@ -325,11 +321,9 @@ router.get("/districts", (req, res) => {
 });
 
 router.get("/districts/:id", (req, res) => {
-  // const access_token = req.headers.access_token
   axios({
     method: "get",
     url: `${MAP_SERVICES_URL}/districts/${req.params.id}`,
-    // headers: { access_token }
   })
     .then((resp) => {
       res.send(resp.data);

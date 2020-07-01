@@ -1,27 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
-import {
-  StyleSheet,
-  Dimensions,
-  View,
-  Text,
-  Modal,
-  TouchableHighlight,
-  Alert,
-  TouchableWithoutFeedback,
-} from "react-native";
-import MapView, { Polygon, Marker } from "react-native-maps";
+import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight } from "react-native";
+import MapView, { Polygon } from "react-native-maps";
 import { district, buildCoordinate } from "../assets/coordinates/index";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import * as geolib from "geolib";
 import * as Location from "expo-location";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default function Page1({ navigation: { navigate } }) {
+  const navigation = useNavigation();
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,14 +21,12 @@ export default function Page1({ navigation: { navigate } }) {
   const [dataModal, setDataModal] = useState({});
   const [modalAlert, setModalAlert] = useState(false);
   const [status, setStatus] = useState("");
-  const navigation = useNavigation();
 
   useEffect(() => {
     axios
       .get(`https://crimeport-orchestrator.herokuapp.com/districts`)
       .then((res) => {
         setFetchData(res.data);
-        console.log("=================");
       })
       .catch((error) => {
         console.log(error);
@@ -160,15 +150,15 @@ export default function Page1({ navigation: { navigate } }) {
                   kec.status == "dangerous"
                     ? "rgba(255, 0, 0, 0.4)"
                     : kec.status == "warning"
-                      ? "rgba(255, 200, 100, 0.4)"
-                      : "rgba(100, 200, 200, 0.5)"
+                    ? "rgba(255, 200, 100, 0.4)"
+                    : "rgba(100, 200, 200, 0.5)"
                 }
                 strokeColor={
                   kec.status == "dangerous"
                     ? "rgba(255, 0, 0, 0.5)"
                     : kec.status == "warning"
-                      ? "rgba(255, 200, 200, 0.5)"
-                      : "rgba(100, 200, 200, 0.5)"
+                    ? "rgba(255, 200, 200, 0.5)"
+                    : "rgba(100, 200, 200, 0.5)"
                 }
                 tappable={true}
                 onPress={() => showModal(kec)}
@@ -180,10 +170,12 @@ export default function Page1({ navigation: { navigate } }) {
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={{color:'#283148', fontWeight:'bold',fontSize:18}}>{dataModal.city}</Text>
-              <Text style={{marginBottom:10, fontSize:12, color:'#913535', fontWeight:'bold'}}>{dataModal.name}</Text>
+              <Text style={{ color: "#283148", fontWeight: "bold", fontSize: 18 }}>{dataModal.city}</Text>
+              <Text style={{ marginBottom: 10, fontSize: 12, color: "#913535", fontWeight: "bold" }}>
+                {dataModal.name}
+              </Text>
               <Text>Status: {dataModal.status}</Text>
-              
+
               <Text>Population: {dataModal.population}</Text>
               <Text>abduction: {dataModal.abduction} case</Text>
               <Text>anarchism: {dataModal.anarchism} case</Text>
@@ -195,7 +187,7 @@ export default function Page1({ navigation: { navigate } }) {
               <Text>Theft: {dataModal.theft} case</Text>
 
               <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#283148", borderRadius:10, marginVertical:10 }}
+                style={{ ...styles.openButton, backgroundColor: "#283148", borderRadius: 10, marginVertical: 10 }}
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
@@ -210,8 +202,7 @@ export default function Page1({ navigation: { navigate } }) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text>{status}</Text>
-              <View style={{ flexDirection: 'row', marginVertical:10, }}>
-
+              <View style={{ flexDirection: "row", marginVertical: 10 }}>
                 <TouchableHighlight
                   style={{ ...styles.openButton, backgroundColor: "#283148", borderRadius: 10 }}
                   onPress={() => {
@@ -221,12 +212,18 @@ export default function Page1({ navigation: { navigate } }) {
                   <Text style={styles.textStyle}>Close</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                  style={{ ...styles.openButton, backgroundColor: "#fff", borderColor:'#913535', borderWidth:1, borderRadius: 10 }}
+                  style={{
+                    ...styles.openButton,
+                    backgroundColor: "#fff",
+                    borderColor: "#913535",
+                    borderWidth: 1,
+                    borderRadius: 10,
+                  }}
                   onPress={() => {
                     changePage();
                   }}
                 >
-                  <Text style={styles.textStyle, {color:'#913535',fontWeight:'bold'}}>See DOs and DONTs</Text>
+                  <Text style={(styles.textStyle, { color: "#913535", fontWeight: "bold" })}>See DOs and DONTs</Text>
                 </TouchableHighlight>
               </View>
             </View>
@@ -252,7 +249,7 @@ const styles = StyleSheet.create({
   header: {
     width: screenWidth,
     justifyContent: "center",
-    backgroundColor: '#283148'
+    backgroundColor: "#283148",
   },
   titleHeader: {
     paddingTop: 22,
@@ -286,7 +283,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    marginHorizontal:10,
+    marginHorizontal: 10,
   },
   textStyle: {
     color: "white",

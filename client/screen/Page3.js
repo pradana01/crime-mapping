@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView, StatusBar, Platform, Image } from "react-native";
-import Newsfeed from "../components/Newsfeed";
-import Constants from "expo-constants";
+import { StyleSheet, Text, View, StatusBar, Platform, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Container, Content, Header, Card, CardItem, Left, Right, Input, Button } from "native-base";
+import { Container, Content, CardItem, Right, Button } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { fetch_report, delete_report } from "../store/actions/reportAction";
 
 export default function Home({ navigation: { navigate } }) {
-  const url = "http://192.168.1.115:3000";
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [datas, setDatas] = useState([]);
