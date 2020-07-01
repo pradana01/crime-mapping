@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
   header: {
     width: screenWidth,
     justifyContent: "center",
+    backgroundColor:'#283148',
   },
   titleHeader: {
     paddingTop: 22,
