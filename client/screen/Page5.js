@@ -82,6 +82,7 @@ export default function Page5(props) {
           </View>
 
           <View style={{}}>
+            <Image source={{uri:reportData.photo}} />
             <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 8 }}>{reportData.title}</Text>
             <Text style={{ marginTop: 8 }}>{reportData.description}</Text>
             <Text style={{ marginTop: 8, color: "#5891fe", fontWeight: "bold" }}>{reportData.location}</Text>
@@ -91,18 +92,20 @@ export default function Page5(props) {
           <Text>Comments : </Text>
           {commentData.map((comment, i) => (
             <View key={i}>
+              <Text style={{color:'#ccc', fontWeight:'bold'}}>{comment.User.name}</Text>
               <Text>{comment.comment}</Text>
-              <Text>By: {comment.User.name}</Text>
             </View>
           ))}
           <View style={{ width: "100%", borderStyle: "solid", borderWidth: 1, borderColor: "#ccc", marginVertical: 8 }}>
             <Textarea rowSpan={2} placeholder="your comment here.." onChangeText={(add) => setNewComment(add)} />
           </View>
-          <Button block onPress={() => onPressAddComment()}>
+          <Button block onPress={() => onPressAddComment()} 
+          style={{elevation:5, shadowColor:'#000', shadowOpacity:1, shadowOffset: {width:5,height:5}}}>
             <Text style={{ color: "#fff" }}>SUBMIT COMMENT</Text>
           </Button>
         </CardItem>
-        <Button block onPress={() => pindahPage()}>
+        <Button block onPress={() => pindahPage()}
+        style={{backgroundColor:'#913535'}}>
           <Text style={{ color: "#fff" }}>BACK</Text>
         </Button>
       </Content>
