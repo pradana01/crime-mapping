@@ -14,24 +14,29 @@ export default function Edit({ route: { params: { data } } }) {
   const [photo, setPhoto] = useState(data.photo)
   const [video, setVideo] = useState(data.video)
 
-  const url = 'http://192.168.1.115:3000'
+  const url = 'http://192.168.0.105:3000'
   const token = useSelector(state => state.userReducer.token)
 
   const selectOneVideo = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: 'Videos'
+    let res = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: 'Videos',
+      base64: true
     })
     if (!res.cancelled) {
+      let base64Vid = `data:image/jpg;base64,${res.base64}`
       console.log(res)
-      setVideo(res.uri)
+      setVideo(base64Vid)
     }
   }
 
   const selectOneImage = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync()
+    let res = await ImagePicker.launchImageLibraryAsync({
+      base64: true
+    })
     if (!res.cancelled) {
+      let base64Img = `data:image/jpg;base64,${res.base64}`
       console.log(res)
-      setPhoto(res.uri)
+      setPhoto(base64Img)
     }
   }
 

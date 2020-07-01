@@ -73,9 +73,11 @@ router.post('/reports', (req, res) => {
     //     console.log('gagal')
     // } else {
         if (photo) {
-            const newImageUri =  "file:///" + photo.split("file:/").join("");
-            cloudinary.uploader.upload(newImageUri, function(err, result) {
+            console.log(photo)
+            // const newImageUri =  "file:///" + photo.split("file:/").join("");
+            cloudinary.uploader.upload(photo, function(err, result) {
                 uploadedPhoto = result.url
+                console.log(uploadedPhoto)
                 let data = {title, description, location, photo: uploadedPhoto}
                 axios({
                     method: 'post',
