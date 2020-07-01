@@ -128,7 +128,7 @@ export default function Page1({ navigation: { navigate } }) {
     return (
       <View style={styles.container}>
         <Header style={styles.header}>
-          <Text style={styles.titleHeader}>Maps</Text>
+          <Text style={styles.titleHeader}>Crime Maps</Text>
         </Header>
         <MapView
           style={styles.map}
@@ -248,6 +248,8 @@ const styles = StyleSheet.create({
   },
   header: {
     width: screenWidth,
+    height: 60,
+    paddingTop: 7,
     justifyContent: "center",
     backgroundColor: "#283148",
   },

@@ -60,11 +60,10 @@ export default function Create() {
           <Item regular>
             <Input bordered onChangeText={(loc) => setLocation(loc)} />
           </Item>
-          <Label style={{ marginVertical: 5, fontSize: 15 }}>Input file</Label>
-          <Button bordered onPress={() => selectOneImage()}>
-            <Text>Upload Image</Text>
+          <Button style={{ backgroundColor: "#336d88", marginTop: 20 }} onPress={() => selectOneImage()}>
+            <Text style={{ color: "#fff", paddingLeft: 146 }}>Upload Image</Text>
           </Button>
-          <Button block onPress={() => onPressed()} style={{ backgroundColor: "#913535", marginVertical: 10 }}>
+          <Button block onPress={() => onPressed()} style={{ backgroundColor: "#913535", marginVertical: 20 }}>
             <Text style={{ color: "#fff" }}>Submit Report </Text>
           </Button>
         </Form>

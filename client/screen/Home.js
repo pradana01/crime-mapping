@@ -52,7 +52,7 @@ export default function Home({ navigation: { navigate } }) {
         <View style={{ marginTop: -50 }}>
           {newsfeed.length > 0 &&
             newsfeed.map((data, i) => (
-              <CardItem key={i} style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5 }}>
+              <CardItem key={i} style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5, elevation: 3 }}>
                 <View>
                   {data.photo == "" ? (
                     <Image

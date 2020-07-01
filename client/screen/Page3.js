@@ -37,7 +37,10 @@ export default function Home({ navigation: { navigate } }) {
       <Content style={{ backgroundColor: "#f0f0f0" }}>
         {reports.length > 0 &&
           reports.map((report) => (
-            <CardItem key={report.id} style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5 }}>
+            <CardItem
+              key={report.id}
+              style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5, elevation: 3 }}
+            >
               <View>
                 {report.photo == "" ? (
                   <Image
