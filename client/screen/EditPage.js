@@ -137,7 +137,9 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
 
       }
-    })
+    }),
+    backgroundColor:'#283148',
+    
   },
   titleHeader: {
     fontSize: 16,

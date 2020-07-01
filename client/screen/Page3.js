@@ -51,9 +51,6 @@ export default function Home({ navigation: { navigate } }) {
 
   return (
     <Container>
-      <Header style={styles.header}>
-        <Text style={styles.titleHeader}>My Report</Text>
-      </Header>
       <Content padder style={{ backgroundColor: '#f0f0f0' }}>
 
         {data.map((report) =>
@@ -99,6 +96,7 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
       },
     }),
+    backgroundColor:'#283148',
   },
   titleHeader: {
     fontSize: 16,

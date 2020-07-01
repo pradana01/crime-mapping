@@ -102,13 +102,15 @@ export default function Create() {
           <Button
             bordered
             onPress={() => selectOneVideo()}
-          />
+          >
+              <Text>Upload Video</Text>
+</Button>
           <Button
             block
-            primary
             onPress={() => onPressed()}
+            style={{backgroundColor:'#913535', marginVertical:10}}
           >
-            <Text> Submit Report </Text>
+            <Text style={{color:'#fff'}}>Submit Report </Text>
           </Button>
         </Form>
       </Content>
@@ -131,7 +133,8 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
 
       }
-    })
+    }),
+    backgroundColor:'#283148',
   },
   titleHeader: {
     fontSize: 16,
