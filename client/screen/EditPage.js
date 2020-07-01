@@ -68,8 +68,8 @@ export default function Edit({
           <Button bordered onPress={() => selectOneImage()}>
             <Text>Upload Image</Text>
           </Button>
-          <Button block primary onPress={() => onPressed()}>
-            <Text>Submit</Text>
+          <Button block onPress={() => onPressed()} style={{ backgroundColor: "#913535", marginVertical: 10 }}>
+            <Text style={{ color: "#fff" }}>Submit Report </Text>
           </Button>
         </Form>
       </Content>

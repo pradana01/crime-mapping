@@ -182,6 +182,8 @@ export default function Page1({ navigation: { navigate } }) {
             <View style={styles.modalView}>
               <Text style={{color:'#283148', fontWeight:'bold',fontSize:18}}>{dataModal.city}</Text>
               <Text style={{marginBottom:10, fontSize:12, color:'#913535', fontWeight:'bold'}}>{dataModal.name}</Text>
+              <Text>Status: {dataModal.status}</Text>
+              
               <Text>Population: {dataModal.population}</Text>
               <Text>abduction: {dataModal.abduction} case</Text>
               <Text>anarchism: {dataModal.anarchism} case</Text>
@@ -191,7 +193,6 @@ export default function Page1({ navigation: { navigate } }) {
               <Text>Homicide: {dataModal.homicide} case</Text>
               <Text>Robbery {dataModal.robbery} case</Text>
               <Text>Theft: {dataModal.theft} case</Text>
-              <Text>Status: {dataModal.status}</Text>
 
               <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#283148", borderRadius:10, marginVertical:10 }}
