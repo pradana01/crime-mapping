@@ -1,23 +1,23 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
+    "password": "123456",
     "database": "crime_database",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": 1,
-    "database": "crimeport-database-test",
+    "password": 123456,
+    "database": "crime_database",
     "host": "localhost",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "wqiihqxhlazcee",
+    "password": "b13d922dbf91a7f5d7533a906c1319d8eb783e61574394148731824d33ed08fa",
+    "database": "de9piva0evt3qf",
+    "host": "ec2-54-234-44-238.compute-1.amazonaws.com",
+    "dialect": "postgres"
   }
 }
