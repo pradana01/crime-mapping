@@ -1,82 +1,54 @@
-import React, {useState, useEffect} from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ScrollView,
-  Button,
-  StatusBar,
-  Platform,
-  Image,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, FlatList, ScrollView, StatusBar, Platform, Image } from "react-native";
 import Constants from "expo-constants";
-import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
-import { useNavigation } from '@react-navigation/native'
-import { useSelector } from "react-redux";
-const url = 'http://192.168.0.105:3000'
+import { Container, Content, Header, Card, CardItem, Left, Right, Button } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { fetch_newsfeed } from "../store/actions/reportAction";
+const url = "http://192.168.1.115:3000";
 
 export default function Home({ navigation: { navigate } }) {
-  const navigation = useNavigation()
-  const [data, setData] = useState([])
-  const [user, setUser] = useState([])
-  const token = useSelector(state => state.userReducer.token)
-  
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [datas, setDatas] = useState([]);
+  const [user, setUser] = useState([]);
+  const token = useSelector((state) => state.userReducer.token);
+  const newsfeed = useSelector((state) => state.reportReducer.newsfeed);
+
   useEffect(() => {
-    fetch(`${url}/reports`, {
-      headers: {
-        'access_token': token,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      // console.log(data)
-      setData(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  })
+    let data = {
+      token,
+    };
+    dispatch(fetch_newsfeed(data));
+    setDatas(newsfeed);
+  }, [newsfeed]);
 
   const pindahPage = (reportData) => {
-    console.log(reportData)
-    navigation.navigate('Comment', {reportData})
-}
+    navigation.navigate("Comment", { reportData });
+  };
 
   return (
     <Container>
       <Content style={{ backgroundColor: "#f0f0f0" }}>
-
-      {data.map((data, i) =>  
-        <CardItem key={i}>
-          <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
-            <Image source={{uri: data.photo}} />
-          </View>
-          <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
-      <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt}</Text>
-            <Text style={{ fontWeight: "bold" }}>{data.title}</Text>
-            <Text
-              style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}
-            >
-              Kecamatan : {data.location}
-            </Text>
-            <Button 
-                onPress={() => pindahPage(data)}
-                title="View Comment" />
-          </Right>
-        </CardItem>
-)}
+        {newsfeed.length > 0 &&
+          newsfeed.map((data, i) => (
+            <CardItem key={i}>
+              <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
+                <Image source={{ uri: data.photo }} />
+              </View>
+              <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
+                <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt}</Text>
+                <Text style={{ fontWeight: "bold" }}>{data.title}</Text>
+                <Text style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}>
+                  Kecamatan : {data.location}
+                </Text>
+                <Button small onPress={() => pindahPage(data)} style={{ backgroundColor: "#913535" }}>
+                  <Text style={{ color: "#fff" }}>View Comment</Text>
+                </Button>
+              </Right>
+            </CardItem>
+          ))}
       </Content>
-{/*
-      <View style={{ backgroundColor: "#f0f0f0" }}>
-        <FlatList
-          data={newsfeed}
-          renderItem={(item) => <Newsfeed props={item} />}
-          keyExtractor={(item) => String(item.id)}
-        />
-      </View>
-*/}
     </Container>
   );
 }
@@ -95,7 +67,7 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
       },
     }),
-    backgroundColor:'#283148',
+    backgroundColor: "#283148",
   },
   titleHeader: {
     fontSize: 16,

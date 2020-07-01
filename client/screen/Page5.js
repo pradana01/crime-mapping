@@ -1,93 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput } from 'react-native-gesture-handler';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ScrollView,
-  StatusBar,
-  Platform,
-  Image,
-  Dimensions
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { TextInput } from "react-native-gesture-handler";
+import { StyleSheet, Text, View, FlatList, ScrollView, StatusBar, Platform, Image, Dimensions } from "react-native";
 import Newsfeed from "../components/Newsfeed";
 import Constants from "expo-constants";
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 import { Container, Content, Header, Card, CardItem, Left, Right, Textarea, Button } from "native-base";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 export default function Page5(props) {
-  const navigation = useNavigation()
-  const { reportData } = props.route.params
+  const navigation = useNavigation();
+  const { reportData } = props.route.params;
   // console.log(id)
-  const [commentData, setCommentData] = useState([])
-  const [newComment, setNewComment] = useState('')
-  const url = 'http://192.168.0.105:3000'
-  const token = useSelector(state => state.userReducer.token)
-  const [render, setRender] = useState(true)
+  const [commentData, setCommentData] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const url = "http://192.168.1.115:3000";
+  const token = useSelector((state) => state.userReducer.token);
+  const [render, setRender] = useState(true);
 
   useEffect(() => {
     fetch(`${url}/comments/${reportData.id}`, {
       headers: {
-        'access_token': token,
-        'Content-Type': 'application/json'
-      }
+        access_token: token,
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => res.json())
-      .then(comment => {
-        // console.log(id)
-        console.log(comment)
-        setCommentData(comment)
-        
+      .then((res) => res.json())
+      .then((comment) => {
+        setCommentData(comment);
       })
-      .catch(err => {
-        console.log(err)
-      })
-  },[render])
-
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [render]);
 
   const onPressAddComment = () => {
     if (newComment) {
       fetch(`${url}/comments`, {
-        method: 'post',
+        method: "post",
         headers: {
-          'access_token': token,
-          'Content-Type': 'application/json'
+          access_token: token,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           comment: newComment,
-          CrimeReportId: reportData.id
-        })
+          CrimeReportId: reportData.id,
+        }),
       })
-        .then(res => res.json())
-        .then(comment => {
-          alert('Added a comment')
-          setRender(!render)
+        .then((res) => res.json())
+        .then((comment) => {
+          alert("Added a comment");
+          setRender(!render);
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      alert('Write something first')
+      alert("Write something first");
     }
-  }
+  };
 
   const pindahPage = () => {
-    setCommentData([])
-    navigation.navigate('Home')
-  }
+    setCommentData([]);
+    navigation.navigate("Home");
+  };
 
   return (
     <Container>
-      <Header style={styles.header}>
+      {/* <Header style={styles.header}>
         <Text style={styles.titleHeader}>Reports Detail</Text>
-      </Header>
+      </Header> */}
       <Content style={{ backgroundColor: "#f0f0f0" }}>
-
-        <CardItem style={{ flexDirection: 'column' }}>
-          <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-            <View >
+        <CardItem style={{ flexDirection: "column" }}>
+          <View style={{ flexDirection: "row", marginBottom: 15 }}>
+            <View>
               <Image style={{ width: 30, height: 30, borderRadius: 100 }} source={{ uri: reportData.photo }} />
             </View>
             <View style={{ flex: 1, alignItems: "flex-start", height: 30, marginLeft: 15 }}>
@@ -97,31 +82,29 @@ export default function Page5(props) {
           </View>
 
           <View style={{}}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 8 }}>{reportData.title}</Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 8 }}>{reportData.title}</Text>
             <Text style={{ marginTop: 8 }}>{reportData.description}</Text>
-            <Text style={{ marginTop: 8, color: '#5891fe', fontWeight: 'bold' }}>{reportData.location}</Text>
+            <Text style={{ marginTop: 8, color: "#5891fe", fontWeight: "bold" }}>{reportData.location}</Text>
           </View>
-
         </CardItem>
-        <CardItem style={{ marginTop: 5, flexDirection: 'column', alignItems: 'flex-start' }}>
+        <CardItem style={{ marginTop: 5, flexDirection: "column", alignItems: "flex-start" }}>
           <Text>Comments : </Text>
-          {commentData.map((comment, i) =>
+          {commentData.map((comment, i) => (
             <View key={i}>
               <Text>{comment.comment}</Text>
               <Text>By: {comment.User.name}</Text>
             </View>
-          )}
-          <View style={{ width: '100%', borderStyle: "solid", borderWidth: 1, borderColor: '#ccc', marginVertical: 8 }}>
-            <Textarea rowSpan={2} placeholder='your comment here..' onChangeText={add => setNewComment(add)} />
+          ))}
+          <View style={{ width: "100%", borderStyle: "solid", borderWidth: 1, borderColor: "#ccc", marginVertical: 8 }}>
+            <Textarea rowSpan={2} placeholder="your comment here.." onChangeText={(add) => setNewComment(add)} />
           </View>
           <Button block onPress={() => onPressAddComment()}>
-            <Text style={{ color: '#fff' }}>SUBMIT COMMENT</Text>
+            <Text style={{ color: "#fff" }}>SUBMIT COMMENT</Text>
           </Button>
         </CardItem>
         <Button block onPress={() => pindahPage()}>
-          <Text style={{ color: '#fff' }}>BACK</Text>
+          <Text style={{ color: "#fff" }}>BACK</Text>
         </Button>
-
       </Content>
     </Container>
   );
@@ -141,7 +124,7 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
       },
     }),
-    backgroundColor:'#283148',
+    backgroundColor: "#283148",
   },
   titleHeader: {
     fontSize: 16,

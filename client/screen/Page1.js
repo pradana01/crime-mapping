@@ -1,18 +1,27 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Header } from "native-base";
-import { StyleSheet, Dimensions, View, Text, Modal, TouchableHighlight, Alert } from "react-native";
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  Modal,
+  TouchableHighlight,
+  Alert,
+  TouchableWithoutFeedback,
+} from "react-native";
 import MapView, { Polygon, Marker } from "react-native-maps";
 import { district, buildCoordinate } from "../assets/coordinates/index";
 import * as geolib from "geolib";
-// import * as Location from "expo-location";
-
+import * as Location from "expo-location";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
 
-export default function Page1() {
+export default function Page1({ navigation: { navigate } }) {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [dataKecamatan, setDataKecamatan] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,12 +29,14 @@ export default function Page1() {
   const [dataModal, setDataModal] = useState({});
   const [modalAlert, setModalAlert] = useState(false);
   const [status, setStatus] = useState("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     axios
-      .get(`http://192.168.0.105:3000/districts`)
+      .get(`https://crimeport-orchestrator.herokuapp.com/districts`)
       .then((res) => {
         setFetchData(res.data);
+        console.log("=================");
       })
       .catch((error) => {
         console.log(error);
@@ -54,33 +65,44 @@ export default function Page1() {
   }, [fetchData]);
 
   useEffect(() => {
-    function success(pos) {
-      var crd = pos.coords;
-      setLocation(crd);
-    }
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      } else {
+        function success(pos) {
+          var crd = pos.coords;
+          setLocation(crd);
+        }
 
-    function error(err) {
-      console.warn("ERROR(" + err.code + "): " + err.message);
-    }
+        function error(err) {
+          console.warn("ERROR(" + err.code + "): " + err.message);
+        }
 
-    const options = {
-      enableHighAccuracy: false,
-      timeout: 5000,
-      maximumAge: 5000,
-    };
+        const options = {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 5000,
+        };
 
-    navigator.geolocation.watchPosition(success, error, options);
+        navigator.geolocation.watchPosition(success, error, options);
+      }
+    })();
   }, []);
 
   useEffect(() => {
     dataKecamatan.forEach((data) => {
       if (geolib.isPointInPolygon({ latitude: location.latitude, longitude: location.longitude }, data.cords)) {
         if (data.status === "dangerous") {
-          setStatus("DANGER");
+          setStatus("Danger! You are in a danger area. Please read our dos and don'ts to make yourself safer.");
         } else if (data.status === "warning") {
-          setStatus("WARNING");
+          setStatus(
+            "Warning! You are in a warning area. You are prone to become a victim of criminal act. Please read our dos and don'ts to make yourself safer."
+          );
         } else {
-          setStatus("SAFE");
+          setStatus(
+            "Safe! You are in a safe area. Please enjoy your stay and read our dos and don'ts to make yourself safer."
+          );
         }
         setTimeout(() => {
           setModalAlert(true);
@@ -99,6 +121,12 @@ export default function Page1() {
     }
   };
 
+  const changePage = () => {
+    navigation.navigate("Do");
+    setModalAlert(false);
+  };
+
+  // RENDER PAGE
   if (location.latitude === 0) {
     return (
       <View style={styles.container}>
@@ -176,6 +204,7 @@ export default function Page1() {
             </View>
           </View>
         </Modal>
+
         <Modal animationType="slide" transparent={true} visible={modalAlert}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -185,6 +214,14 @@ export default function Page1() {
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
                   setModalAlert(false);
+                }}
+              >
+                <Text style={styles.textStyle}>thanks</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  changePage();
                 }}
               >
                 <Text style={styles.textStyle}>thanks</Text>
@@ -212,7 +249,6 @@ const styles = StyleSheet.create({
   header: {
     width: screenWidth,
     justifyContent: "center",
-    backgroundColor:'#283148',
   },
   titleHeader: {
     paddingTop: 22,
