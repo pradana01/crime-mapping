@@ -23,7 +23,7 @@ export default function Page5(props) {
   // console.log(id)
   const [commentData, setCommentData] = useState([])
   const [newComment, setNewComment] = useState('')
-  const url = 'http://localhost:3000'
+  const url = 'http://192.168.1.6:3000'
 
   useEffect(() => {
     fetch(`${url}/comments/${reportData.id}`, {

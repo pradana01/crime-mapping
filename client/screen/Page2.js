@@ -11,7 +11,7 @@ export default function Create() {
   const [location, setLocation] = useState('Input location')
   const [photo, setPhoto] = useState('')
   const [video, setVideo] = useState('')
-  const url = 'http://localhost:3000'
+  const url = 'http://192.168.1.6:3000'
 
   const selectOneVideo = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({

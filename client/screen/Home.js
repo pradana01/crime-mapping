@@ -14,7 +14,7 @@ import Constants from "expo-constants";
 import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
 import { useNavigation } from '@react-navigation/native'
 
-const url = 'http://localhost:3000'
+const url = 'http://192.168.1.6:3000'
 
 export default function Home({ navigation: { navigate } }) {
   const navigation = useNavigation()
