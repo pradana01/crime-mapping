@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platform, Image } from "react-native";
+import { StyleSheet, Text, View, FlatList, ScrollView, StatusBar, Platform, Image } from "react-native";
 import Newsfeed from "../components/Newsfeed";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
-import { Container, Content, Header, Card, CardItem, Left, Right, Input } from "native-base";
+import { Container, Content, Header, Card, CardItem, Left, Right, Input, Button } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { fetch_report, delete_report } from "../store/actions/reportAction";
 
@@ -37,12 +37,12 @@ export default function Home({ navigation: { navigate } }) {
 
   return (
     <Container>
-      <Content padder style={{ backgroundColor: "#f0f0f0" }}>
+      <Content style={{ backgroundColor: "#f0f0f0" }}>
         {reports.length > 0 &&
           reports.map((report) => (
-            <CardItem key={report.id}>
-              <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
-                <Image source={{ uri: report.photo }} />
+            <CardItem key={report.id} style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5 }}>
+              <View >
+                <Image style={{ width: 80, height: 100, borderRadius: 7 }} source={{ uri: report.photo }} />
               </View>
               <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
                 <Text style={{ fontSize: 12, color: "#ccc" }}>By user at {report.createdAt}</Text>
@@ -50,8 +50,19 @@ export default function Home({ navigation: { navigate } }) {
                 <Text style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}>
                   Kecamatan: {report.location}
                 </Text>
-                <Button onPress={() => onPressDelete(report.id)} title="Del"></Button>
-                <Button onPress={() => showEdit(report)} title="Edit"></Button>
+                <View style={{ flexDirection: 'row', marginTop:10}}>
+
+                  <Button small onPress={() => showEdit(report)} title="Edit"
+                    style={{ backgroundColor: '#913535', padding: 10, marginRight: 10 }}>
+
+                    <Text style={{ color: '#fff' }}>Edit</Text>
+
+                  </Button>
+                  <Button small onPress={() => onPressDelete(report.id)}
+                    style={{ borderColor: '#913535', borderWidth: 1, backgroundColor: '#fff', padding: 10, marginRight: 10 }}>
+                    <Text style={{ color: '#913535' }}>Delete</Text>
+                  </Button>
+                </View>
               </Right>
             </CardItem>
           ))}

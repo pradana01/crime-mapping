@@ -160,15 +160,15 @@ export default function Page1({ navigation: { navigate } }) {
                   kec.status == "dangerous"
                     ? "rgba(255, 0, 0, 0.4)"
                     : kec.status == "warning"
-                    ? "rgba(255, 200, 100, 0.4)"
-                    : "rgba(100, 200, 200, 0.5)"
+                      ? "rgba(255, 200, 100, 0.4)"
+                      : "rgba(100, 200, 200, 0.5)"
                 }
                 strokeColor={
                   kec.status == "dangerous"
                     ? "rgba(255, 0, 0, 0.5)"
                     : kec.status == "warning"
-                    ? "rgba(255, 200, 200, 0.5)"
-                    : "rgba(100, 200, 200, 0.5)"
+                      ? "rgba(255, 200, 200, 0.5)"
+                      : "rgba(100, 200, 200, 0.5)"
                 }
                 tappable={true}
                 onPress={() => showModal(kec)}
@@ -180,8 +180,8 @@ export default function Page1({ navigation: { navigate } }) {
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text>City :{dataModal.city}</Text>
-              <Text>District: {dataModal.name}</Text>
+              <Text style={{color:'#283148', fontWeight:'bold',fontSize:18}}>{dataModal.city}</Text>
+              <Text style={{marginBottom:10, fontSize:12, color:'#913535', fontWeight:'bold'}}>{dataModal.name}</Text>
               <Text>Population: {dataModal.population}</Text>
               <Text>abduction: {dataModal.abduction} case</Text>
               <Text>anarchism: {dataModal.anarchism} case</Text>
@@ -194,12 +194,12 @@ export default function Page1({ navigation: { navigate } }) {
               <Text>Status: {dataModal.status}</Text>
 
               <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                style={{ ...styles.openButton, backgroundColor: "#283148", borderRadius:10, marginVertical:10 }}
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
               >
-                <Text style={styles.textStyle}>thanks</Text>
+                <Text style={styles.textStyle}>Close</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -209,23 +209,25 @@ export default function Page1({ navigation: { navigate } }) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text>{status}</Text>
+              <View style={{ flexDirection: 'row', marginVertical:10, }}>
 
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  setModalAlert(false);
-                }}
-              >
-                <Text style={styles.textStyle}>thanks</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  changePage();
-                }}
-              >
-                <Text style={styles.textStyle}>thanks</Text>
-              </TouchableHighlight>
+                <TouchableHighlight
+                  style={{ ...styles.openButton, backgroundColor: "#283148", borderRadius: 10 }}
+                  onPress={() => {
+                    setModalAlert(false);
+                  }}
+                >
+                  <Text style={styles.textStyle}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={{ ...styles.openButton, backgroundColor: "#fff", borderColor:'#913535', borderWidth:1, borderRadius: 10 }}
+                  onPress={() => {
+                    changePage();
+                  }}
+                >
+                  <Text style={styles.textStyle, {color:'#913535',fontWeight:'bold'}}>See DOs and DONTs</Text>
+                </TouchableHighlight>
+              </View>
             </View>
           </View>
         </Modal>
@@ -249,6 +251,7 @@ const styles = StyleSheet.create({
   header: {
     width: screenWidth,
     justifyContent: "center",
+    backgroundColor: '#283148'
   },
   titleHeader: {
     paddingTop: 22,
@@ -265,8 +268,8 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: "rgba(255, 255, 255, 1)",
-    borderRadius: 20,
-    padding: 50,
+    borderRadius: 10,
+    padding: 30,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -282,6 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginHorizontal:10,
   },
   textStyle: {
     color: "white",
