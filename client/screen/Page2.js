@@ -12,7 +12,7 @@ export default function Create() {
   const [location, setLocation] = useState('Input location')
   const [photo, setPhoto] = useState('')
   const [video, setVideo] = useState('')
-  const url = 'http://192.168.1.115:3000'
+  const url = 'http://93-sde.zudhhyy.client.exp.direct:3000'
   const token = useSelector(state => state.userReducer.token)
 
 
@@ -27,37 +27,38 @@ export default function Create() {
   }
 
   const selectOneImage = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync()
-    if (!res.cancelled) {
-      console.log(res.uri)
-      setPhoto(res.uri)
-    }
-  }
 
-  const onPressed = () => {
-    fetch(`${url}/reports`, {
-      method: 'post',
-      headers: {
-        'access_token': token,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title,
-        description,
-        location,
-        photo,
-        video
-      }),
-    })
-      .then(res => res.json())
-      .then(report => {
-        alert(`You've successfuly submitted a report`)
-        navigation.navigate('My Report')
-      })
-      .catch(err => {
-        // console.log(err)
-        alert(err)
-      })
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true
+    });
+    
+    if (!result.cancelled) {
+      // setPhoto(result.uri)
+      
+      let base64Img = `data:image/jpg;base64,${result.base64}`
+      
+      //Add your cloud name
+      let apiUrl = 'https://api.cloudinary.com/v1_1/andrean/image/upload';
+  
+      let data = {
+        "file": base64Img,
+        "upload_preset": "pz1rtvsu",
+      }
+
+      fetch(apiUrl, {
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST',
+      }).then(async r => {
+          let data = await r.json()
+          console.log(data.secure_url)
+          return data.secure_url
+      }).catch(err=>console.log(err))
+}
   }
 
   return (

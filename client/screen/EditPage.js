@@ -57,7 +57,7 @@ export default function Edit({ route: { params: { data } } }) {
       .then(res => res.json())
       .then(report => { 
         alert(`You've successfuly edited the report`)
-        navigation.navigate('MyReport')
+        navigation.navigate('My Report')
       })
       .catch(err => {
         alert(err)

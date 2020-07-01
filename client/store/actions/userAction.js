@@ -1,4 +1,4 @@
-const user_url = "http://192.168.1.115:3000";
+const user_url = "http://93-sde.zudhhyy.client.exp.direct:3000";
 
 export function userLogin(data) {
   return (dispatch) => {

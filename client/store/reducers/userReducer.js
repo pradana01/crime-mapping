@@ -1,5 +1,5 @@
 const defaultState = {
-    isLogin: false,
+    isLogin: true,
     token: '',
     message: ''
 }

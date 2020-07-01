@@ -23,7 +23,7 @@ export default function Page5(props) {
   // console.log(id)
   const [commentData, setCommentData] = useState([])
   const [newComment, setNewComment] = useState('')
-  const url = 'http://192.168.1.115:3000'
+  const url = 'http://93-sde.zudhhyy.client.exp.direct:3000'
   const token = useSelector(state => state.userReducer.token)
   const [render, setRender] = useState(true)
 

@@ -13,6 +13,7 @@ import Page5 from "../screen/Page5";
 import SignIn from "../screen/SignIn";
 import SignUp from "../screen/SignUp";
 import EditPage from '../screen/EditPage'
+import Do from '../screen/Do'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator()
@@ -87,8 +88,8 @@ export default TabComponent = () => {
                 }}
               />
               <Tab.Screen
-                name="Account"
-                component={Account}
+                name="Do"
+                component={Do}
                 options={{
                   tabBarLabel: "Account",
                   tabBarIcon: ({ color, size }) => <Icon name="account" color={color} size={size} />,
