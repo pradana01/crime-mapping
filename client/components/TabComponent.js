@@ -10,6 +10,7 @@ import CreateReport from "../screen/Page2";
 import MyReport from "../screen/Page3";
 import Account from "../screen/Page4";
 import Page5 from "../screen/Page5";
+import Do from "../screen/Do";
 import SignIn from "../screen/SignIn";
 import SignUp from "../screen/SignUp";
 import EditPage from '../screen/EditPage'
@@ -144,10 +145,10 @@ export default TabComponent = () => {
                 }}
               />
               <Tab.Screen
-                name="Account"
-                component={Account}
+                name="Do"
+                component={Do}
                 options={{
-                  tabBarLabel: "Account",
+                  tabBarLabel: "DOs DONTs",
                   tabBarIcon: ({ color, size }) => <Icon name="account" color={color} size={size} />,
                 }}
               />

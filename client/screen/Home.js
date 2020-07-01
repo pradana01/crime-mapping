@@ -13,18 +13,19 @@ import {
 import Constants from "expo-constants";
 import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
 import { useNavigation } from '@react-navigation/native'
-
-const url = 'http://localhost:3000'
+import { useSelector } from "react-redux";
+const url = 'http://192.168.1.115:3000'
 
 export default function Home({ navigation: { navigate } }) {
   const navigation = useNavigation()
   const [data, setData] = useState([])
   const [user, setUser] = useState([])
+  const token = useSelector(state => state.userReducer.token)
   
   useEffect(() => {
     fetch(`${url}/reports`, {
       headers: {
-        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'access_token': token,
         'Content-Type': 'application/json'
       }
     })
@@ -49,12 +50,12 @@ export default function Home({ navigation: { navigate } }) {
         <Text style={styles.titleHeader}>News Feed</Text>
       </Header> */}
 
-      <Content style={{ backgroundColor: "#f0f0f0" }}>
+      <Content padder style={{ backgroundColor: "#f0f0f0" }}>
 
       {data.map((data, i) =>  
         <CardItem key={i}>
-          <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
-            <Image source={{uri: data.photo}} />
+          <View >
+            <Image style={{ width: 80, height: 100,}} source={{uri: data.photo}} />
           </View>
           <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
       <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt}</Text>

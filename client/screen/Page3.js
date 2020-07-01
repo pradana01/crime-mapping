@@ -4,29 +4,24 @@ import Newsfeed from '../components/Newsfeed'
 import Constants from 'expo-constants'
 import { useNavigation } from '@react-navigation/native'
 import { Container, Content, Header, Card, CardItem, Left, Right, Input } from "native-base";
-
+import {useSelector} from 'react-redux'
 
 export default function Home({ navigation: { navigate } }) {
   const navigation = useNavigation()
-  const url = 'http://localhost:3000'
+  const url = 'http://192.168.1.115:3000'
   const [data, setData] = useState([])
+  const token = useSelector(state => state.userReducer.token)
 
   useEffect(() => {
-    fetch(`${url}/reports`, {
+    fetch(`${url}/myReports`, {
       headers: {
-        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'access_token': token,
         'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(comment => {
-        let temp = []
-        for (let i = 0; i < comment.length; i++) {
-          if (comment[i].UserId === 3) {
-            temp.push(comment[i])
-          }
-        }
-        setData(temp)
+        setData(comment)
       })
       .catch(err => {
         console.log(err)
@@ -37,7 +32,7 @@ export default function Home({ navigation: { navigate } }) {
     fetch(`${url}/reports/${id}`, {
       method: 'delete',
       headers: {
-        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'access_token': token,
         'Content-Type': 'application/json'
       }
     })
@@ -60,8 +55,8 @@ export default function Home({ navigation: { navigate } }) {
 
         {data.map((report) =>
           <CardItem key={report.id}>
-            <View style={{ width: 80, height: 100, backgroundColor: '#707070', marginLeft: -10 }}>
-              <Image source={{uri: report.photo}} />
+            <View>
+              <Image  style={{ width: 80, height: 100,}} source={{uri: report.photo}} />
             </View>
             <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
               <Text style={{ fontSize: 12, color: '#ccc' }}>By user at {report.createdAt}</Text>

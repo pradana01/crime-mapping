@@ -16,19 +16,21 @@ import Constants from "expo-constants";
 import { useNavigation } from '@react-navigation/native'
 import { Container, Content, Header, Card, CardItem, Left, Right, Textarea, Button } from "native-base";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
+import { useSelector } from 'react-redux';
 export default function Page5(props) {
   const navigation = useNavigation()
   const { reportData } = props.route.params
   // console.log(id)
   const [commentData, setCommentData] = useState([])
   const [newComment, setNewComment] = useState('')
-  const url = 'http://localhost:3000'
+  const url = 'http://192.168.1.115:3000'
+  const token = useSelector(state => state.userReducer.token)
+  const [render, setRender] = useState(true)
 
   useEffect(() => {
     fetch(`${url}/comments/${reportData.id}`, {
       headers: {
-        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'access_token': token,
         'Content-Type': 'application/json'
       }
     })
@@ -37,11 +39,12 @@ export default function Page5(props) {
         // console.log(id)
         console.log(comment)
         setCommentData(comment)
+        
       })
       .catch(err => {
         console.log(err)
       })
-  })
+  },[render])
 
 
   const onPressAddComment = () => {
@@ -49,7 +52,7 @@ export default function Page5(props) {
       fetch(`${url}/comments`, {
         method: 'post',
         headers: {
-          'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+          'access_token': token,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -60,6 +63,7 @@ export default function Page5(props) {
         .then(res => res.json())
         .then(comment => {
           alert('Added a comment')
+          setRender(!render)
         })
         .catch(err => {
           console.log(err)
@@ -103,7 +107,7 @@ export default function Page5(props) {
           <Text>Comments : </Text>
           {commentData.map((comment, i) =>
             <View key={i}>
-              <Text>{comment.comment}</Text><br />
+              <Text>{comment.comment}</Text>
               <Text>By: {comment.User.name}</Text>
             </View>
           )}
