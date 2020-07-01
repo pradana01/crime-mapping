@@ -71,6 +71,7 @@ export function delete_report(data) {
 export function add_report(data) {
   return (dispatch) => {
     let apiUrl = "https://api.cloudinary.com/v1_1/andrean/image/upload";
+
     if (data.photo !== "") {
       let datas = {
         file: data.photo,
@@ -87,8 +88,8 @@ export function add_report(data) {
         method: "POST",
       })
         .then(async (r) => {
-          let data = await r.json();
-          image = data.secure_url;
+          let img = await r.json();
+          image = img.secure_url;
 
           return fetch(`${url}/reports`, {
             method: "post",
@@ -150,31 +151,81 @@ export function add_report(data) {
 
 export function edit_report(data) {
   return (dispatch) => {
-    fetch(`${url}/reports/${data.id}`, {
-      method: "put",
-      headers: {
-        access_token: data.token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: data.title,
-        description: data.description,
-        location: data.location,
-        photo: data.photo,
-      }),
-    })
-      .then((res) => res.json())
-      .then((hasil) => {
-        dispatch({
-          type: "EDIT_REPORT",
-          payload: {
-            reports: hasil,
-          },
-        });
-        alert(`You've successfuly edited the report`);
+    let apiUrl = "https://api.cloudinary.com/v1_1/andrean/image/upload";
+
+    if (data.photo !== "") {
+      let datas = {
+        file: data.photo,
+        upload_preset: "dxvs8dwc",
+      };
+
+      let image;
+
+      fetch(apiUrl, {
+        body: JSON.stringify(datas),
+        headers: {
+          "content-type": "application/json",
+        },
+        method: "POST",
       })
-      .catch((err) => {
-        alert(err);
-      });
+        .then(async (r) => {
+          let img = await r.json();
+          image = img.secure_url;
+
+          return fetch(`${url}/reports/${data.id}`, {
+            method: "put",
+            headers: {
+              access_token: data.token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: data.title,
+              description: data.description,
+              location: data.location,
+              photo: image,
+            }),
+          });
+        })
+        .then((res) => res.json())
+        .then((hasil) => {
+          dispatch({
+            type: "EDIT_REPORT",
+            payload: {
+              reports: hasil,
+            },
+          });
+          alert(`You've successfuly edited report`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      fetch(`${url}/reports/${data.id}`, {
+        method: "put",
+        headers: {
+          access_token: data.token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.title,
+          description: data.description,
+          location: data.location,
+          photo: data.photo,
+        }),
+      })
+        .then((res) => res.json())
+        .then((hasil) => {
+          dispatch({
+            type: "EDIT_REPORT",
+            payload: {
+              reports: hasil,
+            },
+          });
+          alert(`You've successfuly edited the report`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 }

@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, StatusBar, Platform } from "react-native";
-import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button } from "native-base";
+import { StyleSheet, Text, StatusBar, Platform } from "react-native";
+import { Container, Content, Header, Form, Item, Input, Label, Button } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { add_report } from "../store/actions/reportAction";
+import * as ImagePicker from "expo-image-picker";
 
 export default function Create() {
   const navigation = useNavigation();
-  const [title, setTitle] = useState("Input report title");
-  const [description, setDescription] = useState("Input description");
-  const [location, setLocation] = useState("Input location");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
   const [photo, setPhoto] = useState("");
   const token = useSelector((state) => state.userReducer.token);
   const dispatch = useDispatch();
-  // const url = "https://crimeport-orchestrator.herokuapp.com";
 
   const selectOneImage = async () => {
     let res = await ImagePicker.launchImageLibraryAsync({
@@ -35,6 +34,10 @@ export default function Create() {
       photo,
     };
     dispatch(add_report(data));
+    setTitle("");
+    setDescription("");
+    setLocation("");
+    setPhoto("");
     navigation.navigate("My Report");
   };
 

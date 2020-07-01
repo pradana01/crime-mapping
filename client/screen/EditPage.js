@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, StatusBar, Platform } from "react-native";
-import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button } from "native-base";
+import { StyleSheet, Text, StatusBar, Platform } from "react-native";
+import { Container, Content, Form, Item, Input, Label, Button } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import { useSelector, useDispatch } from "react-redux";
 import { edit_report } from "../store/actions/reportAction";
+import * as ImagePicker from "expo-image-picker";
 
 export default function Edit({
   route: {
@@ -13,11 +13,11 @@ export default function Edit({
 }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const id = data.id;
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
   const [location, setLocation] = useState(data.location);
   const [photo, setPhoto] = useState(data.photo);
+  const id = data.id;
 
   const token = useSelector((state) => state.userReducer.token);
 
@@ -47,9 +47,6 @@ export default function Edit({
 
   return (
     <Container>
-      {/* <Header style={styles.header}>
-        <Text style={styles.titleHeader}>Edit Report</Text>
-      </Header> */}
       <Content padder>
         <Form style={{ marginHorizontal: 10 }}>
           <Label style={{ marginBottom: 5, fontSize: 15 }}>Title</Label>

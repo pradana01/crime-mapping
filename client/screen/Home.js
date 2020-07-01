@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView, StatusBar, Platform, Image } from "react-native";
-import Constants from "expo-constants";
-import { Container, Content, Header, Card, CardItem, Left, Right, Button, Icon } from "native-base";
+import { StyleSheet, Text, View, StatusBar, Platform, Image } from "react-native";
+import { Container, Content, CardItem, Right, Button, Icon } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector, useDispatch } from "react-redux";
 import { fetch_newsfeed } from "../store/actions/reportAction";
-const url = "http://192.168.1.115:3000";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Home({ navigation: { navigate } }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [datas, setDatas] = useState([]);
-  const [user, setUser] = useState([]);
   const token = useSelector((state) => state.userReducer.token);
   const newsfeed = useSelector((state) => state.reportReducer.newsfeed);
 
@@ -50,17 +47,7 @@ export default function Home({ navigation: { navigate } }) {
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
             }}
-          >
-            {/* <View style={{ marginHorizontal: 15, flexDirection: 'row', }}>
-              <View >
-                <Image style={{ width: 50, height: 50, borderRadius: 10, backgroundColor: '#ccc' }} source={{ uri: IMAGE }} />
-              </View>
-              <View style={{ flex: 1, alignItems: "flex-start", marginLeft: 15 }}>
-                <Text style={{ fontSize: 18, color: "#283148", fontWeight: 'bold' }}>JENNIE</Text>
-                <Text style={{ fontSize: 12 }}>Kecamatan : Kuningan</Text>
-              </View>
-            </View> */}
-          </View>
+          ></View>
         </View>
         <View style={{ marginTop: -50 }}>
           {newsfeed.length > 0 &&
@@ -77,7 +64,7 @@ export default function Home({ navigation: { navigate } }) {
                   )}
                 </View>
                 <Right style={{ flex: 3, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
-                  <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt}</Text>
+                  <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt.split("T")[0]}</Text>
                   <Text style={{ fontWeight: "bold" }}>{data.title}</Text>
                   <Text style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontSize: 12 }}>
                     Kecamatan : {data.location}
