@@ -72,9 +72,9 @@ router.post('/reports', (req, res) => {
     // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
     //     console.log('gagal')
     // } else {
-        if(!video) {
-            cloudinary.uploader.upload(photo, function(err, result) {
-                // console.log(result)
+        if (photo) {
+            const newImageUri =  "file:///" + photo.split("file:/").join("");
+            cloudinary.uploader.upload(newImageUri, function(err, result) {
                 uploadedPhoto = result.url
                 let data = {title, description, location, photo: uploadedPhoto}
                 axios({
@@ -88,7 +88,7 @@ router.post('/reports', (req, res) => {
                 })
                 .catch(err => { res.send(err) })
             })
-        } else {
+        } else if (video) {
             cloudinary.uploader.upload(photo, function(err, result) {
                 uploadedPhoto = result.url
                 cloudinary.uploader.upload(video, { resource_type: 'video'}, function(vidErr, vidResult) {
@@ -108,6 +108,18 @@ router.post('/reports', (req, res) => {
                         .catch(err => { res.send(err) })
                 })
             })
+        } else {
+            let data = {title, description, location}
+                axios({
+                    method: 'post',
+                    url: `${NEWS_FEED_SERVICES_URL}/reports`,
+                    data: data,
+                    headers: { access_token }
+                })
+                .then(resp => { 
+                    res.send(resp.data)
+                })
+                .catch(err => { res.send(err) })
         }
     // }
 })
@@ -121,7 +133,7 @@ router.put('/reports/:id', (req, res) => {
     // if(photo.mimetype !== 'image/jpeg' && photo.mimetype !== 'image/jpg' && photo.mimetype !== 'image/png') {
     //     console.log('gagal')
     // } else {
-        if(!video) {
+        if(photo) {
             cloudinary.uploader.upload(photo, function(err, result) {
                 uploadedPhoto = result.url
                 let data = {title, description, location, photo: uploadedPhoto}
@@ -134,7 +146,7 @@ router.put('/reports/:id', (req, res) => {
                 .then(resp => { res.send(resp.data) })
                 .catch(err => { res.send(err) })
             })
-        } else {
+        } else if (video){
             cloudinary.uploader.upload(photo, function(err, result) {
                 if (err) console.log(err);
                 uploadedPhoto = result.url
@@ -154,6 +166,18 @@ router.put('/reports/:id', (req, res) => {
                     .catch(err => { res.send(err) })
                 })
             })
+        } else {
+            let data = {title, description, location}
+                axios({
+                    method: 'put',
+                    url: `${NEWS_FEED_SERVICES_URL}/reports/${req.params.id}`,
+                    data: data,
+                    headers: { access_token }
+                })
+                .then(resp => { 
+                    res.send(resp.data)
+                })
+                .catch(err => { res.send(err) })
         }
     // }
     

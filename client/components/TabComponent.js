@@ -29,8 +29,8 @@ const HomeNavigator = () => {
 const ReportNavigator = () => {
   return (
   <Stack.Navigator>
-    <Stack.Screen name='My Report' component={MyReport} />
-    <Stack.Screen name='Edit Report' component={EditPage} />
+    <Stack.Screen name='MyReport' component={MyReport} />
+    <Stack.Screen name='EditPage' component={EditPage} />
   </Stack.Navigator>
   )
 }

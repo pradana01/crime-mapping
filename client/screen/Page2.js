@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button } from "native-base";
 import { useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
+import { useSelector } from 'react-redux';
 
 export default function Create() {
   const navigation = useNavigation()
@@ -11,7 +12,9 @@ export default function Create() {
   const [location, setLocation] = useState('Input location')
   const [photo, setPhoto] = useState('')
   const [video, setVideo] = useState('')
-  const url = 'http://localhost:3000'
+  const url = 'http://192.168.1.115:3000'
+  const token = useSelector(state => state.userReducer.token)
+
 
   const selectOneVideo = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
@@ -26,7 +29,7 @@ export default function Create() {
   const selectOneImage = async () => {
     const res = await ImagePicker.launchImageLibraryAsync()
     if (!res.cancelled) {
-      console.log(res)
+      console.log(res.uri)
       setPhoto(res.uri)
     }
   }
@@ -35,7 +38,7 @@ export default function Create() {
     fetch(`${url}/reports`, {
       method: 'post',
       headers: {
-        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'access_token': token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -45,10 +48,6 @@ export default function Create() {
         photo,
         video
       }),
-      // files: {
-      //   photo,
-      //   video
-      // }
     })
       .then(res => res.json())
       .then(report => {
@@ -56,6 +55,7 @@ export default function Create() {
         navigation.navigate('My Report')
       })
       .catch(err => {
+        // console.log(err)
         alert(err)
       })
   }
@@ -71,15 +71,13 @@ export default function Create() {
           <Item regular>
             <Input
               bordered
-              placeholder={title}
               onChangeText={title => setTitle(title)}
             />
           </Item>
           <Label style={styles.label}>Description</Label>
           <Item regular>
-            <Textarea
+            <Input
               rowSpan={5}
-              placeholder={description}
               onChangeText={desc => setDescription(desc)}
             />
           </Item>
@@ -87,19 +85,16 @@ export default function Create() {
           <Item regular>
             <Input
               bordered
-              placeholder={location}
               onChangeText={loc => setLocation(loc)}
             />
           </Item>
           <Label style={{ marginVertical: 5, fontSize: 15 }}>Input file</Label>
           <Button
             bordered
-            placeholder={photo}
             onPress={() => selectOneImage()}
           />
           <Button
             bordered
-            placeholder={video}
             onPress={() => selectOneVideo()}
           />
           <Button
