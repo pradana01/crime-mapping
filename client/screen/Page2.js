@@ -38,31 +38,6 @@ export default function Create() {
     navigation.navigate("My Report");
   };
 
-  // const onPressed = () => {
-  //   fetch(`${url}/reports`, {
-  //     method: "post",
-  //     headers: {
-  //       access_token: token,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       title,
-  //       description,
-  //       location,
-  //       photo,
-  //       video,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((report) => {
-  //       alert(`You've successfuly submitted a report`);
-  //       navigation.navigate("My Report");
-  //     })
-  //     .catch((err) => {
-  //       alert(err);
-  //     });
-  // };
-
   return (
     <Container>
       <Header style={styles.header}>

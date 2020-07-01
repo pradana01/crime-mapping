@@ -71,10 +71,19 @@ export default function Page5(props) {
         <Text style={styles.titleHeader}>Reports Detail</Text>
       </Header> */}
       <Content padder style={{ backgroundColor: "#f0f0f0" }}>
-        <CardItem style={{ flexDirection: "column", borderRadius:10 }}>
+        <CardItem style={{ flexDirection: "column", borderRadius: 10 }}>
           <View style={{ flexDirection: "row", marginBottom: 15 }}>
-            <View style={{width:30, height:30, backgroundColor:'#707070', borderRadius:50,alignItems:'center', justifyContent:'center'}}>
-              <Icon name="account" style={{color:'#fff', fontSize:20}}/>
+            <View
+              style={{
+                width: 30,
+                height: 30,
+                backgroundColor: "#707070",
+                borderRadius: 50,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon name="account" style={{ color: "#fff", fontSize: 20 }} />
             </View>
             <View style={{ flex: 1, alignItems: "flex-start", height: 30, marginLeft: 15 }}>
               <Text style={{ fontSize: 10, color: "#ccc" }}>{reportData.createdAt}</Text>
@@ -82,39 +91,56 @@ export default function Page5(props) {
             </View>
           </View>
 
-          <View style={{width:'100%'}}>
-            <Image style={{ width: '100%', height: 180,}} source={{ uri: reportData.photo }} />
+          <View style={{ width: "100%" }}>
+            {reportData.photo == "" ? (
+              <Image
+                style={{ width: 80, height: 100, borderRadius: 7 }}
+                source={{ uri: "https://upload.wikimedia.org/wikipedia/en/6/60/No_Picture.jpg" }}
+              />
+            ) : (
+              <Image style={{ width: 80, height: 100, borderRadius: 7 }} source={{ uri: reportData.photo }} />
+            )}
             <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 8 }}>{reportData.title}</Text>
             <Text style={{ marginTop: 8 }}>{reportData.description}</Text>
             <Text style={{ marginTop: 8, color: "#5891fe", fontWeight: "bold" }}>{reportData.location}</Text>
           </View>
         </CardItem>
-        <CardItem style={{ marginTop: 5, flexDirection: "column", alignItems: "flex-start", borderRadius:10 }}>
-          <Text style={{marginBottom:10, fontWeight:'700'}}>Comments : </Text>
+        <CardItem style={{ marginTop: 5, flexDirection: "column", alignItems: "flex-start", borderRadius: 10 }}>
+          <Text style={{ marginBottom: 10, fontWeight: "700" }}>Comments : </Text>
           {commentData.map((comment, i) => (
-            <View key={i} style={{marginVertical:5,flexDirection:'row'}}>
-              <View style={{marginRight:5, marginLeft:-5}}>
-              <View style={{width:15, height:15, backgroundColor:'#707070', borderRadius:50,alignItems:'center', justifyContent:'center'}}>
-              <Icon name="account" style={{color:'#fff', fontSize:12}}/>
-            </View>
+            <View key={i} style={{ marginVertical: 5, flexDirection: "row" }}>
+              <View style={{ marginRight: 5, marginLeft: -5 }}>
+                <View
+                  style={{
+                    width: 15,
+                    height: 15,
+                    backgroundColor: "#707070",
+                    borderRadius: 50,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon name="account" style={{ color: "#fff", fontSize: 12 }} />
+                </View>
               </View>
-              <View style={{marginTop:-3}}>
-              <Text style={{ color: '#913535', fontWeight: 'bold' }}>{comment.User.name}</Text>
-              <Text>{comment.comment}</Text>
-                
+              <View style={{ marginTop: -3 }}>
+                <Text style={{ color: "#913535", fontWeight: "bold" }}>{comment.User.name}</Text>
+                <Text>{comment.comment}</Text>
               </View>
             </View>
           ))}
           <View style={{ width: "100%", borderStyle: "solid", borderWidth: 1, borderColor: "#ccc", marginVertical: 8 }}>
             <Textarea rowSpan={2} placeholder="your comment here.." onChangeText={(add) => setNewComment(add)} />
           </View>
-          <Button block onPress={() => onPressAddComment()}
-            style={{ elevation: 5, shadowColor: '#000', shadowOpacity: 1, shadowOffset: { width: 5, height: 5 } }}>
+          <Button
+            block
+            onPress={() => onPressAddComment()}
+            style={{ elevation: 5, shadowColor: "#000", shadowOpacity: 1, shadowOffset: { width: 5, height: 5 } }}
+          >
             <Text style={{ color: "#fff" }}>SUBMIT COMMENT</Text>
           </Button>
         </CardItem>
-        <Button block onPress={() => pindahPage()}
-          style={{ backgroundColor: '#913535' }}>
+        <Button block onPress={() => pindahPage()} style={{ backgroundColor: "#913535" }}>
           <Text style={{ color: "#fff" }}>BACK</Text>
         </Button>
       </Content>

@@ -41,8 +41,15 @@ export default function Home({ navigation: { navigate } }) {
         {reports.length > 0 &&
           reports.map((report) => (
             <CardItem key={report.id} style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5 }}>
-              <View >
-                <Image style={{ width: 80, height: 100, borderRadius: 7 }} source={{ uri: report.photo }} />
+              <View>
+                {report.photo == "" ? (
+                  <Image
+                    style={{ width: 80, height: 100, borderRadius: 7 }}
+                    source={{ uri: "https://upload.wikimedia.org/wikipedia/en/6/60/No_Picture.jpg" }}
+                  />
+                ) : (
+                  <Image style={{ width: 80, height: 100, borderRadius: 7 }} source={{ uri: report.photo }} />
+                )}
               </View>
               <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
                 <Text style={{ fontSize: 12, color: "#ccc" }}>By user at {report.createdAt}</Text>
@@ -50,17 +57,27 @@ export default function Home({ navigation: { navigate } }) {
                 <Text style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}>
                   Kecamatan: {report.location}
                 </Text>
-                <View style={{ flexDirection: 'row', marginTop:10}}>
-
-                  <Button small onPress={() => showEdit(report)} title="Edit"
-                    style={{ backgroundColor: '#913535', padding: 10, marginRight: 10 }}>
-
-                    <Text style={{ color: '#fff' }}>Edit</Text>
-
+                <View style={{ flexDirection: "row", marginTop: 10 }}>
+                  <Button
+                    small
+                    onPress={() => showEdit(report)}
+                    title="Edit"
+                    style={{ backgroundColor: "#913535", padding: 10, marginRight: 10 }}
+                  >
+                    <Text style={{ color: "#fff" }}>Edit</Text>
                   </Button>
-                  <Button small onPress={() => onPressDelete(report.id)}
-                    style={{ borderColor: '#913535', borderWidth: 1, backgroundColor: '#fff', padding: 10, marginRight: 10 }}>
-                    <Text style={{ color: '#913535' }}>Delete</Text>
+                  <Button
+                    small
+                    onPress={() => onPressDelete(report.id)}
+                    style={{
+                      borderColor: "#913535",
+                      borderWidth: 1,
+                      backgroundColor: "#fff",
+                      padding: 10,
+                      marginRight: 10,
+                    }}
+                  >
+                    <Text style={{ color: "#913535" }}>Delete</Text>
                   </Button>
                 </View>
               </Right>

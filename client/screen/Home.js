@@ -30,11 +30,27 @@ export default function Home({ navigation: { navigate } }) {
   return (
     <Container>
       <Content style={{ backgroundColor: "#f0f0f0" }}>
-        <View style={{ alignItems: 'center', width: '100%', height: 105, backgroundColor: '#283148', }}>
-        </View>
+        <View style={{ alignItems: "center", width: "100%", height: 105, backgroundColor: "#283148" }}></View>
 
-        <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: 55, marginTop: -75, borderRadius: 15 }}>
-          <View style={{ width: '100%', backgroundColor: '#f0f0f0', height: 100, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            height: 55,
+            marginTop: -75,
+            borderRadius: 15,
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#f0f0f0",
+              height: 100,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+            }}
+          >
             {/* <View style={{ marginHorizontal: 15, flexDirection: 'row', }}>
               <View >
                 <Image style={{ width: 50, height: 50, borderRadius: 10, backgroundColor: '#ccc' }} source={{ uri: IMAGE }} />
@@ -44,16 +60,21 @@ export default function Home({ navigation: { navigate } }) {
                 <Text style={{ fontSize: 12 }}>Kecamatan : Kuningan</Text>
               </View>
             </View> */}
-
           </View>
         </View>
         <View style={{ marginTop: -50 }}>
-
           {newsfeed.length > 0 &&
             newsfeed.map((data, i) => (
               <CardItem key={i} style={{ borderRadius: 10, marginHorizontal: 15, marginVertical: 5 }}>
-                <View >
-                  <Image style={{ width: 80, height: 100, borderRadius: 7 }} source={{ uri: data.photo }} />
+                <View>
+                  {data.photo == "" ? (
+                    <Image
+                      style={{ width: 80, height: 100, borderRadius: 7 }}
+                      source={{ uri: "https://upload.wikimedia.org/wikipedia/en/6/60/No_Picture.jpg" }}
+                    />
+                  ) : (
+                    <Image style={{ width: 80, height: 100, borderRadius: 7 }} source={{ uri: data.photo }} />
+                  )}
                 </View>
                 <Right style={{ flex: 3, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
                   <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt}</Text>
@@ -66,21 +87,18 @@ export default function Home({ navigation: { navigate } }) {
                   <View>
                     <Button
                       onPress={() => pindahPage(data)}
-                      style={{ backgroundColor: '#fff', borderRadius: 5, elevation: 0 }}
+                      style={{ backgroundColor: "#fff", borderRadius: 5, elevation: 0 }}
                     >
-                      <Icon name='eye' style={{ fontSize: 25, color: '#913535' }} />
+                      <Icon name="eye" style={{ fontSize: 25, color: "#913535" }} />
                     </Button>
                   </View>
                   <View>
-                    <Text style={{ color: '#913535', fontSize: 10, textAlign:'center' }}>View Detail</Text>
-
+                    <Text style={{ color: "#913535", fontSize: 10, textAlign: "center" }}>View Detail</Text>
                   </View>
-
                 </View>
               </CardItem>
             ))}
         </View>
-
       </Content>
     </Container>
   );
