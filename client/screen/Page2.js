@@ -12,25 +12,30 @@ export default function Create() {
   const [location, setLocation] = useState('Input location')
   const [photo, setPhoto] = useState('')
   const [video, setVideo] = useState('')
-  const url = 'http://192.168.1.115:3000'
+  const url = 'http://192.168.0.105:3000'
   const token = useSelector(state => state.userReducer.token)
 
 
   const selectOneVideo = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:'Videos' 
+    let res = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:'Videos',
+      base64: true
     })
     if (!res.cancelled) {
+      let base64Vid = `data:image/jpg;base64,${res.base64}`
       console.log(res)
-      setVideo(res.uri)
+      setVideo(base64Vid)
     }
   }
 
   const selectOneImage = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync()
+    let res = await ImagePicker.launchImageLibraryAsync({
+      base64: true
+    })
     if (!res.cancelled) {
-      console.log(res.uri)
-      setPhoto(res.uri)
+      let base64Img = `data:image/jpg;base64,${res.base64}`
+      console.log(res)
+      setPhoto(base64Img)
     }
   }
 
@@ -91,8 +96,9 @@ export default function Create() {
           <Label style={{ marginVertical: 5, fontSize: 15 }}>Input file</Label>
           <Button
             bordered
-            onPress={() => selectOneImage()}
-          />
+            onPress={() => selectOneImage()}>
+              <Text>Upload Image</Text>
+          </Button>
           <Button
             bordered
             onPress={() => selectOneVideo()}

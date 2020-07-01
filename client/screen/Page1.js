@@ -23,7 +23,7 @@ export default function Page1() {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.1.115:3000/districts`)
+      .get(`http://192.168.0.105:3000/districts`)
       .then((res) => {
         setFetchData(res.data);
       })

@@ -14,7 +14,7 @@ import Constants from "expo-constants";
 import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from "react-redux";
-const url = 'http://192.168.1.115:3000'
+const url = 'http://192.168.0.105:3000'
 
 export default function Home({ navigation: { navigate } }) {
   const navigation = useNavigation()

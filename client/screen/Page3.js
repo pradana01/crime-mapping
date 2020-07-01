@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux'
 
 export default function Home({ navigation: { navigate } }) {
   const navigation = useNavigation()
-  const url = 'http://192.168.1.115:3000'
+  const url = 'http://192.168.0.105:3000'
   const [data, setData] = useState([])
   const token = useSelector(state => state.userReducer.token)
 
