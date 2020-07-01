@@ -1,29 +1,77 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView, Button, StatusBar, Platform, Image } from "react-native";
-import Newsfeed from "../components/Newsfeed";
-import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
+import React, {useState, useEffect} from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  Button,
+  StatusBar,
+  Platform,
+  Image,
+} from "react-native";
 import Constants from "expo-constants";
+import { Container, Content, Header, Card, CardItem, Left, Right } from "native-base";
+import { useNavigation } from '@react-navigation/native'
 
-import { useSelector, useDispatch } from "react-redux";
-import { fetch_newsfeed } from "../store/actions/reportAction";
+const url = 'http://localhost:3000'
 
 export default function Home({ navigation: { navigate } }) {
-  const dispatch = useDispatch();
-  const newsfeed = useSelector((state) => state.reportReducer.newsfeed);
-  const token = useSelector((state) => state.userReducer.token);
-
+  const navigation = useNavigation()
+  const [data, setData] = useState([])
+  const [user, setUser] = useState([])
+  
   useEffect(() => {
-    let data = {
-      token,
-    };
-    dispatch(fetch_newsfeed(data));
-  }, []);
+    fetch(`${url}/reports`, {
+      headers: {
+        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      // console.log(data)
+      setData(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  })
+
+  const pindahPage = (reportData) => {
+    console.log(reportData)
+    navigation.navigate('Comment', {reportData})
+}
 
   return (
     <Container>
       <Header style={styles.header}>
         <Text style={styles.titleHeader}>News Feed</Text>
       </Header>
+
+      <Content style={{ backgroundColor: "#f0f0f0" }}>
+
+      {data.map((data, i) =>  
+        <CardItem key={i}>
+          <View style={{ width: 80, height: 100, backgroundColor: "#707070", marginLeft: -10 }}>
+            <Image source={{uri: data.photo}} />
+          </View>
+          <Right style={{ flex: 1, alignItems: "flex-start", height: 100, marginLeft: 15 }}>
+      <Text style={{ fontSize: 12, color: "#ccc" }}>By user: at {data.createdAt}</Text>
+            <Text style={{ fontWeight: "bold" }}>{data.title}</Text>
+            <Text
+              style={{ marginTop: 5, fontStyle: "italic", color: "#5891FE", fontWeight: "700" }}
+            >
+              Kecamatan : {data.location}
+            </Text>
+            <Button 
+                onPress={() => pindahPage(data)}
+                title="View Comment" />
+          </Right>
+        </CardItem>
+)}
+      </Content>
+{/*
       <View style={{ backgroundColor: "#f0f0f0" }}>
         <FlatList
           data={newsfeed}
@@ -31,6 +79,7 @@ export default function Home({ navigation: { navigate } }) {
           keyExtractor={(item) => String(item.id)}
         />
       </View>
+*/}
     </Container>
   );
 }

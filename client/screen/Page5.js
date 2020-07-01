@@ -1,54 +1,123 @@
-import React from "react";
-import { StyleSheet, Text, View, StatusBar, Platform, Image, Dimensions } from "react-native";
-import { Container, Content, Header, CardItem, Left, Right, Textarea, Button } from "native-base";
-import Swipe from "react-native-swiper";
-// import Newsfeed from "../components/Newsfeed";
-// import Constants from "expo-constants";
-// import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React, { useState, useEffect } from 'react';
+import { TextInput } from 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  StatusBar,
+  Platform,
+  Image,
+  Dimensions
+} from "react-native";
+import Newsfeed from "../components/Newsfeed";
+import Constants from "expo-constants";
+import { useNavigation } from '@react-navigation/native'
+import { Container, Content, Header, Card, CardItem, Left, Right, Textarea, Button } from "native-base";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const URL = "https://tribratanewsbengkulu.com/wp-content/uploads/20160109011636-curanmor.jpg";
-export default function Detail({ navigation: { navigate } }) {
+export default function Page5(props) {
+  const navigation = useNavigation()
+  const { reportData } = props.route.params
+  // console.log(id)
+  const [commentData, setCommentData] = useState([])
+  const [newComment, setNewComment] = useState('')
+  const url = 'http://localhost:3000'
+
+  useEffect(() => {
+    fetch(`${url}/comments/${reportData.id}`, {
+      headers: {
+        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(comment => {
+        // console.log(id)
+        console.log(comment)
+        setCommentData(comment)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  })
+
+
+  const onPressAddComment = () => {
+    if (newComment) {
+      fetch(`${url}/comments`, {
+        method: 'post',
+        headers: {
+          'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJyZXphMkBlbWFpbC5jb20iLCJpYXQiOjE1OTMzMDYxNDF9.5x_hXIU6PlxBWfOL5_4GqE5AYcDIQhS6GZ6xh96Dtkk',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          comment: newComment,
+          CrimeReportId: reportData.id
+        })
+      })
+        .then(res => res.json())
+        .then(comment => {
+          alert('Added a comment')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {
+      alert('Write something first')
+    }
+  }
+
+  const pindahPage = () => {
+    setCommentData([])
+    navigation.navigate('Home')
+  }
+
   return (
     <Container>
       <Header style={styles.header}>
         <Text style={styles.titleHeader}>Reports Detail</Text>
       </Header>
       <Content style={{ backgroundColor: "#f0f0f0" }}>
-        <CardItem style={{ flexDirection: "column" }}>
-          <View style={{ flexDirection: "row", marginBottom: 15 }}>
-            <View>
-              <Image style={{ width: 30, height: 30, borderRadius: 100 }} source={{ uri: URL }} />
+
+        <CardItem style={{ flexDirection: 'column' }}>
+          <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+            <View >
+              <Image style={{ width: 30, height: 30, borderRadius: 100 }} source={{ uri: reportData.photo }} />
             </View>
             <View style={{ flex: 1, alignItems: "flex-start", height: 30, marginLeft: 15 }}>
-              <Text style={{ fontSize: 10, color: "#ccc" }}>01.00 PM</Text>
-              <Text style={{ fontWeight: "bold" }}>Jennie-chan</Text>
+              <Text style={{ fontSize: 10, color: "#ccc" }}>{reportData.createdAt}</Text>
+              <Text style={{ fontWeight: "bold" }}>user</Text>
             </View>
           </View>
-          <Swipe autoplay={true} autoplayTimeout={5} style={{ height: 180 }}>
-            <View style={{ flex: 1 }}>
-              <Image style={{ flex: 1, resizeMode: "contain", width: null, height: null }} source={{ uri: URL }} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Image style={{ flex: 1, resizeMode: "contain", width: null, height: null }} source={{ uri: URL }} />
-            </View>
-          </Swipe>
+
           <View style={{}}>
-            <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 8 }}>Terjadi aksi penembakan di sekolah</Text>
-            <Text style={{ marginTop: 8 }}>
-              Seorang cowo berinitial ABC, diduga melakukan penembakan kepada seorang cewe di sekolahnya
-            </Text>
-            <Text style={{ marginTop: 8, color: "#5891fe", fontWeight: "bold" }}>Palmerah</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 8 }}>{reportData.title}</Text>
+            <Text style={{ marginTop: 8 }}>{reportData.description}</Text>
+            <Text style={{ marginTop: 8, color: '#5891fe', fontWeight: 'bold' }}>{reportData.location}</Text>
           </View>
+
         </CardItem>
-        <CardItem style={{ marginTop: 5, flexDirection: "column", alignItems: "flex-start" }}>
+        <CardItem style={{ marginTop: 5, flexDirection: 'column', alignItems: 'flex-start' }}>
           <Text>Comments : </Text>
-          <View style={{ width: "100%", borderStyle: "solid", borderWidth: 1, borderColor: "#ccc", marginVertical: 8 }}>
-            <Textarea rowSpan={2} placeholder="your comment here.." />
+          {commentData.map((comment, i) =>
+            <View key={i}>
+              <Text>{comment.comment}</Text><br />
+              <Text>By: {comment.User.name}</Text>
+            </View>
+          )}
+          <View style={{ width: '100%', borderStyle: "solid", borderWidth: 1, borderColor: '#ccc', marginVertical: 8 }}>
+            <Textarea rowSpan={2} placeholder='your comment here..' onChangeText={add => setNewComment(add)} />
           </View>
-          <Button block>
-            <Text style={{ color: "#fff" }}>SUBMIT COMMENT</Text>
+          <Button block onPress={() => onPressAddComment()}>
+            <Text style={{ color: '#fff' }}>SUBMIT COMMENT</Text>
           </Button>
         </CardItem>
+        <Button block onPress={() => pindahPage()}>
+          <Text style={{ color: '#fff' }}>BACK</Text>
+        </Button>
+
       </Content>
     </Container>
   );
