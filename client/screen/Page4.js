@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, StatusBar, Platform, Button } from "react-native";
-import { Container, Content, Header, Form, Item, Input, Label, Textarea } from "native-base";
+import { StyleSheet, Text, View, StatusBar, Platform,  } from "react-native";
+import { Container, Content, Header, Form, Item, Input, Label, Textarea, Button } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogout } from "../store/actions/userAction";
 
@@ -35,7 +35,9 @@ export default function Account() {
         <Item regular disabled>
           <Input bordered placeholder="Your Username" />
         </Item>
-        <Button title="Logout" onPress={() => user_logout()} />
+        <Button block style={{marginTop:10, backgroundColor:'#283148'}} onPress={() => user_logout()}>
+        <Text style={{color:'#fff'}}>LOGOUT</Text>
+        </Button>
       </Content>
     </Container>
   );

@@ -20,8 +20,36 @@ const Stack = createStackNavigator()
 const HomeNavigator = () => {
   return (
   <Stack.Navigator>
-    <Stack.Screen name='Home' component={Home} />
-    <Stack.Screen name='Comment' component={Page5} />
+    <Stack.Screen name='Home' component={Home}
+    options={{
+      title: 'News Feed',
+      headerStyle: {
+        backgroundColor: '#283148',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        padding: 10
+      },
+      headerTitleAlign: 'center',
+      
+    }} />
+    <Stack.Screen name='Comment' component={Page5} 
+    options={{
+      title: 'Detail Report',
+      headerStyle: {
+        backgroundColor: '#283148',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        padding: 10
+      },
+      headerTitleAlign: 'center',
+      
+    }}/>
   </Stack.Navigator>
   )
 }
@@ -29,22 +57,51 @@ const HomeNavigator = () => {
 const ReportNavigator = () => {
   return (
   <Stack.Navigator>
-    <Stack.Screen name='My Report' component={MyReport} />
-    <Stack.Screen name='Edit Report' component={EditPage} />
+    <Stack.Screen name='My Report' component={MyReport}
+    options={{
+      title: 'My Report',
+      headerStyle: {
+        backgroundColor: '#283148',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        padding: 10
+      },
+      headerTitleAlign: 'center',
+      
+    }} />
+    <Stack.Screen name='Edit Report' component={EditPage} 
+    options={{
+      title: 'Edit Report',
+      headerStyle: {
+        backgroundColor: '#283148',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        padding: 10
+      },
+      headerTitleAlign: 'center',
+      
+    }} />
   </Stack.Navigator>
   )
 }
 
 export default TabComponent = () => {
 
-    const isLogin = useSelector(state => state.userReducer.isLogin)
+    // const isLogin = useSelector(state => state.userReducer.isLogin)
+    const isLogin = true
 
     return (
         <>
         <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Report"
         tabBarOptions={{
-          activeTintColor: "#5891FE",
+          activeTintColor: "#913535",
           inactiveTintColor: "#707070",
         }}
         >

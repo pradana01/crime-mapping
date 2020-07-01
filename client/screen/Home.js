@@ -45,9 +45,9 @@ export default function Home({ navigation: { navigate } }) {
 
   return (
     <Container>
-      <Header style={styles.header}>
+      {/* <Header style={styles.header}>
         <Text style={styles.titleHeader}>News Feed</Text>
-      </Header>
+      </Header> */}
 
       <Content style={{ backgroundColor: "#f0f0f0" }}>
 
