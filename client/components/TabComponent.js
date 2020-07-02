@@ -151,7 +151,7 @@ export default TabComponent = () => {
               component={Do}
               options={{
                 tabBarLabel: "DOs DONTs",
-                tabBarIcon: ({ color, size }) => <Icon name="account" color={color} size={size} />,
+                tabBarIcon: ({ color, size }) => <Icon name="check-underline" color={color} size={size} />,
               }}
             />
           </>
